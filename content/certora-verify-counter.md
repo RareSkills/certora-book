@@ -1,3 +1,4 @@
+# Formally Verifying a Counter
 
 In the previous chapter, we learned the theoretical side of formal verification, including what it is and how it works. In this module, we’ll move beyond theory and learn the following:
 
