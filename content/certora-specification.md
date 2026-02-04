@@ -1,4 +1,4 @@
-
+# Understanding the Spec File in Certora CVL
 In the last chapter, we saw that to perform formal verification using Certora Prover, we need to provide the Prover with the following key items:
 
 1. Smart Contract (**`.`**`sol` file)
