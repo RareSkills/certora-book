@@ -1,4 +1,4 @@
-
+# Introduction to Invariants in Certora
 Up until now, we’ve focused on verifying the behavior of individual methods or sequences of methods —ensuring that a specific function call or set of calls, given certain inputs, produces the correct changes in state. But there’s another, more universal aspect of verification: **invariants**.
 
 
