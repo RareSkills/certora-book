@@ -1,3 +1,5 @@
+# Loops in CVL: Path Explosion and Loop Unrolling
+
 
 Loops are one of the most common programming constructs, but they remain challenging to reason about in formal verification. **While a loop in Solidity or any other programming language appears simple—merely repeating an action until a condition is met—its verification becomes exponentially** **complex****.** A formal verification engine, such as the Certora Prover, must reason about all possible numbers of loop iterations, which leads to what is known as the **path explosion problem**: the exponential increase in possible execution paths that the Prover must explore as the number of loop iterations or conditional branches increases.
 
@@ -516,4 +518,3 @@ The `--loop_iter` flag increases the number of iterations explored, but this onl
 
 
 These workarounds are helpful for debugging, quick checks, or catching shallow bugs. However, they cannot provide a complete proof when dealing with unbounded loops.
-

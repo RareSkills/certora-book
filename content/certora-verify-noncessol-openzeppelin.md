@@ -1,3 +1,5 @@
+# Formally Verifying Nonces.Sol in OpenZeppelin
+
 
 Nonces, which stands for "number used once" are used in digital signature schemes to prevent replay attacks. For the purposes of this article, we assume the reader is already familiar with what nonces are and how they are used.
 
@@ -229,4 +231,3 @@ to_mathint
     assert otherNonceBefore != otherNonceAfter => other == account, "no other nonce is used";
 }
 ```
-

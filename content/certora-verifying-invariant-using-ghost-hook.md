@@ -1,3 +1,5 @@
+# Verifying an Invariant Using Ghost and Hook
+
 
 In any correct ERC20 implementation, t**he sum of all account balances must always equal the total token supply.** This property should always remain true throughout any state changes. If a call, whether direct or part of a sequence of calls, violates this invariant, it signals a fundamental flaw in the contract’s logic and design. 
 
@@ -578,4 +580,3 @@ We achieved this by using a **ghost variable** to track the aggregate sum and�
 
 
 These techniques allow you to prove high-level business rules on top of low-level storage, ensuring your verification focuses solely on valid, realistic contract behaviors.
-

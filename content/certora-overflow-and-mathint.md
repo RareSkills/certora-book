@@ -1,3 +1,5 @@
+# Overflow and Mathint
+
 
 In CVL, the type `mathint` represents unbounded integers, unlike Solidity’s fixed-size types such as `uint256`. It performs arithmetic without overflow or underflow, which allows reasoning based on pure math. Hence, it exposes overflow or underflow that might otherwise go undetected in unchecked blocks or inline assembly.
 

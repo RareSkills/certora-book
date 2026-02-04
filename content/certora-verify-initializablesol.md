@@ -1,3 +1,5 @@
+# Formally verifying Initializable.sol
+
 
 This article describes how Certora formally verified the Initializable.sol OpenZeppelin contract. We assume the reader is already familiar with how this contract is used. If not, please see our article on [Initializable Contracts](https://www.rareskills.io/post/initializable-solidity).
 
@@ -119,4 +121,3 @@ rule disableEffect() {
 
 
 The rules we showed here are extremely simple to grasp, but we review them to demonstrate that formal verification doesn’t always have to be complex. The rules we show here could be accomplished with a unit test, but formal verification is more thorough and high assurance.
-

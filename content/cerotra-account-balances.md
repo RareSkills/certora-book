@@ -1,3 +1,5 @@
+# Formally Verifying Address Balance
+
 
 In the previous chapter, we covered how to reason about environment-dependent functions in CVL by focusing on `msg.sender` in non-payable contexts. In those examples, access control depended on the caller’s address. We also explained how to handle reverts caused by unexpected non-zero `msg.value`.
 

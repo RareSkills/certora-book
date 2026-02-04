@@ -1,3 +1,5 @@
+# Constraining the Ghost Values in Rules
+
 
 In the previous chapter, we learned how ghost variables allow information to flow from hooks into rules. We also learned that:
 
@@ -223,4 +225,3 @@ This highlights an important design consideration: **the choice of what to hook 
 
 
 Unconstrained ghost variables can lead the Prover to explore unrealistic states, resulting in misleading verification failures. By constraining their initial values using a `require` statement, we can make sure that ghosts start in a state that aligns logically with the contract’s storage. This small but crucial step keeps verification both exhaustive and semantically valid, allowing the Prover to report only genuine logical issues.
-

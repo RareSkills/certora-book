@@ -1,4 +1,6 @@
 # Understanding the Spec File in Certora CVL
+
+
 In the last chapter, we saw that to perform formal verification using Certora Prover, we need to provide the Prover with the following key items:
 
 1. Smart Contract (**`.`**`sol` file)
@@ -356,4 +358,3 @@ Even though all the rules are verified, this does not mean the entire contract i
 
 
 In this chapter, we explored the anatomy of a `.spec` file, focusing on the **Methods Block** for interface definition and the **Rule Block** for logic testing. We also saw how tags like `envfree` help refine the verification process. In the next chapter, we will build on this foundation by taking a detailed look at `require` and `assert` statements.
-

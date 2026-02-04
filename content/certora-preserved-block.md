@@ -1,3 +1,5 @@
+# Preserved Block and Its Role in Invariant Verification
+
 
 **An invariant** is a property that must always hold true after a smart contract is deployed and throughout its execution. At first glance, verifying an invariant may seem straightforward: assume that the invariant holds before a function call, run the function, and confirm it still holds afterward.
 
@@ -593,4 +595,3 @@ Preserved blocks are a powerful tool for refining invariant verification in CVL.
 
 
 Through the WETH case study, we saw how carefully chosen preserved blocks can guide the Prover away from impossible symbolic states and toward meaningful executions, ensuring that invariants are verified under conditions that accurately reflect real-world behavior.
-

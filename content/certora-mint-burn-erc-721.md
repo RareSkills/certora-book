@@ -1,3 +1,5 @@
+# Mint and Burn for ERC-721
+
 
 ## Introduction
 
@@ -752,4 +754,3 @@ Here's the Prover [run](https://prover.certora.com/output/541734/b596159772c447d
 
 
 Here's the complete specification and the Prover [run](https://prover.certora.com/output/541734/3ed32b635917474a92cacbfbd17bb06c?anonymousKey=df13a9896e61d7d2ec402e8607f0082e6868cae8).
-

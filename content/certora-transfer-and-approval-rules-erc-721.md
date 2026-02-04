@@ -1,3 +1,5 @@
+# Transfer and Approval Rules for ERC-721
+
 
 ## Introduction
 
@@ -1102,4 +1104,3 @@ rule zeroAddressBalanceRevert() {
     assert lastReverted;
 }
 ```
-

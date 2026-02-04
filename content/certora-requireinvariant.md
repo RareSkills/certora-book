@@ -1,3 +1,5 @@
+# Using “requireInvariant" in Rules and Invariants
+
 
 Up until now, we’ve either written a **rule** to verify specific behaviors or an **invariant** to verify properties that must always hold true throughout the contract’s lifetime. However, when verifying new properties, we often want to assume that other properties we've already proven continue to hold.
 
@@ -672,4 +674,3 @@ This is how we can use `requireInvariant` to make our specifications stronger, m
 - In **invariants**, it lets us prove new properties by assuming earlier ones, avoiding meaningless counterexamples that come from inconsistent states.
 
 The key principle is simple but powerful: **prove global invariants first, then reuse them as building blocks** when verifying specific behaviors or additional invariants.
-

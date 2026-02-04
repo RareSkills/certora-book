@@ -1,3 +1,5 @@
+# Invariants for ERC-721
+
 
 ## Introduction
 
@@ -1053,4 +1055,3 @@ invariant zeroAddressHasNoApprovedOperator(address a)
 
 
   Here's the Prover [run](https://prover.certora.com/output/541734/f7aa089c0cb5442c9d225d91c5279080?anonymousKey=7b79ecebe4d14c20a9b0a143a7735a9b2a857742).
-

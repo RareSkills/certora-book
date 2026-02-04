@@ -1,3 +1,5 @@
+# Introduction to Method Properties
+
 
 ## Introduction
 
@@ -295,4 +297,3 @@ Using a filter block inside a parametric rule helps us achieve two things:
 
 
 This is how we can utilize method properties to enforce function-specific assertions as well as exclude irrelevant functions from verification using filtered blocks.
-

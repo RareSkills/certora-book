@@ -1,3 +1,5 @@
+# Introduction to Storage Hooks And Ghosts
+
 
 It often becomes necessary to inspect changes at specific storage locations to prove that a property or invariant holds, especially when the storage is not externally accessible or when the values of interest are not explicitly calculated or exposed by the contract.
 
@@ -549,5 +551,3 @@ Weâ€™ll explore these behaviours in greater detail in a later chapter, where weâ
 
 
 Certora hooks provide powerful observability into storage and EVM operations. However, their variables are limited to each hook's local scope. Ghost variables solve this problem by capturing data from hooks and making it accessible to rules, thereby enabling effective and comprehensive reasoning about a contract's internal state during the verification.
-
-

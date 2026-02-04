@@ -1,4 +1,6 @@
 # Introduction to Invariants in Certora
+
+
 Up until now, we’ve focused on verifying the behavior of individual methods or sequences of methods —ensuring that a specific function call or set of calls, given certain inputs, produces the correct changes in state. But there’s another, more universal aspect of verification: **invariants**.
 
 
@@ -419,8 +421,4 @@ These additional checks do not alter the core verification process. The Prover s
 ## Conclusion
 
 
-Smart contract invariants are critical assertions about the state of your contract that must always remain true. Formally verifying these invariants ensures that the contract maintains its intended behavior and correctness across all possible states and method executions. 
-
-
-  
-
+Smart contract invariants are critical assertions about the state of your contract that must always remain true. Formally verifying these invariants ensures that the contract maintains its intended behavior and correctness across all possible states and method executions.

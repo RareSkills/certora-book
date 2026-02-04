@@ -1,3 +1,5 @@
+# Formally Verifying Ownable.sol
+
 
 Ownable is an abstract contract that provides owner-based access control. When inherited, it restricts specific functions to the owner using the `onlyOwner` modifier. It has three core mechanisms, each implemented through the following functions:
 
@@ -536,4 +538,3 @@ If the owner has changed (`oldCurrent != newCurrent`), then the change must have
 
 
 These are the only two legitimate paths for changing ownership according to the rule.
-

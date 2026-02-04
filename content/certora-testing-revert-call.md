@@ -1,3 +1,5 @@
+# Testing Revert Call In Certora
+
 
 In this chapter, we will learn how to use method tags (`@withrevert` and `@norevert`) and the special variable `lastReverted` in CVL to verify expected reverts in smart contract execution.
 
@@ -288,4 +290,3 @@ By storing `lastReverted` **immediately after calling** `divide(a, 0)`, we ensur
 
 
 Testing both success and revert cases is crucial for performing formal verification of a method, as it provides better coverage and ensures that the method behaves correctly under all possible input conditions, including edge cases like overflows or invalid inputs.
-
