@@ -1,6 +1,5 @@
 # Formally Verifying a Counter
 
-
 In the previous chapter, we learned the theoretical side of formal verification, including what it is and how it works. In this module, we’ll move beyond theory and learn the following:
 
 - How to set up a project to work with Certora Prover.
@@ -9,9 +8,7 @@ In the previous chapter, we learned the theoretical side of formal verification,
 
 Let’s start by setting up the project environment for Certora Prover.
 
-
 ## **Installing the Essential Prerequisites Tools**
-
 
 Before setting up the project directory, make sure that your local machine has the following prerequisites installed:
 
@@ -30,7 +27,6 @@ You can check whether your machine has both of these installed by simply running
 
 ## Setting Up Our Project  Directory
 
-
 Once prerequisites are installed, create an empty directory named `certora-counter`, navigate into it, and follow the instructions below to set up your project directory correctly.
 
 1. In your local machine, install [**virtualenv**](https://virtualenv.pypa.io/en/latest/user_guide.html) by running the command below. This tool will allow us to create a Python virtual environment, which is essential for managing dependencies within your project directory.
@@ -42,15 +38,13 @@ pip3 install virtualenv
 1. Once we have **virtualenv** installed, create a Python virtual environment for our project by running the command below in your terminal.
 
 ```bash
-virtualenv
- certora-env
+virtualenv certora-env
 ```
 
 1. Next, activate the Python virtual environment you created by running the command below in your terminal.
 
 ```bash
-source
- certora-env/bin/activate
+source certora-env/bin/activate
 ```
 
 1. Next, run the command below in your terminal to install the Prover.
@@ -59,23 +53,17 @@ source
 pip3 install certora-cli
 ```
 
-
 4. Next, Install [**solc-select**](https://github.com/crytic/solc-select) in your virtual environment using the command below. This will allow us to conveniently change the version of the Solidity compiler we are using.
-
 
 ```solidity
 pip3 install solc-select
 ```
 
-
 ## **Adding Certora Personal Access Key** 
-
 
 To run the Prover, you need to set up an access key as a system variable. To obtain your personal access, register on the [Certora website](https://www.certora.com/signup?plan=prover). Once you register, you will receive an email from Certora containing the access key and an initial password for your Certora account.
 
-
 To add the access key as a system variable, follow the following instructions:  
-
 
 ### For Linux Users
 
@@ -95,7 +83,6 @@ export CERTORAKEY=<your-certora-access-key>
 ```bash
 source .profile
 ```
-
 
 ### For Mac Users Using `zsh`
 
@@ -117,15 +104,11 @@ export CERTORAKEY=<your-certora-access-key>
 source .zshenv
 ```
 
-
 **Please note that** whenever you open the new terminal, make sure to run `source .zshenv` **or** `source .profile`  command to load environment variables; Otherwise,  you will get the error message `The environment variable CERTORAKEY does not contain a Certora key` error from the Prover
-
 
 ## Adding a Contract In the Project Directory
 
-
 In the `certora-counter` directory, add a subfolder called`contracts` . Once done, create a file called `Counter.sol` in it, and add the contract below.
-
 
 ```solidity
 //SPDX-License-Identifier: MIT
@@ -140,12 +123,9 @@ contract Counter {
 }
 ```
 
-
 The above contract is a simple smart contract that has only one public state variable called `count`, whose value can be incremented by the external function `increment()`.
 
-
 ## Setting Up **`Certora Verification Language`** LSP
-
 
 If you use **Microsoft’s VS Code** editor or a fork of it, we recommend installing the [**Certora Verification Language LSP**](https://marketplace.visualstudio.com/items?itemName=Certora.evmspec-lsp) to enhance your development experience with **syntax checking, syntax highlighting, and code completion** by following the instructions below:
 
