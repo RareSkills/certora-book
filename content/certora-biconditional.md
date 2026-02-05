@@ -48,7 +48,7 @@ rule setX_usingImplication() {
 ```
 
 
-![image](media/certora-biconditional/image-1db09cb3.png)
+![image](media/certora-biconditional/image1.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/885900ff6e4b4d50995371de86dd206d?anonymousKey=79765145fd63da9363a34e78a345f6c66d04918c)
@@ -88,7 +88,7 @@ This single assert biconditional statement is more concise and directly expresse
 As expected, this rule verifies:
 
 
-![image](media/certora-biconditional/image-1db09cb3.png)
+![image](media/certora-biconditional/image2.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/0cb9f701278841e1884d502397f09fd9?anonymousKey=be23c334e574e147a5a514577ee9805f49aae739)
@@ -149,7 +149,7 @@ rule mulDivUp_denominatorIsZero_revert() {
 The rule fails due to a counterexample where the product of `x` and `y` exceeds `max_uint256`. We need to include that as an additional revert condition:
 
 
-![image](media/certora-biconditional/image-1cb09cb3.png)
+![image](media/certora-biconditional/image3.png)
 
 
 Here’s the corrected CVL rule:
@@ -167,7 +167,7 @@ rule mulDivUp_allConditions_revert() {
 ```
 
 
-![image](media/certora-biconditional/image-1cb09cb3.png)
+![image](media/certora-biconditional/image4.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/bbef2b36f358411c92b8eda3b7b364ed?anonymousKey=5fb7a527daee3b46cbbdc2dfb6f888fda2e86c29)
@@ -188,7 +188,7 @@ rule mulDivUp_allConditions_revert() {
 ```
 
 
-![image](media/certora-biconditional/image-1cb09cb3.png)
+![image](media/certora-biconditional/image5.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/695777bc9bf44d438d421b0fd1f7a55b?anonymousKey=5a19eaa0fabd2cbd0be353fc1272e40b258a538b)
@@ -215,7 +215,7 @@ rule mulDivUp_roundUp() {
 ```
 
 
-![image](media/certora-biconditional/image-1e509cb3.png)
+![image](media/certora-biconditional/image6.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/faf390806e124743a098eaaeb2512339?anonymousKey=5e3a9aa509f01cdb5a8e9351d0165296e170521d)
@@ -237,7 +237,7 @@ rule mulDivUp_noRoundUp() {
 ```
 
 
-![image](media/certora-biconditional/image-1e509cb3.png)
+![image](media/certora-biconditional/image7.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/7cb0979fee584275a4a22d8c28610d3d?anonymousKey=8594f4c1dd1caddf1589e9426af45b391e89a608)
