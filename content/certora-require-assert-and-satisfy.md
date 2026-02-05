@@ -81,7 +81,7 @@ rule checkCounter() {
 Since neither of the above rules includes an assert statement at the end, the Prover cannot determine which property to verify. This results in the error _“__**last statement of the rule …… is not an assert or satisfy command (but must be)**__,”_ as shown below.
 
 
-![image](media/certora-require-assert-and-satisfy/image-1b009cb3.png)
+![image](media/certora-require-assert-and-satisfy/image1.png)
 
 
 The `assert` statement contains the expected state of the contract in the form of an expression, along with an optional message string describing the expression, as shown below:
@@ -89,8 +89,8 @@ The `assert` statement contains the expected state of the contract in the form o
 
 ```solidity
 assert Expression, "An Optional Message String";
-    //OR
-    assert Expression;
+//OR
+assert Expression;
 ```
 
 
@@ -145,7 +145,7 @@ rule checkCountValidity() {
 }
 ```
 
-1. **Perform the increments**: We then call the `increment()` function three times to increase the counter.
+2. **Perform the increments**: We then call the `increment()` function three times to increase the counter.
 
 ```solidity
 rule checkCountValidity() {
@@ -160,7 +160,7 @@ rule checkCountValidity() {
 }
 ```
 
-1. **Retrieve the updated state**: After executing the `increment()` calls, we fetch the new value of `count` and store it in `PostcallCountValue`. This allows us to compare the state before and after the function executions.
+3. **Retrieve the updated state**: After executing the `increment()` calls, we fetch the new value of `count` and store it in `PostcallCountValue`. This allows us to compare the state before and after the function executions.
 
 ```solidity
 rule checkCountValidity() {
@@ -179,7 +179,7 @@ rule checkCountValidity() {
 }
 ```
 
-1. **Validate the initial state**: To ensure correctness, we use an `assert` statement to verify that count was initially **0**—confirming that the contract starts from a known, expected state.
+4. **Validate the initial state**: To ensure correctness, we use an `assert` statement to verify that count was initially **0**—confirming that the contract starts from a known, expected state.
 
 ```solidity
 rule checkCountValidity() {
@@ -192,9 +192,7 @@ rule checkCountValidity() {
     increment();
     increment();
 
-    // 
-G
-rabbing the state of count after the increment() calls
+    // Grabbing the state of count after the increment() calls
     uint256 PostcallCountValue = count();
 
     // Assertions 
@@ -202,7 +200,7 @@ rabbing the state of count after the increment() calls
 }
 ```
 
-1. **Verify the increment behavior**: Finally, we assert that `count` has increased by exactly **3**, confirming that each call to `increment()` successfully added **1** to the value.
+5. **Verify the increment behavior**: Finally, we assert that `count` has increased by exactly **3**, confirming that each call to `increment()` successfully added **1** to the value.
 
 ```solidity
 rule checkCountValidity() {
@@ -232,7 +230,7 @@ We can see how we used the `assert` statements to enforce our expectations about
 
 At first glance, you might expect `checkCountValidity` to pass the verification because:
 
-1. **Default Initialization**<u>:</u> The `Counter` contract does not explicitly initialize the `count` state variable, so Solidity automatically sets it to **0**. As a result, when the rule retrieves the initial value using `count()`, it should return **0**, making the assertion `PrecallCountValue == 0` valid for any execution path.
+1. **Default Initialization**: The `Counter` contract does not explicitly initialize the `count` state variable, so Solidity automatically sets it to **0**. As a result, when the rule retrieves the initial value using `count()`, it should return **0**, making the assertion `PrecallCountValue == 0` valid for any execution path.
 2. **Increment Behavior**: Each call to `increment()` increases the `count` variable by **1**. Since the rule calls `increment()` three times, the expected final value of `count` should be `PrecallCountValue + 3`. Therefore, the assertion `PostcallCountValue == PrecallCountValue + 3`  is expected to hold true for any execution path.
 
 ## Running the Verification
@@ -241,7 +239,7 @@ At first glance, you might expect `checkCountValidity` to pass the verification 
 **However, when you run the verification process, you will encounter an unexpected result as shown below.**
 
 
-![image](media/certora-require-assert-and-satisfy/image-4f793e83.png)
+![image](media/certora-require-assert-and-satisfy/image2.png)
 
 
 In the result above, we can clearly see that the Prover failed to verify the `checkCountValidity()` rule. This suggests that at least one of the following conditions evaluated to false, resulting in a rule violation:
@@ -261,25 +259,25 @@ To understand the violation, the Certora Prover provides counterexamples. In sim
 To view the counterexample of our violated rule, click the violated rule (`checkCountValidity`) name on the report page to get a view similar to the one below.
 
 
-![image](media/certora-require-assert-and-satisfy/image-cbdf829a.png)
+![image](media/certora-require-assert-and-satisfy/image3.png)
 
 
 Once you do so, it shows the values of the rule’s parameters and variables (on the right-hand side), and a call trace (in the middle), as shown below.
 
 
-![image](media/certora-require-assert-and-satisfy/image-c78e4815.png)
+![image](media/certora-require-assert-and-satisfy/image4.png)
 
 
 While investigating a violation, the **call trace** is extremely helpful as it provides detailed information about the state variables at the beginning of the rule execution and also tracks updates to those variables throughout the execution, as shown below:
 
 
-![image](media/certora-require-assert-and-satisfy/image-1b209cb3.png)
+![image](media/certora-require-assert-and-satisfy/image5.png)
 
 
 In the **counterexample** provided by the Certora Prover, we can clearly see that our rule **failed verification** because the rule expected `count` to start at **0**, but instead it started at **10**, which caused `assert PrecallCountValue == 0` to fail.
 
 
-![image](media/certora-require-assert-and-satisfy/image-1b209cb3.png)
+![image](media/certora-require-assert-and-satisfy/image6.png)
 
 
 This raises an important question: **Why is** `count` **set to 10 instead of the expected default of 0?** To understand this, we need to understand how Solidity and CVL handle uninitialized variables differently.
@@ -348,13 +346,13 @@ require count() == 0;
 If you re-run the Prover with the above change and open the verification link printed in your terminal, you will get a verified rule, as shown below.
 
 
-![image](media/certora-require-assert-and-satisfy/image-06be7bd9.png)
+![image](media/certora-require-assert-and-satisfy/image7.png)
 
 
 **This time, we can see that the Prover has successfully verified our rule. This is because, with the** `require` **constraint, the prover will ignore any execution path where the initial value of** **`count`** **is not zero.** 
 
 
-![image](media/certora-require-assert-and-satisfy/image-6f250f8d.png)
+![image](media/certora-require-assert-and-satisfy/image8.png)
 
 
 By default, the Prover does not provide a call trace for a verified rule because **there can be an extremely large number of valid execution traces** that satisfy the rule’s conditions. Since a verified rule confirms that no counterexamples exist, generating and displaying all possible valid traces would be both unnecessary and impractical. 
@@ -405,7 +403,7 @@ Since the rule `searchValidExecution` ends with a `satisfy` statement, it in
 To check whether the rule `searchValidExecution` holds, run the Prover and open the verification link in a browser to view the result.
 
 
-![image](media/certora-require-assert-and-satisfy/image-9a79c46e.png)
+![image](media/certora-require-assert-and-satisfy/image9.png)
 
 
 The results above show that the Certora Prover has successfully verified the rule. This means it found at least one execution path that satisfies the `satisfy` statement. Specifically, the Prover identified a state where `count()` reaches `8` after three successive calls to `increment()`.
@@ -414,7 +412,7 @@ The results above show that the Certora Prover has successfully verified the rul
 This outcome aligns with expectations because, ideally, the value of `count()` can reach `8` after three successive `increment()` calls if the initial value is `5` (assuming each call increases the count by `1`). Since the rule seeks a valid execution path, the Prover confirmed its existence, leading to successful verification.
 
 
-![image](media/certora-require-assert-and-satisfy/image-1c309cb3.png)
+![image](media/certora-require-assert-and-satisfy/image10.png)
 
 
 ## **Using the Prover to Solve and Verify Systems of Linear Equations**
@@ -477,7 +475,7 @@ rule checkEqn(uint256 x, uint256 y) {
 When the rule is executed, the Prover attempts to find values for $x$ and $y$ that make the function return true. In this case, the correct integer solution is $x = 2$ and $y = 6$. 
 
 
-![image](media/certora-require-assert-and-satisfy/image-1c609cb3.png)
+![image](media/certora-require-assert-and-satisfy/image11.png)
 
 
 Additionally, if the equations are modified in a way that makes them inconsistent—such as defining parallel lines—the Prover will detect that no solution exists. Consider the modified system:
@@ -505,7 +503,7 @@ contract Math {
 When we re-run the `checkEqn()` rule on this modified function, the verification result indicates that the Prover correctly identifies the absence of a valid solution.
 
 
-![image](media/certora-require-assert-and-satisfy/image-1c609cb3.png)
+![image](media/certora-require-assert-and-satisfy/image12.png)
 
 
 The above results highlight the Prover’s capability not only to find valid solutions when they exist but also to detect and confirm when a set of constraints is inherently unsatisfiable, such as in the case of inconsistent or parallel equations.
@@ -518,17 +516,17 @@ The above results highlight the Prover’s capability not only to find valid sol
 
 - If a rule contains multiple `satisfy` statements, the Prover will report it as verified only if all executed satisfy statements hold for at least one execution path; otherwise, the rule will be considered violated (in the default Prover mode) as shown below:
 
-![image](media/certora-require-assert-and-satisfy/image-1b209cb3.png)
+![image](media/certora-require-assert-and-satisfy/image13.png)
 
 
-![image](media/certora-require-assert-and-satisfy/image-1b209cb3.png)
+![image](media/certora-require-assert-and-satisfy/image14.png)
 
 - A`satisfy` statement on a conditional branch that is not executed does not need to hold, as it is never reached during verification. The Prover verifies each execution path independently and reports the results for the executed paths, as shown below.
 
-![image](media/certora-require-assert-and-satisfy/image-1b209cb3.png)
+![image](media/certora-require-assert-and-satisfy/image15.png)
 
 
-![image](media/certora-require-assert-and-satisfy/image-1b209cb3.png)
+![image](media/certora-require-assert-and-satisfy/image16.png)
 
 
 ##  Difference Between `assert` And `satisfy`
