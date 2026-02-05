@@ -138,7 +138,7 @@ If you use **Microsoft’s VS Code** editor or a fork of it, we recommend instal
 ## Writing Your First Specification
 
 
-In the `certora-counter`directory, add a subfolder named `specs`. Once done, create a file named `counter.spec` in it and add the code below.
+In the `certora-counter` directory, add a subfolder named `specs`. Once done, create a file named `counter.spec` in it and add the code below.
 
 
 ```solidity
