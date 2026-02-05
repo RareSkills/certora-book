@@ -101,9 +101,9 @@ rule mod_ifXLessThanY_resultIsX_usingIfElse() {
     mathint result = mod(x, y);
 
     if (x < y) {
-        assert result == x;
+    assert result == x;
     } else {
-        assert result != x;
+    assert result != x;
     }
 }
 ```
@@ -435,8 +435,7 @@ rule max_outcomeIsAlwaysTrue_tautology() {
     uint256 y;
 
     mathint result = max(x, y);
-    assert 
-x > y => result >= 0;
+    assert x > y => result >= 0;
 }
 ```
 
