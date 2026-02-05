@@ -377,9 +377,7 @@ rule max_unreachableCondition_vacuouslyTrue() {
     uint256 y;
 
     mathint result = max(x, y);
-    assert x < 0 => 
-result == y
-;
+    assert x < 0 => result == y;
 }
 ```
 
@@ -438,8 +436,7 @@ rule max_outcomeIsAlwaysTrue_tautology() {
 
     mathint result = max(x, y);
     assert 
-x > y
- => result >= 0;
+x > y => result >= 0;
 }
 ```
 
