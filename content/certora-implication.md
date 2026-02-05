@@ -167,8 +167,7 @@ Let’s now formally verify the following property: “if `x` is greater than `y
 
 
 ```solidity
-rule
- max_ifXGreaterThanY_resultX() {
+rule max_ifXGreaterThanY_resultX() {
     uint256 x;
     uint256 y;
 
@@ -218,9 +217,6 @@ rule max_ifResultIsX_thenXGreaterThanY() {
 
 
 When a rule is violated, the Prover shows a counterexample. In this case, `result == x` not only happens when `x > y` — it also occurs when `x == y`. The counterexample specifically shows x = 3 and y = 3:
-
-
- 
 
 
 ![image](media/certora-implication/image4.png)
