@@ -111,7 +111,7 @@ else {
 As expected, the CVL rule is VERIFIED:
 
 
-![image](media/certora-verify-conditional-statements/image-1d509cb3.png)
+![image](media/certora-verify-conditional-statements/image1.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/9a875e3d499f46468cba8f0b15a73680?anonymousKey=ee1f5212c28b2e11f7112a8dee72a056a7581b7f)
@@ -184,7 +184,7 @@ In the rule above, the if block verifies that when `x > y`, the max value is `x`
 As expected this rule is VERIFIED:
 
 
-![image](media/certora-verify-conditional-statements/image-1d509cb3.png)
+![image](media/certora-verify-conditional-statements/image2.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/56f5f66a0a214bc28089ce134d34ddc4?anonymousKey=70d28ee0eaf0db5f5ec1cc56a0236c054271b726)
@@ -218,7 +218,7 @@ rule max_returnMax_modified() {
 ```
 
 
-![image](media/certora-verify-conditional-statements/image-1bb09cb3.png)
+![image](media/certora-verify-conditional-statements/image3.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/ea0770449d7346a397a4500e4e4acca2?anonymousKey=24519480e1c78f6143776616fca5c5a4e9998bb6)
@@ -352,7 +352,7 @@ mulDivUp_roundOrRevert
 When we run the Certora Prover, the Solmate `mulDivUp()` is verified to be correct:
 
 
-![image](media/certora-verify-conditional-statements/image-1d509cb3.png)
+![image](media/certora-verify-conditional-statements/image4.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/f97e4ceda2994b078311d7815a799cd0?anonymousKey=4073bab255a72079663c4d58b84aabf1a917fbd7) 
@@ -464,7 +464,7 @@ We then removed all `mulDivUp@withrevert(x, y, denominator)` function invocation
 Below is the comparison of execution time between the inefficient code and the optimized code:
 
 
-![image](media/certora-verify-conditional-statements/image-1d509cb3.png)
+![image](media/certora-verify-conditional-statements/image5.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/41724e541b944eceaf7c62b08329cb15?anonymousKey=19d87555bfdc4f2cdaea79bfc133dd27f9726040)
@@ -516,7 +516,7 @@ rule mulDivUp_roundOrRevert_omittedARevertCase() {
 ```
 
 
-![image](media/certora-verify-conditional-statements/image-1bb09cb3.png)
+![image](media/certora-verify-conditional-statements/image6.png)
 
 
 
@@ -570,7 +570,7 @@ rule max_returnMax_ternary() {
 ```
 
 
-![image](media/certora-verify-conditional-statements/image-1bb09cb3.png)
+![image](media/certora-verify-conditional-statements/image7.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/46e5b78045444e0cbbc09adfa3194d48?anonymousKey=0632ffa6cf27a3ef9ae4df1e684883007f99e905)
@@ -612,7 +612,7 @@ rule add_sumWithOverflowRevert_ternary() {
 ```
 
 
-![image](media/certora-verify-conditional-statements/image-1e309cb3.png)
+![image](media/certora-verify-conditional-statements/image8.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/349b2438943c4e599b91a2482b3ba154?anonymousKey=45f8a0e59e08cbc0dd193811c657726406751ab2)
