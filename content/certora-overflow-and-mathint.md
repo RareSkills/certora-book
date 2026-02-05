@@ -18,7 +18,7 @@ In Solidity , an `unchecked` block disables overflow/underflow checks. Hence in 
 To demonstrate, consider the function `average()` that accepts two unsigned integers and calculates their average:
 
 
-```javascript
+```solidity
 /// Solidity
 
 function average(uint256 x, uint256 y) external pure returns (uint256) {
@@ -51,7 +51,7 @@ mathint returnVal = average(x, y);
 This rule fails, indicating that an overflow occurred during the evaluation of `x + y`. We'll explain the reason next.
 
 
-![image](media/certora-overflow-and-mathint/image-1d809cb3.png)
+![image](media/certora-overflow-and-mathint/image1.png)
 
 
 ### CVL Arithmetic Evaluates to `mathint`by Default
@@ -139,7 +139,7 @@ As a result, `expectedVal` always equals `returnVal`, causing the rule to pass w
  
 
 
-![image](media/certora-overflow-and-mathint/image-1d809cb3.png)
+![image](media/certora-overflow-and-mathint/image2.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/92f221abc95040aa8f2b3c2dabbfa5fc?anonymousKey=c1efc6c3a0cb71d39c2e6301c4408d392f52d7fb)
@@ -202,7 +202,7 @@ _Note: The precondition_ _`require d != 0`_ _excludes division-by-zero errors fo
 As expected, there is a violation because of an overflow when `n + d` is being evaluated:
 
 
-![image](media/certora-overflow-and-mathint/image-1d809cb3.png)
+![image](media/certora-overflow-and-mathint/image3.png)
 
 
 
@@ -241,7 +241,7 @@ rule flawedCeilDiv_overflowIgnored() {
 As a result, counterexamples beyond the `uint256` range are ignored; therefore, the rule passes, hiding the overflow behavior:
 
 
-![image](media/certora-overflow-and-mathint/image-1d809cb3.png)
+![image](media/certora-overflow-and-mathint/image4.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/032593a4e2d644e0a67485e54ffbfb90?anonymousKey=ea45e5d9a9d87a771f15668a1c2ec6f6bca03126)
@@ -295,7 +295,7 @@ rule unsafeDivUp_noOverflow() {
 As we see, the function holds under the assumption that it behaves equivalently to `(n + d - 1) / d`. Since CVL operations naturally default to `mathint`, we can observe that no overflow occurs (even without actively thinking about it).
 
 
-![image](media/certora-overflow-and-mathint/image-1d809cb3.png)
+![image](media/certora-overflow-and-mathint/image5.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/7daeb5bee1b74401b1062f9cfae7e759?anonymousKey=0ac67083a1d0aefa12d5f0774cbacd27ef312448)
