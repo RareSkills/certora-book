@@ -4,7 +4,7 @@
 In this chapter, we will learn how to use method tags (`@withrevert` and `@norevert`) and the special variable `lastReverted` in CVL to verify expected reverts in smart contract execution.
 
 
-## **Setting Up Verification Scenarios for the** **`Add`** **function**
+## Setting Up Verification Scenarios for the `Add` function
 
 
 Consider the following `Math` contract, which has a basic `add()` function that takes two unsigned integers as its inputs and returns their sum as its output.
@@ -54,7 +54,7 @@ rule checkAdd() {
 To view the verification result of the above spec, run the Prover and open the verification link to see a result similar to the image below.
 
 
-![image](media/certora-testing-revert-call/image-4a311b44.png)
+![image](media/certora-testing-revert-call/image1.png)
 
 
 This might seem surprising because the `add()` function is expected to revert when the sum of `x` and `y` exceeds the maximum `uint256` value. Since the Prover explores different execution paths to verify correctness, one would expect it to encounter the revert scenario as well. In such cases, the assert statement should evaluate to false, and the rule should fail verification.
@@ -82,12 +82,8 @@ Certora provides us with two method tags, `@norevert` and `@withrevert`, which c
 
 
 ```solidity
-function_name
-@norevert
-();
-function_name
-@withrevert
-();
+function_name@norevert();
+function_name@withrevert();
 ```
 
 
@@ -117,13 +113,13 @@ rule checkAdd() {
 When we re-run the Prover with this updated specification, the outcome changes: the rule now fails verification, as shown in the image below:
 
 
-![image](media/certora-testing-revert-call/image-0d4c50ff.png)
+![image](media/certora-testing-revert-call/image2.png)
 
 
 Since we used the `@withrevert` tag with the `add()` function call, the Prover no longer ignores revert cases. As a result, if the sum of `a` and `b` exceeds the maximum `uint256` value, the rule treats the revert as a violation. The verifier detects this issue and reports a counterexample—one that leads to an overflow and a revert, ultimately causing the assertion to fail. **When a revert occurs, there’s no return value—c is unconstrained and can take an arbitrary value. Because of this, the assertion a + b == c cannot hold.**
 
 
-![image](media/certora-testing-revert-call/image-1bc09cb3.png)
+![image](media/certora-testing-revert-call/image3.png)
 
 
 ## Introducing CVL S**pecial Variable:** **`lastReverted`**  
@@ -138,7 +134,7 @@ By default, however, the Prover **ignores** any execution paths that would resul
 To accurately track whether a function reverts, we must **explicitly instruct** the Prover to consider revert paths using the `@withrevert` tag. When a function is called with `@withrevert`, the Prover no longer ignores revert scenarios, and if a revert occurs, `lastReverted` is updated to `true`.
 
 
-## **Example: Detecting Reverts Due to Overflow**
+## Example: Detecting Reverts Due to Overflow
 
 
 Now, let’s look at how `lastReverted` can be used in practical verification rules. We will test a function `add()`, ensuring it behaves correctly in cases where an overflow **does** and **does not** occur.
@@ -178,7 +174,7 @@ _**Note: In CVL, the maximum values for different integer types are available as
 Because the function is invoked using `@withrevert`, the Prover **does not ignore** this revert scenario and correctly detects it. As a result, `lastReverted` is set to true, indicating that the function execution was reverted. The assertion `assert lastReverted;` then evaluates to true, as `lastReverted` matches the expected outcome. Consequently, the rule should pass, as shown in the image below.
 
 
-![image](media/certora-testing-revert-call/image-1be09cb3.png)
+![image](media/certora-testing-revert-call/image4.png)
 
 
 ### **Case 2: Function Should Not Revert on Valid Addition**
@@ -212,7 +208,7 @@ In the **rule above**, the statement `require(a + b <= max_uint256);` ensures th
 Since the function is called with `@withrevert`, the Prover tracks whether a revert occurs. However, because the addition does not exceed the `uint256` limit, no revert happens, and `lastReverted` remains false. The assertion `assert !lastReverted;` verifies this, ensuring that the rule passes successfully, as shown below.
 
 
-![image](media/certora-testing-revert-call/image-1be09cb3.png)
+![image](media/certora-testing-revert-call/image5.png)
 
 
 ## **Avoiding Overwriting of** **`lastReverted`**
@@ -274,7 +270,7 @@ rule checkMath() {
 ```
 
 
-![image](media/certora-testing-revert-call/image-1be09cb3.png)
+![image](media/certora-testing-revert-call/image6.png)
 
 
 If we **don’t store** `lastReverted` immediately after calling `divide(a, 0)`, the next function call (`add(a, 0)`) **will update it again**, completely **erasing** the information about the division operation failing.
