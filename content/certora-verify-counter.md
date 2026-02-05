@@ -13,7 +13,7 @@ Let’s start by setting up the project environment for Certora Prover.
 Before setting up the project directory, make sure that your local machine has the following prerequisites installed:
 
 
-•	[<u>**Java Devel**</u>](https://www.oracle.com/in/java/technologies/downloads/)[<u>opment Kit (</u>](https://www.oracle.com/in/java/technologies/downloads/)[JDK) 21 or newer](https://www.oracle.com/in/java/technologies/downloads/)
+•	[Java Development Kit(JDK) 21 or newer](https://www.oracle.com/in/java/technologies/downloads/)
 
 
 •	[Python 3.9 or newer](https://www.python.org/downloads/)
@@ -55,7 +55,7 @@ pip3 install certora-cli
 
 5. Next, Install [**solc-select**](https://github.com/crytic/solc-select) in your virtual environment using the command below. This will allow us to conveniently change the version of the Solidity compiler we are using.
 
-```solidity
+```bash
 pip3 install solc-select
 ```
 
@@ -187,7 +187,7 @@ solc-select use 0.8.25
 Once we have a contract and a specification, we can submit them to the Certora prover for the verification process by running the `certoraRun` command. This command requires the path to the Solidity contract and the associated `.spec` file, as shown below, to execute successfully.
 
 
-```solidity
+```bash
 certoraRun contractFilePath:contractName --verify contractName:specFilePath
 ```
 
@@ -195,7 +195,7 @@ certoraRun contractFilePath:contractName --verify contractName:specFilePath
 To verify our specification, make sure you are in the `certora-counter` directory, and then run the command below in your terminal.
 
 
-```solidity
+```bash
 certoraRun contracts/Counter.sol:Counter --verify Counter:specs/counter.spec
 ```
 
