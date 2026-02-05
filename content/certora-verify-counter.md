@@ -1,6 +1,5 @@
 # Formally Verifying a Counter
 
-
 In the previous chapter, we learned the theoretical side of formal verification, including what it is and how it works. In this module, we’ll move beyond theory and learn the following:
 
 - How to set up a project to work with Certora Prover.
@@ -9,17 +8,15 @@ In the previous chapter, we learned the theoretical side of formal verification,
 
 Let’s start by setting up the project environment for Certora Prover.
 
-
 ## **Installing the Essential Prerequisites Tools**
-
 
 Before setting up the project directory, make sure that your local machine has the following prerequisites installed:
 
 
-•	[<u>**Java Devel**</u>](https://www.oracle.com/in/java/technologies/downloads/)[<u>opment Kit (</u>](https://www.oracle.com/in/java/technologies/downloads/)[JDK) 21 or newer](https://www.oracle.com/in/java/technologies/downloads/)
+- [Java Development Kit(JDK) 21 or newer](https://www.oracle.com/in/java/technologies/downloads/)
 
 
-•	[Python 3.9 or newer](https://www.python.org/downloads/)
+- [Python 3.9 or newer](https://www.python.org/downloads/)
 
 
 You can check whether your machine has both of these installed by simply running `python3 --version`  and `java --version` command in your terminal.
@@ -30,7 +27,6 @@ You can check whether your machine has both of these installed by simply running
 
 ## Setting Up Our Project  Directory
 
-
 Once prerequisites are installed, create an empty directory named `certora-counter`, navigate into it, and follow the instructions below to set up your project directory correctly.
 
 1. In your local machine, install [**virtualenv**](https://virtualenv.pypa.io/en/latest/user_guide.html) by running the command below. This tool will allow us to create a Python virtual environment, which is essential for managing dependencies within your project directory.
@@ -39,43 +35,35 @@ Once prerequisites are installed, create an empty directory named `certora-count
 pip3 install virtualenv
 ```
 
-1. Once we have **virtualenv** installed, create a Python virtual environment for our project by running the command below in your terminal.
+2. Once we have **virtualenv** installed, create a Python virtual environment for our project by running the command below in your terminal.
 
 ```bash
-virtualenv
- certora-env
+virtualenv certora-env
 ```
 
-1. Next, activate the Python virtual environment you created by running the command below in your terminal.
+3. Next, activate the Python virtual environment you created by running the command below in your terminal.
 
 ```bash
-source
- certora-env/bin/activate
+source certora-env/bin/activate
 ```
 
-1. Next, run the command below in your terminal to install the Prover.
+4. Next, run the command below in your terminal to install the Prover.
 
 ```bash
 pip3 install certora-cli
 ```
 
+5. Next, Install [**solc-select**](https://github.com/crytic/solc-select) in your virtual environment using the command below. This will allow us to conveniently change the version of the Solidity compiler we are using.
 
-4. Next, Install [**solc-select**](https://github.com/crytic/solc-select) in your virtual environment using the command below. This will allow us to conveniently change the version of the Solidity compiler we are using.
-
-
-```solidity
+```bash
 pip3 install solc-select
 ```
 
-
 ## **Adding Certora Personal Access Key** 
-
 
 To run the Prover, you need to set up an access key as a system variable. To obtain your personal access, register on the [Certora website](https://www.certora.com/signup?plan=prover). Once you register, you will receive an email from Certora containing the access key and an initial password for your Certora account.
 
-
 To add the access key as a system variable, follow the following instructions:  
-
 
 ### For Linux Users
 
@@ -88,14 +76,13 @@ To add the access key as a system variable, follow the following instructions:
 export CERTORAKEY=<your-certora-access-key>
 ```
 
-1. To save the changes, press `CTRL + O` and then press `Enter`.
-2. To exit , press `CTRL + X`.
-3. To load the recent changes we made in  **.profile** file , run the command below in  your terminal.
+4. To save the changes, press `CTRL + O` and then press `Enter`.
+5. To exit , press `CTRL + X`.
+6. To load the recent changes we made in  **.profile** file , run the command below in  your terminal.
 
 ```bash
 source .profile
 ```
-
 
 ### For Mac Users Using `zsh`
 
@@ -109,23 +96,19 @@ source .profile
 export CERTORAKEY=<your-certora-access-key>
 ```
 
-1. To save the changes, press `CTRL + O` and then press `Enter`.
-2. To exit, press `CTRL + X`.
-3. To apply the environment variable we just created, run the command below in your terminal.
+5. To save the changes, press `CTRL + O` and then press `Enter`.
+6. To exit, press `CTRL + X`.
+7. To apply the environment variable we just created, run the command below in your terminal.
 
 ```bash
 source .zshenv
 ```
 
-
 **Please note that** whenever you open the new terminal, make sure to run `source .zshenv` **or** `source .profile`  command to load environment variables; Otherwise,  you will get the error message `The environment variable CERTORAKEY does not contain a Certora key` error from the Prover
-
 
 ## Adding a Contract In the Project Directory
 
-
-In the `certora-counter` directory, add a subfolder called`contracts` . Once done, create a file called `Counter.sol` in it, and add the contract below.
-
+In the `certora-counter` directory, add a subfolder called `contracts` . Once done, create a file called `Counter.sol` in it, and add the contract below.
 
 ```solidity
 //SPDX-License-Identifier: MIT
@@ -140,12 +123,9 @@ contract Counter {
 }
 ```
 
-
 The above contract is a simple smart contract that has only one public state variable called `count`, whose value can be incremented by the external function `increment()`.
 
-
 ## Setting Up **`Certora Verification Language`** LSP
-
 
 If you use **Microsoft’s VS Code** editor or a fork of it, we recommend installing the [**Certora Verification Language LSP**](https://marketplace.visualstudio.com/items?itemName=Certora.evmspec-lsp) to enhance your development experience with **syntax checking, syntax highlighting, and code completion** by following the instructions below:
 
@@ -158,7 +138,7 @@ If you use **Microsoft’s VS Code** editor or a fork of it, we recommend instal
 ## Writing Your First Specification
 
 
-In the `certora-counter`directory, add a subfolder named `specs`. Once done, create a file named `counter.spec` in it and add the code below.
+In the `certora-counter` directory, add a subfolder named `specs`. Once done, create a file named `counter.spec` in it and add the code below.
 
 
 ```solidity
@@ -207,7 +187,7 @@ solc-select use 0.8.25
 Once we have a contract and a specification, we can submit them to the Certora prover for the verification process by running the `certoraRun` command. This command requires the path to the Solidity contract and the associated `.spec` file, as shown below, to execute successfully.
 
 
-```solidity
+```bash
 certoraRun contractFilePath:contractName --verify contractName:specFilePath
 ```
 
@@ -215,7 +195,7 @@ certoraRun contractFilePath:contractName --verify contractName:specFilePath
 To verify our specification, make sure you are in the `certora-counter` directory, and then run the command below in your terminal.
 
 
-```solidity
+```bash
 certoraRun contracts/Counter.sol:Counter --verify Counter:specs/counter.spec
 ```
 
@@ -223,13 +203,13 @@ certoraRun contracts/Counter.sol:Counter --verify Counter:specs/counter.spec
 Once you run the above command, you should see an output like the one below.
 
 
-![image](media/certora-verify-counter/image-7fe9b10d.png)
+![image](media/certora-verify-counter/image1.png)
 
 
 To view the verification result, open the verification link printed in your terminal. The result should look similar to the image below.
 
 
-![image](media/certora-verify-counter/image-50f51a2a.png)
+![image](media/certora-verify-counter/image2.png)
 
 
 However, for large a project, using the `certoraRun`command with many arguments directly in the terminal can become cumbersome. Therefore, it is recommended to use a configuration file.
@@ -267,13 +247,13 @@ certoraRun confs/counter.conf
 If the command executes successfully, you should see an output like the following, which contains a link to the verification result.
 
 
-![image](media/certora-verify-counter/image-16309cb3.png)
+![image](media/certora-verify-counter/image3.png)
 
 
 Open the verification link printed in your terminal to view the result of the verification. The result should look similar to the image below.
 
 
-![image](media/certora-verify-counter/image-16309cb3.png)
+![image](media/certora-verify-counter/image4.png)
 
 
 

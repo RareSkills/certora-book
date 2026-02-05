@@ -3,8 +3,8 @@
 
 In the last chapter, we saw that to perform formal verification using Certora Prover, we need to provide the Prover with the following key items:
 
-1. Smart Contract (**`.`**`sol` file)
-2. Specification (`.spec` file)
+1. Smart Contract (.sol file)
+2. Specification (.spec file)
 
 In this chapter, we will discuss what precisely a specification means and how to write one.
 
@@ -25,15 +25,11 @@ There are other components, but for now, we’ll focus on these and introduce th
 
 ## Understanding the Rules
 
-
 **A rule** defines the expected “before and after” behavior of a function call in the smart contract. It is defined using the `rule` keyword, followed by its name, as shown below:
 
 
-```javascript
-rul
-e 
-nameOfRule
- {}
+```solidity
+rule nameOfRule{}
 ```
 
 
@@ -43,7 +39,7 @@ In CVL, a rule is written using the following three foundational concepts:
 2. **Action:** A method call that changes the contract state.
 3. **Post-call Expectation****:** This part specifies the expected state of the contract after the action is executed. It is specified using the `assert` statement.
 
-**Note : We will discuss** `require` **and** `assert` **statements in much more detail in the next chapter.**
+Note : We will discuss **require** and **assert** statements in much more detail in the next chapter.
 
 
 To better understand the concepts discussed above, consider the `Counter` contract below.
@@ -121,15 +117,13 @@ rule checkCounter() {
     //Retrieval of Post-call value
     uint256 postcallCountValue = count();
 
-    //
-Post-call Expectation
-
+    //Post-call Expectation
     assert postcallCountValue == precallCountValue;
 }
 ```
 
 
-However, our specification file is still missing the methods block. Let’s add it before submiting it to the Prover for verification.
+However, our specification file is still missing the methods block. Let’s add it before submitting it to the Prover for verification.
 
 
 ## The Methods Block and its Use
@@ -143,9 +137,7 @@ The Methods Block is defined using the `methods` keyword, as shown below:
 
 ```solidity
 methods {
-// Contract 
-methods 
-entries go here
+// Contract methods entries go here
 }
 ```
 
@@ -160,10 +152,10 @@ Each entry in the Methods Block should follow the syntax below:
 - Add an optional tag like `envfree` (we will discuss other tags as we use them).
 - End each method declaration ends with a semicolon (;)
 
-![image](media/certora-specification/image-d0e762b3.png)
+![image](media/certora-specification/image1.png)
 
 
-I**t is very important to note that adding functions to the methods block will not make verification faster or more effective unless those functions are marked as** `envfree`**,** `optional`**, or have a summary.** If none of these conditions are met, adding the function will have no impact, and the verifier will likely issue a warning about it in the report.
+**It is very important to note that adding functions to the methods block will not make verification faster or more effective unless those functions are marked as `envfree`, `optional`, or have a summary. If none of these conditions are met, adding the function will have no impact, and the verifier will likely issue a warning about it in the report.**
 
 
 To keep things simple and easy to understand, in this chapter we will only focus on envfree. We will explore `optional` and `summarization` in a separate chapter.
@@ -195,7 +187,7 @@ methods {
 ```
 
 
-In contrast, some functions need access to the global blockchain state for its execution and therefore **cannot** be declared `envfree`. For instance, the `balance()` function below retrieves the caller’s balance :
+In contrast, some functions need access to the global blockchain state for its execution and therefore cannot be declared `envfree`. For instance, the `balance()` function below retrieves the caller’s balance :
 
 
 ```solidity
@@ -339,14 +331,14 @@ If the Prover successfully compiles the code without errors, it will print the v
 To view the verification results, open the link printed in your terminal using a browser. The results should look similar to the image below:
 
 
-![image](media/certora-specification/image-8d177273.png)
+![image](media/certora-specification/image2.png)
 
 
 In our case, it shows the results for three rules:
 
-- **`✅`**`checkCounter`: This shows the verification results for the `checkCounter` rule from our spec.
-- **`✅`**`checkIncrementCall`**:** This shows the verification results for the `checkIncrementCall` rule from our spec.
-- **`✅`**`envfreeFuncsStaticCheck`:  When the Methods Block contains functions marked as `envfree`, the Prover verifies that they do not rely on Solidity’s global variables. The results of this verification are published as `envfreeFuncsStaticCheck`.
+- `checkCounter` : This shows the verification results for the `checkCounter` rule from our spec.
+- `checkIncrementCall` : This shows the verification results for the `checkIncrementCall` rule from our spec.
+- `envfreeFuncsStaticCheck` : When the Methods Block contains functions marked as `envfree`, the Prover verifies that they do not rely on Solidity’s global variables. The results of this verification are published as `envfreeFuncsStaticCheck`.
 
 The green check mark (✅) indicates that the Prover has not found any violations, meaning our rules have been successfully verified. In case of a violation, a red cross mark (❌) will be displayed. 
 
