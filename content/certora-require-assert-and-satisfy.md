@@ -89,8 +89,8 @@ The `assert` statement contains the expected state of the contract in the form o
 
 ```solidity
 assert Expression, "An Optional Message String";
-    //OR
-    assert Expression;
+//OR
+assert Expression;
 ```
 
 
@@ -145,7 +145,7 @@ rule checkCountValidity() {
 }
 ```
 
-1. **Perform the increments**: We then call the `increment()` function three times to increase the counter.
+2. **Perform the increments**: We then call the `increment()` function three times to increase the counter.
 
 ```solidity
 rule checkCountValidity() {
@@ -160,7 +160,7 @@ rule checkCountValidity() {
 }
 ```
 
-1. **Retrieve the updated state**: After executing the `increment()` calls, we fetch the new value of `count` and store it in `PostcallCountValue`. This allows us to compare the state before and after the function executions.
+3. **Retrieve the updated state**: After executing the `increment()` calls, we fetch the new value of `count` and store it in `PostcallCountValue`. This allows us to compare the state before and after the function executions.
 
 ```solidity
 rule checkCountValidity() {
@@ -179,7 +179,7 @@ rule checkCountValidity() {
 }
 ```
 
-1. **Validate the initial state**: To ensure correctness, we use an `assert` statement to verify that count was initially **0**—confirming that the contract starts from a known, expected state.
+4. **Validate the initial state**: To ensure correctness, we use an `assert` statement to verify that count was initially **0**—confirming that the contract starts from a known, expected state.
 
 ```solidity
 rule checkCountValidity() {
@@ -202,7 +202,7 @@ rabbing the state of count after the increment() calls
 }
 ```
 
-1. **Verify the increment behavior**: Finally, we assert that `count` has increased by exactly **3**, confirming that each call to `increment()` successfully added **1** to the value.
+5. **Verify the increment behavior**: Finally, we assert that `count` has increased by exactly **3**, confirming that each call to `increment()` successfully added **1** to the value.
 
 ```solidity
 rule checkCountValidity() {
@@ -232,7 +232,7 @@ We can see how we used the `assert` statements to enforce our expectations about
 
 At first glance, you might expect `checkCountValidity` to pass the verification because:
 
-1. **Default Initialization**<u>:</u> The `Counter` contract does not explicitly initialize the `count` state variable, so Solidity automatically sets it to **0**. As a result, when the rule retrieves the initial value using `count()`, it should return **0**, making the assertion `PrecallCountValue == 0` valid for any execution path.
+1. **Default Initialization**: The `Counter` contract does not explicitly initialize the `count` state variable, so Solidity automatically sets it to **0**. As a result, when the rule retrieves the initial value using `count()`, it should return **0**, making the assertion `PrecallCountValue == 0` valid for any execution path.
 2. **Increment Behavior**: Each call to `increment()` increases the `count` variable by **1**. Since the rule calls `increment()` three times, the expected final value of `count` should be `PrecallCountValue + 3`. Therefore, the assertion `PostcallCountValue == PrecallCountValue + 3`  is expected to hold true for any execution path.
 
 ## Running the Verification
