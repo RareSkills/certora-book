@@ -338,7 +338,7 @@ In our case, it shows the results for three rules:
 
 - ✅ checkCounter: This shows the verification results for the `checkCounter` rule from our spec.
 - ✅ checkIncrementCall: This shows the verification results for the `checkIncrementCall` rule from our spec.
-- ✅ envfreeFuncsStaticCheck:  When the Methods Block contains functions marked as `envfree`, the Prover verifies that they do not rely on Solidity’s global variables. The results of this verification are published as `envfreeFuncsStaticCheck`.
+- ✅ envfreeFuncsStaticCheck: When the Methods Block contains functions marked as `envfree`, the Prover verifies that they do not rely on Solidity’s global variables. The results of this verification are published as `envfreeFuncsStaticCheck`.
 
 The green check mark (✅) indicates that the Prover has not found any violations, meaning our rules have been successfully verified. In case of a violation, a red cross mark (❌) will be displayed. 
 
