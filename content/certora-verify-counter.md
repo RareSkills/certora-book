@@ -203,13 +203,13 @@ certoraRun contracts/Counter.sol:Counter --verify Counter:specs/counter.spec
 Once you run the above command, you should see an output like the one below.
 
 
-![image](media/certora-verify-counter/image-7fe9b10d.png)
+![image](media/certora-verify-counter/image1.png)
 
 
 To view the verification result, open the verification link printed in your terminal. The result should look similar to the image below.
 
 
-![image](media/certora-verify-counter/image-50f51a2a.png)
+![image](media/certora-verify-counter/image2.png)
 
 
 However, for large a project, using the `certoraRun`command with many arguments directly in the terminal can become cumbersome. Therefore, it is recommended to use a configuration file.
@@ -247,13 +247,13 @@ certoraRun confs/counter.conf
 If the command executes successfully, you should see an output like the following, which contains a link to the verification result.
 
 
-![image](media/certora-verify-counter/image-16309cb3.png)
+![image](media/certora-verify-counter/image3.png)
 
 
 Open the verification link printed in your terminal to view the result of the verification. The result should look similar to the image below.
 
 
-![image](media/certora-verify-counter/image-16309cb3.png)
+![image](media/certora-verify-counter/image4.png)
 
 
 
