@@ -3,8 +3,8 @@
 
 In the last chapter, we saw that to perform formal verification using Certora Prover, we need to provide the Prover with the following key items:
 
-1. Smart Contract (**`.`**`sol` file)
-2. Specification (`.spec` file)
+1. Smart Contract (.sol file)
+2. Specification (.spec file)
 
 In this chapter, we will discuss what precisely a specification means and how to write one.
 
@@ -336,9 +336,9 @@ To view the verification results, open the link printed in your terminal using a
 
 In our case, it shows the results for three rules:
 
-- `✅ checkCounter`: This shows the verification results for the `checkCounter` rule from our spec.
-- `✅ checkIncrementCall`: This shows the verification results for the `checkIncrementCall` rule from our spec.
-- `✅ envfreeFuncsStaticCheck`:  When the Methods Block contains functions marked as `envfree`, the Prover verifies that they do not rely on Solidity’s global variables. The results of this verification are published as `envfreeFuncsStaticCheck`.
+- ✅ checkCounter: This shows the verification results for the `checkCounter` rule from our spec.
+- ✅ checkIncrementCall: This shows the verification results for the `checkIncrementCall` rule from our spec.
+- ✅ envfreeFuncsStaticCheck:  When the Methods Block contains functions marked as `envfree`, the Prover verifies that they do not rely on Solidity’s global variables. The results of this verification are published as `envfreeFuncsStaticCheck`.
 
 The green check mark (✅) indicates that the Prover has not found any violations, meaning our rules have been successfully verified. In case of a violation, a red cross mark (❌) will be displayed. 
 
