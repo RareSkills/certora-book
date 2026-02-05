@@ -123,7 +123,7 @@ rule checkCounter() {
 ```
 
 
-However, our specification file is still missing the methods block. Let’s add it before submiting it to the Prover for verification.
+However, our specification file is still missing the methods block. Let’s add it before submitting it to the Prover for verification.
 
 
 ## The Methods Block and its Use
@@ -187,7 +187,7 @@ methods {
 ```
 
 
-In contrast, some functions need access to the global blockchain state for its execution and therefore **cannot** be declared `envfree`. For instance, the `balance()` function below retrieves the caller’s balance :
+In contrast, some functions need access to the global blockchain state for its execution and therefore cannot be declared `envfree`. For instance, the `balance()` function below retrieves the caller’s balance :
 
 
 ```solidity
