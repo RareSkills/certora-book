@@ -108,7 +108,7 @@ source .zshenv
 
 ## Adding a Contract In the Project Directory
 
-In the `certora-counter` directory, add a subfolder called`contracts` . Once done, create a file called `Counter.sol` in it, and add the contract below.
+In the `certora-counter` directory, add a subfolder called `contracts` . Once done, create a file called `Counter.sol` in it, and add the contract below.
 
 ```solidity
 //SPDX-License-Identifier: MIT
