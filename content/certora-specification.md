@@ -25,15 +25,11 @@ There are other components, but for now, we’ll focus on these and introduce th
 
 ## Understanding the Rules
 
-
 **A rule** defines the expected “before and after” behavior of a function call in the smart contract. It is defined using the `rule` keyword, followed by its name, as shown below:
 
 
-```javascript
-rul
-e 
-nameOfRule
- {}
+```solidity
+rule nameOfRule{}
 ```
 
 
@@ -43,7 +39,7 @@ In CVL, a rule is written using the following three foundational concepts:
 2. **Action:** A method call that changes the contract state.
 3. **Post-call Expectation****:** This part specifies the expected state of the contract after the action is executed. It is specified using the `assert` statement.
 
-**Note : We will discuss** `require` **and** `assert` **statements in much more detail in the next chapter.**
+Note : We will discuss **require** and **assert** statements in much more detail in the next chapter.
 
 
 To better understand the concepts discussed above, consider the `Counter` contract below.
@@ -121,9 +117,7 @@ rule checkCounter() {
     //Retrieval of Post-call value
     uint256 postcallCountValue = count();
 
-    //
-Post-call Expectation
-
+    //Post-call Expectation
     assert postcallCountValue == precallCountValue;
 }
 ```
@@ -143,9 +137,7 @@ The Methods Block is defined using the `methods` keyword, as shown below:
 
 ```solidity
 methods {
-// Contract 
-methods 
-entries go here
+// Contract methods entries go here
 }
 ```
 
@@ -163,7 +155,7 @@ Each entry in the Methods Block should follow the syntax below:
 ![image](media/certora-specification/image-d0e762b3.png)
 
 
-I**t is very important to note that adding functions to the methods block will not make verification faster or more effective unless those functions are marked as** `envfree`**,** `optional`**, or have a summary.** If none of these conditions are met, adding the function will have no impact, and the verifier will likely issue a warning about it in the report.
+**It is very important to note that adding functions to the methods block will not make verification faster or more effective unless those functions are marked as `envfree`, `optional`, or have a summary. If none of these conditions are met, adding the function will have no impact, and the verifier will likely issue a warning about it in the report.**
 
 
 To keep things simple and easy to understand, in this chapter we will only focus on envfree. We will explore `optional` and `summarization` in a separate chapter.
@@ -344,9 +336,9 @@ To view the verification results, open the link printed in your terminal using a
 
 In our case, it shows the results for three rules:
 
-- **`✅`**`checkCounter`: This shows the verification results for the `checkCounter` rule from our spec.
-- **`✅`**`checkIncrementCall`**:** This shows the verification results for the `checkIncrementCall` rule from our spec.
-- **`✅`**`envfreeFuncsStaticCheck`:  When the Methods Block contains functions marked as `envfree`, the Prover verifies that they do not rely on Solidity’s global variables. The results of this verification are published as `envfreeFuncsStaticCheck`.
+- `✅ checkCounter`: This shows the verification results for the `checkCounter` rule from our spec.
+- `✅ checkIncrementCall`: This shows the verification results for the `checkIncrementCall` rule from our spec.
+- `✅ envfreeFuncsStaticCheck`:  When the Methods Block contains functions marked as `envfree`, the Prover verifies that they do not rely on Solidity’s global variables. The results of this verification are published as `envfreeFuncsStaticCheck`.
 
 The green check mark (✅) indicates that the Prover has not found any violations, meaning our rules have been successfully verified. In case of a violation, a red cross mark (❌) will be displayed. 
 
