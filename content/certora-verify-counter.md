@@ -13,10 +13,10 @@ Let’s start by setting up the project environment for Certora Prover.
 Before setting up the project directory, make sure that your local machine has the following prerequisites installed:
 
 
-•	[Java Development Kit(JDK) 21 or newer](https://www.oracle.com/in/java/technologies/downloads/)
+- [Java Development Kit(JDK) 21 or newer](https://www.oracle.com/in/java/technologies/downloads/)
 
 
-•	[Python 3.9 or newer](https://www.python.org/downloads/)
+- [Python 3.9 or newer](https://www.python.org/downloads/)
 
 
 You can check whether your machine has both of these installed by simply running `python3 --version`  and `java --version` command in your terminal.
