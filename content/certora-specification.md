@@ -152,7 +152,7 @@ Each entry in the Methods Block should follow the syntax below:
 - Add an optional tag like `envfree` (we will discuss other tags as we use them).
 - End each method declaration ends with a semicolon (;)
 
-![image](media/certora-specification/image-d0e762b3.png)
+![image](media/certora-specification/image1.png)
 
 
 **It is very important to note that adding functions to the methods block will not make verification faster or more effective unless those functions are marked as `envfree`, `optional`, or have a summary. If none of these conditions are met, adding the function will have no impact, and the verifier will likely issue a warning about it in the report.**
@@ -331,7 +331,7 @@ If the Prover successfully compiles the code without errors, it will print the v
 To view the verification results, open the link printed in your terminal using a browser. The results should look similar to the image below:
 
 
-![image](media/certora-specification/image-8d177273.png)
+![image](media/certora-specification/image2.png)
 
 
 In our case, it shows the results for three rules:
