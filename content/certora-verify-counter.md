@@ -35,25 +35,25 @@ Once prerequisites are installed, create an empty directory named `certora-count
 pip3 install virtualenv
 ```
 
-1. Once we have **virtualenv** installed, create a Python virtual environment for our project by running the command below in your terminal.
+2. Once we have **virtualenv** installed, create a Python virtual environment for our project by running the command below in your terminal.
 
 ```bash
 virtualenv certora-env
 ```
 
-1. Next, activate the Python virtual environment you created by running the command below in your terminal.
+3. Next, activate the Python virtual environment you created by running the command below in your terminal.
 
 ```bash
 source certora-env/bin/activate
 ```
 
-1. Next, run the command below in your terminal to install the Prover.
+4. Next, run the command below in your terminal to install the Prover.
 
 ```bash
 pip3 install certora-cli
 ```
 
-4. Next, Install [**solc-select**](https://github.com/crytic/solc-select) in your virtual environment using the command below. This will allow us to conveniently change the version of the Solidity compiler we are using.
+5. Next, Install [**solc-select**](https://github.com/crytic/solc-select) in your virtual environment using the command below. This will allow us to conveniently change the version of the Solidity compiler we are using.
 
 ```solidity
 pip3 install solc-select
@@ -76,9 +76,9 @@ To add the access key as a system variable, follow the following instructions:
 export CERTORAKEY=<your-certora-access-key>
 ```
 
-1. To save the changes, press `CTRL + O` and then press `Enter`.
-2. To exit , press `CTRL + X`.
-3. To load the recent changes we made in  **.profile** file , run the command below in  your terminal.
+4. To save the changes, press `CTRL + O` and then press `Enter`.
+5. To exit , press `CTRL + X`.
+6. To load the recent changes we made in  **.profile** file , run the command below in  your terminal.
 
 ```bash
 source .profile
@@ -96,9 +96,9 @@ source .profile
 export CERTORAKEY=<your-certora-access-key>
 ```
 
-1. To save the changes, press `CTRL + O` and then press `Enter`.
-2. To exit, press `CTRL + X`.
-3. To apply the environment variable we just created, run the command below in your terminal.
+5. To save the changes, press `CTRL + O` and then press `Enter`.
+6. To exit, press `CTRL + X`.
+7. To apply the environment variable we just created, run the command below in your terminal.
 
 ```bash
 source .zshenv
