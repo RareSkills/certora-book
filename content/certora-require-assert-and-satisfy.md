@@ -192,9 +192,7 @@ rule checkCountValidity() {
     increment();
     increment();
 
-    // 
-G
-rabbing the state of count after the increment() calls
+    // Grabbing the state of count after the increment() calls
     uint256 PostcallCountValue = count();
 
     // Assertions 
