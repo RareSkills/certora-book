@@ -83,7 +83,7 @@ In other words, if the contract is disabled, then any call to `reinitialize` lea
 When the reinitializer is called, a new version must be set, and that version must be larger than the old version. The following rule says that if the new version is the version passed in the argument, and if the transaction didn’t revert, that new version is larger than the previous one.
 
 
-```javascript
+```solidity
 rule reinitializeEffects() {
     requireInvariant notInitializing();
 
@@ -93,9 +93,7 @@ rule reinitializeEffects() {
     reinitialize@withrevert(n);
     bool success = !lastReverted;
 
-    assert success <=> versionBefore < n, "can only reinitialize to a 
-later
- versions";
+    assert success <=> versionBefore < n, "can only reinitialize to a later versions";
     assert success => version() == n,     "reinitialize must set version() to n";
 }
 ```
@@ -104,7 +102,7 @@ later
 The final rule we examine states that if the contract is not in the “initializing state” (the contract is currently setting the storage variables or reinitializing) then calling disable always succeeds.
 
 
-```javascript
+```solidity
 rule disableEffect() {
     requireInvariant notInitializing();
 
