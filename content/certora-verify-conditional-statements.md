@@ -44,17 +44,13 @@ rule add_sumWithOverflowRevert() {
     uint256 y;
 
     mathint _sum = x + y;
-
     
-if (_sum <= max_uint256) {
- // non-revert case
+    if (_sum <= max_uint256) { // non-revert case
         mathint result = add@withrevert(x, y);
         assert !lastReverted;
         assert result == _sum;
-    } 
-    
-else {
- // revert case
+    }
+    else { // revert case
         add@withrevert(x, y);
         assert lastReverted; 
     }
