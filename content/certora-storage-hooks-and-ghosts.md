@@ -252,9 +252,10 @@ A ghost variable can be any CVL supported type or a mapping. In the case of a ma
 
 To make the  `checkOwnerConsistency()` rule work as intended, the value observed inside the hook needs to be made available in the rule’s scope. We can accomplish this by storing the observed value in a ghost variable. The steps to achieve this are outlined below:
 
-**1. Declare a ghost to hold** **the observed value of `owner`:** At the top level of our specification, introduce a ghost variable called  `ghostOw``ner`. This ghost will serve as a container for the value of the contract’s `owner` slot whenever it is read.
+**1. Declare a ghost to hold** **the observed value of `owner`:** At the top level of our specification, introduce a ghost variable called  `ghostOwner`. This ghost will serve as a container for the value of the contract’s `owner` slot whenever it is read.
 
 ```solidity
+
 /// Top-level ghost variable to mirror the contract's `owner` slot
 ghost address ghostOwner;
 
@@ -273,7 +274,6 @@ rule checkOwnerConsistency(env e) {
      address currentOwner = contractOwner;
 
      assert prevOwner == currentOwner;
-
 
 }
 ```
