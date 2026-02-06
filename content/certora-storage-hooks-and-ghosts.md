@@ -207,7 +207,7 @@ In the above spec, the hook `Sload` makes the private `owner` variable observabl
 However, when you run the Certora Prover, you will experience the following error:
 
 
-![image](media/certora-storage-hooks-and-ghosts/image-29009cb3.png)
+![image](media/certora-storage-hooks-and-ghosts/image1.png)
 
 
 The above error simply highlights the fact that the rule `checkOwnerConsistency()` cannot access and use `contractOwner` declared inside our load hook.
@@ -363,7 +363,7 @@ assert prevOwner == currentOwner;
 Once you’ve updated your specification as per the instructions provided above, **re-run the Certora Prover** using the `certoraRun` command. This time the Prover will compile our rule without any error and will print out the verification result in your terminal. The result will be similar to the image below:
 
 
-![image](media/certora-storage-hooks-and-ghosts/image-27109cb3.png)
+![image](media/certora-storage-hooks-and-ghosts/image2.png)
 
 
 After seeing the result above, you might be surprised and wonder why our rule still failed even though the `Counter` contract never explicitly updates its owner. The reason lies not in the Solidity code but in how the **Prover interprets ghosts and how the hooks are executed during verification** **run**.
@@ -378,10 +378,10 @@ Ghost variables are not automatically tied to the contract’s storage. At the s
 This is what actually happened: the storage slot for `owner` held one address (e.g., `0x2712` or `0x2711`), but the ghost `ghostOwner` contained a completely different value (e.g.,`0x401`). 
 
 
-![image](media/certora-storage-hooks-and-ghosts/image-27209cb3.png)
+![image](media/certora-storage-hooks-and-ghosts/image3.png)
 
 
-![image](media/certora-storage-hooks-and-ghosts/image-27209cb3.png)
+![image](media/certora-storage-hooks-and-ghosts/image4.png)
 
 
 Since the ghost was never aligned with storage, our rule ended up comparing two meaningless values, and the Prover quite correctly reported a failure.
@@ -429,13 +429,13 @@ rule checkOwnerConsistency(env e) {
 The **first line** inside the rule (`resetCounter(e);`) is the key addition.
 
 
-![image](media/certora-storage-hooks-and-ghosts/image-29009cb3.png)
+![image](media/certora-storage-hooks-and-ghosts/image5.png)
 
 
 With the ghost now properly synchronized, the comparison between `prevOwner` and `currentOwner` becomes meaningful, allowing the Prover to correctly verify the consistency of the `owner` variable.
 
 
-![image](media/certora-storage-hooks-and-ghosts/image-27209cb3.png)
+![image](media/certora-storage-hooks-and-ghosts/image6.png)
 
 
 Let’s break down what **happened** here, step by step:
@@ -512,7 +512,7 @@ In the spec above, the hook observes updates to the `count` storage slot wheneve
 When we run the Prover on the spec above, we will see that the rule has been verified, as shown in the image below:
 
 
-![image](media/certora-storage-hooks-and-ghosts/image-27109cb3.png)
+![image](media/certora-storage-hooks-and-ghosts/image7.png)
 
 
 Let’s break down what happens here step by step: 
@@ -536,7 +536,7 @@ Hence, we got a verified result from the Prover. In other words, any call to `in
 We can see that hooks are used to observe and collect data by detecting specific read or write operations on the contract’s storage. However, since variables declared inside hooks are local to the hook, their values disappear once the hook finishes executing. To retain and reuse this information across the specification, CVL introduces **ghost variables** — persistent, specification-level storage that mirrors or extends the contract’s actual state. Because of this, ghost variables can be seen and treated as an extension of the contract’s storage.
 
 
-![image](media/certora-storage-hooks-and-ghosts/image-27109cb3.png)
+![image](media/certora-storage-hooks-and-ghosts/image8.png)
 
 
 **In fact, the Certora Prover treats** **ghost** **variables much like regular storage:**
