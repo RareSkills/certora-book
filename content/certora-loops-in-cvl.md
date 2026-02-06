@@ -100,80 +100,62 @@ So in concrete execution, the program follows a single, deterministic path defin
 
 ### The Prover Reasons About All Inputs at Once
 
+The Certora Prover is a **symbolic execution engine**, meaning it doesn't test the program on one input at a time. Instead, it reasons about **all possible executions simultaneously**.
 
-The Certora Prover is a **symbolic execution engine**, meaning it doesn’t test the program on one input at a time. Instead, it reasons about **all possible executions simultaneously**.
+To achieve this, the Prover symbolically simulates the program's behavior step by step, reasoning over logical constraints instead of concrete values.
 
+Here's how the Prover tackles the invariant `maxEqReturnMax()`, step-by-step:
 
-To achieve this, the Prover symbolically simulates the program’s behavior step by step, reasoning over logical constraints instead of concrete values.
-
-
-Here’s how the Prover tackles the invariant `maxEqReturnMax()`, step-by-step:
-
-
-1. **Initial State Check (Base Case):** The first step is to check whether the invariant holds immediately after the contract’s constructor finishes executing.
-
-- In this state, the `collection` array is empty, so `collection.length` is `0`.
-- The `maxInCollection` state variable is initialized to `0`.
-- The Prover then symbolically executes the `returnMax()` function. It initializes `maxTmp` to 0 and encounters the loop:
-
+1. **Initial State Check (Base Case):** The first step is to check whether the invariant holds immediately after the contract's constructor finishes executing.
+   - In this state, the `collection` array is empty, so `collection.length` is `0`.
+   - The `maxInCollection` state variable is initialized to `0`.
+   - The Prover then symbolically executes the `returnMax()` function. It initializes `maxTmp` to 0 and encounters the loop:
 ```solidity
-for (uint256 i = 0; i < collection.length; i++)
+   for (uint256 i = 0; i < collection.length; i++)
 ```
 
+   Since `collection.length` is `0` in the initial state, the loop body never runs, and the function simply returns `maxTmp`, which remains `0`.
 
-Since `collection.length` is `0` in the initial state, the loop body never runs, and the function simply returns `maxTmp`, which remains `0`.
+   As a result, the invariant holds in the initial state, meaning the base case is successfully verified, as shown below:
 
+   ![image](media/certora-loops-in-cvl/image2.png)
 
-As a result, the invariant holds in the initial state, meaning the base case is successfully verified, as shown below:
+2. **The Inductive Step:** After confirming that the invariant holds in the initial state, the Prover moves to the next phase — the **inductive step**. This step is about ensuring that the invariant **continues to hold** after any state change in the contract.
 
+   In simple terms, the Prover checks the following:
 
-![image](media/certora-loops-in-cvl/image2.png)
+   "**If the invariant holds in the current state S, then it must also hold in the next state S′ that results from any valid function call.**"
 
-2. **The Inductive Step: A**fter confirming that the invariant holds in the initial state, the Prover moves to the next phase — the **inductive step**. This step is about ensuring that the invariant **continues to hold** after any state change in the contract.
+   To reason about this, the Prover conceptually follows three stages:
 
-In simple terms, the Prover checks the following:
+   **a. Before the Call Assumption:** The Prover begins by considering an arbitrary, valid state `S` in which the invariant **already holds**. This forms the **inductive hypothesis**, a standard step in inductive reasoning. The Prover doesn't need to know the actual contents of the `collection` array or the value of `maxInCollection`; it assumes—_as part of the proof method itself_—that in this state `S`, the property `maxInCollection() == returnMax()` is true.
 
+   **b. Symbolic Execution:** Next, the Prover simulates a function call that could change the contract's state. In our case, it picks `addToCollection()`. Crucially, it does not choose a specific value like `5` or `10` as input to `addToCollection()`. Instead, it uses a **symbolic variable**, x, which represents _any possible_ `uint256` value that the function could receive.
 
-“**If the invariant holds in the current state S, then it must also hold in the next state S′ that results from any valid function call.**”
+   The Prover then symbolically executes the body of `addToCollection(x)`:
 
+   - It sees the `if` statement: `if (x > maxInCollection)`. Since both `x` and `maxInCollection` are symbolic, the Prover branches, considering both possibilities:
 
-To reason about this, the Prover conceptually follows three stages:
+      **Case 1:** `x > maxInCollection`. The new state `S'` will have `maxInCollection` updated to `x`.
 
-**a. Before the Call Assumption:** The Prover begins by considering an arbitrary, valid state `S` in which the invariant **already holds**. This forms the **inductive hypothesis**, a standard step in inductive reasoning. The Prover doesn’t need to know the actual contents of the `collection` array or the value of `maxInCollection`; it assumes—_as part of the proof method itself_—that in this state `S`, the property `maxInCollection() == returnMax()` is true.
+      **Case 2:** `x <= maxInCollection`. The new state `S'` will have `maxInCollection` unchanged.
 
-**b.** **Symbolic Execution:** Next, the Prover simulates a function call that could change the contract’s state. In our case, it picks `addToCollection()`. Crucially, it does not choose a specific value like `5` or `10` as input to `addToCollection()`. Instead, it uses a **symbolic variable**, x, which represents _any possible_ `uint256` value that the function could receive.
+   In both cases, it symbolically executes `collection.push(x)`. This means the `collection` array in state `S'` is now the `collection` from state `S` plus the new element `x`, and `collection.length` has increased by 1.
 
+   The Prover now has a complete symbolic description of the new state, `S'`, in terms of the old state `S` and the symbolic input `x`.
 
-The Prover then symbolically executes the body of `addToCollection(x)`:
+   **c. After Call Verification:** In the final step, the Prover must now **prove** that the invariant holds in the new state `S'`. It asks: _**Is `maxInCollection()` (in state S') == `returnMax()` (in state S')?**_
 
-- It sees the `if` statement: `if (x > maxInCollection)`. Since both `x` and `maxInCollection` are symbolic, the Prover branches, considering both possibilities:
+   To complete this step, the Prover analyzes both sides of this equation:
 
-    **Case 1:** `x > maxInCollection`. The new state `S'` will have `maxInCollection` updated to `x`.
-
-
-    **Case 2:** `x <= maxInCollection`. The new state `S'` will have `maxInCollection` unchanged.
-
-
-In both cases, it symbolically executes `collection.push(x)`. This means the `collection` array in state `S'` is now the `collection` from state `S` plus the new element `x`, and `collection.length` has increased by 1.
-
-
-The Prover now has a complete symbolic description of the new state, `S'`, in terms of the old state `S` and the symbolic input `x`.
-
-
-**c.** **After** **Call Verification:** In the final step, the Prover must now **prove** that the invariant holds in the new state `S'`. It asks: _**Is**_ _`maxInCollection()`_ _**(in state S') ==**_ _`returnMax()`_ _**(in state S')?**_
-
-
-To complete this step, the Prover analyzes both sides of this equation:
-
-- **LHS (**`maxInCollection()`**):** This is straightforward. The Prover knows the new value of `maxInCollection` symbolically (it's either the old value or `x`).
-- **RHS (**`returnMax()`**):** Next, it will symbolically execute the `returnMax()` function. This is the point where verification becomes challenging, because `returnMax()` contains a **loop:**
-
+   - **LHS (`maxInCollection()`):** This is straightforward. The Prover knows the new value of `maxInCollection` symbolically (it's either the old value or `x`).
+   
+   - **RHS (`returnMax()`):** Next, it will symbolically execute the `returnMax()` function. This is the point where verification becomes challenging, because `returnMax()` contains a **loop:**
 ```solidity
-for (uint256 i = 0; i < collection.length; i++) {...}
+   for (uint256 i = 0; i < collection.length; i++) {...}
 ```
 
-
-### **Why is the Loop an Issue?**
+### Why is the Loop an Issue?
 
 
 When the Prover reaches the `returnMax()` function, it needs to symbolically execute the loop:
