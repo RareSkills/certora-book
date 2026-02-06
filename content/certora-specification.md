@@ -35,9 +35,9 @@ rule nameOfRule{}
 
 In CVL, a rule is written using the following three foundational concepts:
 
-1. **Pre-conditional** **Requirement (optional)**: This specifies the conditions under which a rule should be evaluated by the Prover. It is specified using the `require` statement.
+1. **Pre-conditional Requirement (optional)**: This specifies the conditions under which a rule should be evaluated by the Prover. It is specified using the `require` statement.
 2. **Action:** A method call that changes the contract state.
-3. **Post-call Expectation****:** This part specifies the expected state of the contract after the action is executed. It is specified using the `assert` statement.
+3. **Post-call Expectation:** This part specifies the expected state of the contract after the action is executed. It is specified using the `assert` statement.
 
 Note : We will discuss **require** and **assert** statements in much more detail in the next chapter.
 
