@@ -266,7 +266,7 @@ rule checkOwnerConsistency(env e) {
      
     address prevOwner = contractOwner;
 
-     //parametrcic call
+     //parametric call
      method f;
      calldataarg args;
      f(e,args);
