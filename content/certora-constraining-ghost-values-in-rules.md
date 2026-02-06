@@ -3,7 +3,7 @@
 
 In the previous chapter, we learned how ghost variables allow information to flow from hooks into rules. We also learned that:
 
-1. **At the start of the verification run****,** **the Prover** **chooses** **arbitrary - havoced** **-** **values** **for a ghost variables.**
+1. **At the start of the verification run**,the Prover chooses arbitrary - havoced values for a ghost variables.
 2. **Ghost variables are treated as an extension of the contract’s storage.** If a transaction reverts during symbolic execution, the Prover also reverts any ghost updates from that path, keeping them consistent with the contract’s storage state.
 
 The second case isn’t usually a concern, as reverting ghost values during transactions mirrors normal storage behavior. However, the first case can lead to incorrect or misleading verification results.
@@ -51,9 +51,10 @@ hook Sstore count uint256 updatedValue (uint256 prevValue) {
 }
 
 
-//
-Rule to verify that count increases by exactly the number of times increment()
-//is called
+/*
+*Rule to verify that count increases by exactly the number of times increment()
+is called
+*/
 
 rule checkCounterIncrements() {
 
@@ -84,22 +85,22 @@ The above spec does the following:
 At first glance, this specification appears logically sound. However, when it is run through the Certora Prover, it **fails to verify the** `checkCounterIncrements` **rule**, as shown in the output illustrated below:
 
 
-![image](media/certora-constraining-ghost-values-in-rules/image-21e09cb3.png)
+![image](media/certora-constraining-ghost-values-in-rules/image1.png)
 
 
 To understand why the assertion fails, let’s dig into the call trace provided by the Prover.
 
 
-### **Why the Verification Failed**
+### Why the Verification Failed
 
 
 Our analysis of the call trace reveals that the rule failed not due to any flaw in logic, but because the ghost variable `countIncrementCall` began with a value chosen adversarially by the Prover, in this case -0x2 (or -2). Importantly, this value was not chosen by mistake. Instead, it was assigned intentionally through a systematic process known as **havocing**.
 
 
-_**Havocing**_ is the mechanism by which the Prover assigns **arbitrary (unconstrained)** initial values to state or ghost variables. “**Arbitrary**” here means that the variable is **free to take any value** within its type’s range. By doing so, the Prover can systematically examine edge cases and extreme scenarios that might cause a verification failure. This technique makes the verification process exhaustive, allowing the Prover to reason about all possible states the contract could reach.
+**Havocing** is the mechanism by which the Prover assigns **arbitrary (unconstrained)** initial values to state or ghost variables. “**Arbitrary**” here means that the variable is **free to take any value** within its type’s range. By doing so, the Prover can systematically examine edge cases and extreme scenarios that might cause a verification failure. This technique makes the verification process exhaustive, allowing the Prover to reason about all possible states the contract could reach.
 
 
-![image](media/certora-constraining-ghost-values-in-rules/image-24f09cb3.png)
+![image](media/certora-constraining-ghost-values-in-rules/image2.png)
 
 
 In this particular case, the storage variable `count` started at `0xA` (10 in decimal), while `countIncrementCall` started at -2. After calling `increment()` three times, `count` reached `0xD` (13 in decimal), and the ghost variable increased from -2 to 1. However, the assertion expected:
@@ -156,7 +157,7 @@ We effectively filter out meaningless configurations where the ghost’s initial
 With this constraint in place, the Prover still performs adversarial exploration, but it does so starting from **semantically valid** states. This ensures that any verification failure that occurs after applying the constraint corresponds to a _real_ issue in the rule or the contract logic — not a side effect of arbitrary initialization.
 
 
-## **Constraining the Ghosts with the** **`require`** **Statement**
+## Constraining the Ghosts with the `require` Statement
 
 
 As discussed earlier, in our case, the ghost variable `countIncrementCall` is meant to represent the number of times the `increment()` function has been called. At the start of the rule’s execution, no such calls have occurred yet — meaning that the correct initial value for this ghost should be **zero**.
@@ -206,7 +207,7 @@ assert postCallCountValue == precallCountValue + countIncrementCall;
 holds across all valid execution paths, confirming that the rule now verifies successfully.
 
 
-![image](media/certora-constraining-ghost-values-in-rules/image-21e09cb3.png)
+![image](media/certora-constraining-ghost-values-in-rules/image3.png)
 
 
 This demonstrates how a single line `require countIncrementCall == 0` can eliminate false verification failures by anchoring the Prover’s analysis to a logically sound starting point. It doesn’t limit the scope of verification; instead, it ensures that the exploration space is semantically valid and that any rule failure reflects a genuine logical problem rather than an arbitrary initialization artifact.
