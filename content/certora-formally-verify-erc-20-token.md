@@ -206,13 +206,13 @@ In this chapter, we take a sequenced approach to formally verify the ERC-20 cont
 The process is illustrated in the diagram below:
 
 
-![image](media/certora-formally-verify-erc-20-token/image-2b009cb3.png)
+![image](media/certora-formally-verify-erc-20-token/image1.png)
 
 
 Then, we go through each step shown in the numbered sequence below:
 
 
-![image](media/certora-formally-verify-erc-20-token/image-2b009cb3.png)
+![image](media/certora-formally-verify-erc-20-token/image2.png)
 
 
 ## 1. Verifying function correctness (calls succeed or revert)
