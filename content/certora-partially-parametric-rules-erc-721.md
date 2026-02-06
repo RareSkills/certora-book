@@ -781,7 +781,7 @@ rule approvedForAllChange(env e, address owner, address spender) {
 Prover run: [link](https://prover.certora.com/output/541734/e4dfd40ef9cf4724b189a084488ee359?anonymousKey=5487cf57e602b3474f064527bceb612654b8e01d)
 
 
-### **P****re-call and post-call states**
+### **Pre-call and post-call states**
 
 - `bool approvedForAllBefore = isApprovedForAll(owner, spender);`
 
