@@ -1,4 +1,4 @@
-# Constraining Ghosts In Invariants
+# Constraining Ghosts in Invariants
 
 
 In the previous chapter, we saw how unconstrained ghost variables can lead to false positives. We also learned how a `require` statement can be used to effectively constrain ghost values within rules.
