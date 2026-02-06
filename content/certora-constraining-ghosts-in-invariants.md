@@ -46,7 +46,7 @@ contract Voting {
         hasVoted[msg.sender] = true;
 
         votesAgainst += 1;
-}
+  }
 }
 ```
 
@@ -222,7 +222,7 @@ ghost mathint x {
 This means that during verification, the Prover will assume the condition $x > 0$ holds in all states, effectively constraining the ghost variable to never take zero or negative values.
 
 
-## Using `init_state` Axiom In Our Spec
+## Using `init_state` Axiom in our Spec
 
 
 Now that we understand the purpose of an `init_state` axiom, let’s apply it to the example we explored earlier, where our invariant failed because the ghost variable `totalVotes` started with an arbitrary value.
