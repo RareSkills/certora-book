@@ -3,7 +3,7 @@
 
 In the previous chapter, we learned how ghost variables allow information to flow from hooks into rules. We also learned that:
 
-1. **At the start of the verification run**, the Prover chooses arbitrary - havoced values for a ghost variables.
+1. **At the start of the verification run**, the Prover chooses arbitrary (havoced) values for a ghost variables.
 2. **Ghost variables are treated as an extension of the contract’s storage.** If a transaction reverts during symbolic execution, the Prover also reverts any ghost updates from that path, keeping them consistent with the contract’s storage state.
 
 The second case isn’t usually a concern, as reverting ghost values during transactions mirrors normal storage behavior. However, the first case can lead to incorrect or misleading verification results.
@@ -127,7 +127,7 @@ This is clearly false, hence the verification failed.
 This failure highlights an important concept about how the Prover operates. During verification, **the Prover does not assume any default or constructor-defined initial values** for either contract storage or ghost variables. Instead, it _havocs_ them — assigning arbitrary symbolic values within their allowed range. This behavior allows the Prover to reason about **all possible starting states** of the contract, ensuring that properties hold universally, not just for specific initial configurations.
 
 
-While this approach makes verification exhaustive, it can also introduce **unrealistic initial conditions**. If a rule depends on a meaningful relationship between the contract’s storage and a ghost variable, havocing can break that relationship by starting them from unrelated values. For instance, a ghost that represents the number of `increment``()` calls might begin with -2 or 5, even though no call to the `increment()` function has yet occurred.
+While this approach makes verification exhaustive, it can also introduce **unrealistic initial conditions**. If a rule depends on a meaningful relationship between the contract’s storage and a ghost variable, havocing can break that relationship by starting them from unrelated values. For instance, a ghost that represents the number of `increment()` calls might begin with -2 or 5, even though no call to the `increment()` function has yet occurred.
 
 
 When that happens, the rule might fail — not because its logic is flawed, but because the verification began from a **state that could never exist in practice**. Such failures are _false positives_: they highlight a mismatch between symbolic initialization and semantic intent rather than a real issue in the contract.
