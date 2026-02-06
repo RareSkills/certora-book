@@ -737,7 +737,7 @@ rule burn(env e, uint256 tokenId) {
 ```
 
 
-_Note__: The line_ _`requireInvariant ownerHasBalance(tokenId)`_ _is commented out because Prover 8.3.1 reports violations of this invariant, so it cannot be applied in this specification. This led to adjusting the "effect” assertion  from_ _`_supply == supplyBefore - 1`_ _to_ _`unsafeOwnerOf(tokenId) != 0 => (_supply == supplyBefore - 1)`__._ _All invariants, including_ _`ownerHasBalance(tokenId)`__, will be discussed in the next chapter._
+_Note: The line_ _`requireInvariant ownerHasBalance(tokenId)`_ _is commented out because Prover 8.3.1 reports violations of this invariant, so it cannot be applied in this specification. This led to adjusting the "effect” assertion  from_ _`_supply == supplyBefore - 1`_ _to_ _`unsafeOwnerOf(tokenId) != 0 => (_supply == supplyBefore - 1)`_. _All invariants, including_ _`ownerHasBalance(tokenId)`, will be discussed in the next chapter._
 
 
 Here's the Prover [run](https://prover.certora.com/output/541734/b596159772c447d6ba70969d8a40ad0d?anonymousKey=483b35cf7488deeb851d6b03db1f1f0e2f00cd6c) for the `burn` rule.
