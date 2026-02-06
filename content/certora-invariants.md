@@ -4,7 +4,7 @@
 Up until now, we’ve focused on verifying the behavior of individual methods or sequences of methods — ensuring that a specific function call or set of calls, given certain inputs, produces the correct changes in state. But there’s another, more universal aspect of verification: **invariants**.
 
 
-**Invariants** are conditions that must always hold true for the contract’s state, no matter which function is called or in what order. If any execution — whether direct or via a sequence of calls—violates an invariant, it signals a fundamental flaw in the contract’s design, potentially exposing a bug or vulnerability.
+**Invariants** are conditions that must always hold true for the contract’s state, no matter which function is called or in what order. If any execution — whether direct or via a sequence of calls — violates an invariant, it signals a fundamental flaw in the contract’s design, potentially exposing a bug or vulnerability.
 
 
 In this article, we’ll explore how to formally specify and verify such properties using **Certora’s CVL built-in invariant construct.**
@@ -100,7 +100,7 @@ Choose an **invariant** when you want to verify a property that must hold true a
 Invariants provide the strongest guarantees about the long-term integrity and safety of your contract's state. They answer the critical question: "**Is this fundamental property of my contract unbreakable, no matter what?"
 
 
-## Scope of Verification: `Rules` Vs `Invariants` 
+## Scope of Verification: `Rules` vs `Invariants` 
 
 
 When verifying a **rule**, the Prover checks whether the assertions hold for the specific scenario defined in the rule—based on the initial state, actions taken, and any assumptions. Rules offer flexibility for exploring custom paths or edge cases, but they only verify correctness along the execution paths explicitly constructed in the specification.
