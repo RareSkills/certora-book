@@ -379,7 +379,7 @@ This havoc **overwrites** the computed balance. In the next state (**Global St
 This means the Prover ignored the computed result (3) and assigned an arbitrary value (5) as part of the havoc summary. This havoc'd value is what will be used in the post-state check.
 
 
-### **The Post-State and Invariant Failure (Global State #7)**
+### The Post-State and Invariant Failure (Global State #7)
 
 
 After the `withdraw` function completes, the Prover checks the invariant in the **post-state**:
@@ -416,7 +416,7 @@ This violation is a classic **false positive**. It did not occur because of a l
 The `auto``-havoc` step also contributed to the final values, but the state was already irrecoverably affected by the underflow.
 
 
-## **Fixing False Violations Using Preserved Blocks**
+## Fixing False Violations Using Preserved Blocks
 
 
 Now that it is clear the Prover flagged violations not because of a flaw in the WETH contract, but because it explored symbolic states that can never occur in real execution, our next step is to guide the Prover back toward realistic behavior.
@@ -425,7 +425,7 @@ Now that it is clear the Prover flagged violations not because of a flaw in the 
 We do this by adding **preserved blocks**, which introduce additional assumptions between the pre-state check and symbolic execution. These assumptions prevent the Prover from entering impossible execution paths such as contract self-invocations or absurd token balances.
 
 
-### **Fixing the** **`deposit()`** **and** **`receive()`** **Violations**
+### Fixing the `deposit()` and `receive()` Violation
 
 
 Both violations were caused by the Prover assuming **self-calls**, where the WETH contract was modeled as its own caller. This is impossible in real execution but valid in symbolic execution unless restricted.
@@ -455,7 +455,7 @@ This single assumption removes all self-call traces, immediately eliminating the
 With the self-call issue resolved for both `deposit()` and `receive()`, we can now turn to the second source of false violations: the unrealistic symbolic assumptions inside `withdraw()`.
 
 
-### **Fixing the** **`withdraw()`** **Violation** 
+### Fixing the `withdraw()` Violation 
 
 
 The failure in `withdraw()` was caused by something different: the Prover assumed that `balanceOf(msg.sender)` could be arbitrarily large, even greater than the total supply. This forced `_burn()` to execute along a path that should revert, triggering an underflow and corrupting totalSupply.
@@ -514,13 +514,13 @@ The report shows that all relevant functions — including `deposit()`, `withdra
 At this point, the invariant is verified successfully, and the specification is correct. However, we can simplify it further. Both assumptions we added earlier share the same structure and do not depend on any function arguments, which means we can consolidate them into a single, cleaner preserved block.
 
 
-## **A Cleaner and More Unified Specification**
+## A Cleaner and More Unified Specification
 
 
 In our case, both assumptions we added earlier share an important property: 
 
 
-**“**_**They depend only on the transaction environment (env) and the contract’s global state. They do not depend on the parameters of any particular function.**_**”**
+“They depend only on the transaction environment (env) and the contract’s global state. They do not depend on the parameters of any particular function.”
 
 
 This means they are global truths about the contract:
@@ -554,7 +554,7 @@ When we run the Prover using this combined block, the specification is accepted 
 ![image](media/certora-preserved-block/image16.png)
 
 
-## **Constructor Preserved Blocks (Base-Step Assumptions)**
+## Constructor Preserved Blocks (Base-Step Assumptions)
 
 
 So far, we have discussed preserved blocks as a way to constrain the Prover during the induction step of invariant verification—that is, when checking that public and external functions preserve an invariant assuming it already holds beforehand.
