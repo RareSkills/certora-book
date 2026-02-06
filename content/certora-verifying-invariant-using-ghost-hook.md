@@ -415,10 +415,8 @@ In our `erc20.spec` file, add the code shown below to our store hook to limit th
 
 ```solidity
 hook Sstore balanceOf[KEY address account] uint256 newAmount (uint256 oldAmount)  {
-    
-require oldAmount <= sumOfBalances;  //add this line
-sumOfBalances = sumOfBalances - oldAmount + newAmount;
-  
+    require oldAmount <= sumOfBalances;  //add this line
+    sumOfBalances = sumOfBalances - oldAmount + newAmount;
 }
 ```
 
