@@ -40,9 +40,7 @@ rule transferFrom(env e, address from, address to, uint256 tokenId) {
     uint256 balanceOfFromBefore  = balanceOf(from);
     uint256 balanceOfToBefore    = balanceOf(to);
     uint256 balanceOfOtherBefore = balanceOf(otherAccount);
-    address ownerBefore          = 
-unsafeOwnerOf
-(tokenId);
+    address ownerBefore          = unsafeOwnerOf(tokenId);
     address otherOwnerBefore     = unsafeOwnerOf(otherTokenId);
     address approvalBefore       = unsafeGetApproved(tokenId);
     address otherApprovalBefore  = unsafeGetApproved(otherTokenId);
@@ -131,13 +129,13 @@ This precondition requires the `ownerHasBalance(tokenId)` invariant (which guara
 
 ```solidity
 rule transferFrom(env e, address from, address to, uint256 tokenId) {
-		// preconditions
-		require nonpayable(e);
-		require authSanity(e);
-		...
-		requireInvariant ownerHasBalance(tokenId); // invariant as a precondition
-		require balanceLimited(to);
-		...
+	// preconditions
+	require nonpayable(e);
+	require authSanity(e);
+	...
+	requireInvariant ownerHasBalance(tokenId); // invariant as a precondition
+	require balanceLimited(to);
+	...
 }
 ```
 
@@ -179,13 +177,13 @@ By using the invariant `ownerHasBalance(tokenId)` as a precondition, the `transf
 
 ```solidity
 rule transferFrom(env e, address from, address to, uint256 tokenId) {
-		// preconditions
-		require nonpayable(e);
-		require authSanity(e);
-		...
-		requireInvariant ownerHasBalance(tokenId); // invariant as a precondition
-		require balanceLimited(to);
-		...
+	// preconditions
+	require nonpayable(e);
+	require authSanity(e);
+	...
+	requireInvariant ownerHasBalance(tokenId); // invariant as a precondition
+	require balanceLimited(to);
+	...
 }
 ```
 
@@ -564,18 +562,18 @@ Here’s the rule that verifies this behavior:
 
 ```solidity
 rule approve(env e, address spender, uint256 tokenId) {
-		// preconditions
+	// preconditions
     require nonpayable(e);
     require authSanity(e);
 		
-		// pre-call state
+	// pre-call state
     address caller = e.msg.sender;
     address owner = unsafeOwnerOf(tokenId);
     uint256 otherTokenId;
 
     address otherApprovalBefore  = unsafeGetApproved(otherTokenId);
 		
-		// method call
+	// method call
     approve@withrevert(e, spender, tokenId);
     bool success = !lastReverted;
 
@@ -735,10 +733,10 @@ The `setApprovalForAll()` function authorizes an address to manage all tokens ow
 
 ```solidity
 rule setApprovalForAll(env e, address operator, bool approved) {
-		// preconditions
+	// preconditions
     require nonpayable(e);
 		
-		// pre-call state
+	// pre-call state
     address owner = e.msg.sender;
     address otherOwner;
     address otherOperator;
