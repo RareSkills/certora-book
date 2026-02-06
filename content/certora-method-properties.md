@@ -52,7 +52,7 @@ The available method properties include:
 Out of all these, the most commonly used method properties are `f.selector`, `f.isView`, and `f.isPure`. These cover the most typical use cases—like identifying a specific function (using the selector) or skipping read-only and computational functions (`isView` and `isPure`) when writing rules focused on state changes. To keep things practical, we’ll focus on these properties in the upcoming examples and show how they help write more precise and efficient parametric rules.
 
 
-## **Enforcing Function-Dependent Assertion In Parametric Rule**
+## Enforcing Function-Dependent Assertion In Parametric Rule
 
 
 To understand how method properties can be used to enforce function-dependent assertions within a parametric rule, consider the ERC-20 implementation `RareToken` shown below, which includes both `mint` and `burn` functionality:
