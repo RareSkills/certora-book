@@ -428,11 +428,7 @@ Besides the `_burn()` function, which implements its own revert conditions, the 
 
 ```solidity
 assembly {
-    // 
-Transfer the ETH and check 
-whether 
-it succeeded.
-
+    // Transfer the ETH and check whether it succeeded.
     if iszero(call(gas(), caller(), amount, codesize(), 0x00, codesize(), 0x00)) {
         mstore(0x00, 0xb12d13eb) // `ETHTransferFailed()`.
         revert(0x1c, 0x04)
