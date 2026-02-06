@@ -260,7 +260,7 @@ address otherOwnerBefore     = unsafeOwnerOf(otherTokenId);
 
     This records the balance of any other account before the mint call, to compare it against the post-mint balance and confirm that it has not changed, hence no side effects.
 
-- `a``ddress ownerBefore = unsafeOwnerOf(tokenId)`
+- `address ownerBefore = unsafeOwnerOf(tokenId)`
 
     This records the owner of the token before the mint call. For the mint to succeed, this value must be zero, which is one of the liveness conditions (`ownerBefore == 0` and `to != 0`).
 
