@@ -262,9 +262,7 @@ Finally, the assertion uses the biconditional operator (`<=>`) and lists all the
 ```solidity
 assert isLastReverted <=> (
     ethBalanceBefore < ethDeposit || // the caller doesn't have enough eth to deposit
-    totalSupplyBefore + ethDeposit > max_uint256 // results in
- 
-overflow
+    totalSupplyBefore + ethDeposit > max_uint256 // results in overflow
 );
 ```
 
