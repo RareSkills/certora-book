@@ -60,7 +60,7 @@ To resolve this, one workaround is to add a trivial assertion at the end:
 
 ```solidity
 if (P) { 
-		assert Q; 
+	assert Q; 
 }
 assert true;
 ```
