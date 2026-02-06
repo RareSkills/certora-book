@@ -20,9 +20,7 @@ Invariants in CVL are defined using the `invariant` keyword, followed by a uniqu
 
 
 ```solidity
-invariant invariant_name(
-optional_parameter_1
-, optional_parameter_2, ...)
+invariant invariant_name(optional_parameter_1, optional_parameter_2, ...)
     boolean_expression_in_CVL;
 ```
 
@@ -232,18 +230,15 @@ invariant totalVotesMatch()
 
 
 ```solidity
-i
-nvariant totalVotesMatch()
-
-   
- to_mathint(totalVotes()) == votesInFavor() + votesAgainst();
+invariant totalVotesMatch()
+  to_mathint(totalVotes()) == votesInFavor() + votesAgainst();
 ```
 
 
 Note: `to_mathint` is used to convert Solidity's `uint256` to Certora's mathematical integers for safe comparison. There is no need to apply it to the right-hand side of the equation, because in CVL, the results of all arithmetic operations are automatically of type `mathint` .
 
 
-4. **Add the Methods Block****:** Next, let’s add a **Methods Block** at the top of our specification with correct entries.
+**4. Add the Methods Block**: Next, let’s add a **Methods Block** at the top of our specification with correct entries.
 
 
 ```solidity
@@ -258,7 +253,7 @@ invariant totalVotesMatch()
     to_mathint(totalVotes()) == votesInFavor() + votesAgainst();
 ```
 
-1. **Declaring Functions as** `envfree`: Since the getter functions `votesInFavor()`, `votesAgainst()`, and `totalVotes()` do not depend on the execution environment (i.e., they do not read from `msg.sender`, `msg.value`, or any other global variables), we can declare them as `envfree`.
+Declaring Functions as `envfree`: Since the getter functions `votesInFavor()`, `votesAgainst()`, and `totalVotes()` do not depend on the execution environment (i.e., they do not read from `msg.sender`, `msg.value`, or any other global variables), we can declare them as `envfree`.
 
 ```solidity
 methods {
@@ -291,14 +286,14 @@ Once your project directory is set up correctly, follow the steps below to run t
 }
 ```
 
-1. **Add Certora Personal Access Key:** In your project directory, create a `.profile`, `.bashrc`, or `.zshenv` file (depending on your operating system and shell) and add the following line to set your [Certora Personal Access Key](https://www.certora.com/signup?plan=prover) as an environment variable.
+**2. Add Certora Personal Access Key:** In your project directory, create a `.profile`, `.bashrc`, or `.zshenv` file (depending on your operating system and shell) and add the following line to set your [Certora Personal Access Key](https://www.certora.com/signup?plan=prover) as an environment variable.
 
 ```bash
 #certora access key
 export CERTORAKEY=<add-your-certora-access-key-here>
 ```
 
-1. **Load the Environment Variable:** After adding the key, load the environment variables into your current terminal session by running the appropriate command shown below.
+**3. Load the Environment Variable:** After adding the key, load the environment variables into your current terminal session by running the appropriate command shown below.
 
 ```bash
 # For bash users
@@ -308,14 +303,14 @@ source .profile
 source .zshenv
 ```
 
-1. **Adding the Solidity Compiler:** Before we run the Prover, we need to add the correct Solidity compiler. To add and use the correct Solidity compiler version, run the commands below.
+**4. Adding the Solidity Compiler:** Before we run the Prover, we need to add the correct Solidity compiler. To add and use the correct Solidity compiler version, run the commands below.
 
 ```bash
 solc-select install 0.8.25
 solc-select use 0.8.25
 ```
 
-1. **Running the Prover:** To verify your invariant, run the following command from your project's root directory.
+**5. Running the Prover:** To verify your invariant, run the following command from your project's root directory.
 
 ```bash
 certoraRun confs/
@@ -329,7 +324,7 @@ If the Prover compiles your smart contract and specification file successfully�
 To view [**the verification result**](https://prover.certora.com/output/2547903/f1ff8fc65dea4806a67056160d787a73?anonymousKey=080529361cb2bc72444c7a3b4b21e8f7d42cc319&params=%7B%7D&generalState=%7B%22fileViewOpen%22%3Atrue%2C%22fileViewCollapsed%22%3Atrue%2C%22mainTreeViewCollapsed%22%3Atrue%2C%22callTraceClosed%22%3Atrue%2C%22mainSideNavItem%22%3A%22rules%22%2C%22globalResSelected%22%3Afalse%2C%22isSideBarCollapsed%22%3Afalse%2C%22isRightSideBarCollapsed%22%3Atrue%2C%22selectedFile%22%3A%7B%22uiID%22%3A%222c9795%22%2C%22output%22%3A%22.certora_sources%2Fspecs%2Finvariant.spec%22%2C%22name%22%3A%22invariant.spec%22%7D%2C%22fileViewFilter%22%3A%22%22%2C%22mainTreeViewFilter%22%3A%22%22%2C%22contractsFilter%22%3A%22%22%2C%22globalCallResolutionFilter%22%3A%22%22%2C%22currentRuleUiId%22%3Anull%2C%22counterExamplePos%22%3A1%2C%22expandedKeysState%22%3A%22%22%2C%22expandedFilesState%22%3A%5B%5D%2C%22outlinedfilterShared%22%3A%22000000000%22%7D), open the link printed in your terminal using a browser. The results should look similar to the image below:
 
 
-![image](media/certora-invariants/image-1fa09cb3.png)
+![image](media/certora-invariants/image1.png)
 
 
 _**Note:**_ _**Depending on the complexity of your specification and the current Prover queue, it may take a few minutes for your job status to change from Queued to Executed. This delay is normal, so don’t worry.**_
@@ -346,25 +341,25 @@ To better understand what it means for an invariant to be “successfully valida
 
 When an invariant is submitted for verification, the Prover performs two essential checks to ensure its correctness, which directly correspond to the **two-part proof principle (based on mathematical induction)** discussed earlier:
 
-- **Initial-state Check**: First, the Prover verifies that the invariant holds immediately after the contract’s constructor finishes executing. This is the **Base Case** of our inductive proof.
-- **Inductive** **S****tep**: Next, the Prover checks that every public and external method preserves the invariant across its execution. This corresponds to the **Inductive Step**, making sure that if the property holds before a function call, it continues to hold after.
+- **Initial-state Check:** First, the Prover verifies that the invariant holds immediately after the contract’s constructor finishes executing. This is the **Base Case** of our inductive proof.
+- **Inductive Step:** Next, the Prover checks that every public and external method preserves the invariant across its execution. This corresponds to the **Inductive Step**, making sure that if the property holds before a function call, it continues to hold after.
 
 The result of both of these checks can be seen by expanding the invariant `totalVotesMatch()` in the left-hand panel of the Prover UI.
 
 
-![image](media/certora-invariants/image-1fa09cb3.png)
+![image](media/certora-invariants/image2.png)
 
 
 The outcome of the **Initial-state check** is displayed under **“Induction base: After the constructor”**, confirming that the contract begins in a valid state where the invariant holds.
 
 
-![image](media/certora-invariants/image-1fa09cb3.png)
+![image](media/certora-invariants/image3.png)
 
 
 The outcome of the **Inductive step** is displayed under **“Induction step: after external (non-view) methods”**. This part of the proof is designed to show that **all** public and external functions preserve the invariant.
 
 
-![image](media/certora-invariants/image-1fa09cb3.png)
+![image](media/certora-invariants/image4.png)
 
 
 **So, why does the report only show "non-view" (state changing) methods?**
@@ -385,13 +380,13 @@ The inductive step check, therefore, focuses on the methods that **can** change 
 In our case, both `voteAgainst()` and `voteInFavor()` are analyzed under this check. The green checkmarks (✅) next to each function indicate that, when these methods are invoked, they do not violate the invariant. This confirms that the contract’s logic correctly preserves the invariant across all state-changing operations.
 
 
-![image](media/certora-invariants/image-1fa09cb3.png)
+![image](media/certora-invariants/image5.png)
 
 
 In addition to these two core checks, the Prover also runs a rule named `envFreeFuncsStaticCheck`, which verifies that all functions marked as `envfree` in the specification are truly independent of the execution environment like `msg.sender` or `msg.value`.
 
 
-![image](media/certora-invariants/image-1fa09cb3.png)
+![image](media/certora-invariants/image6.png)
 
 
 ## 
@@ -401,7 +396,7 @@ In addition to these two core checks, the Prover also runs a rule named `envFree
 If you are using a newer version of the Certora Prover, you might notice additional entries when you expand an invariant result in the Prover UI, such as `rule_not_vacuous` and `invariant_not_trivial_postcondition`, as shown below:
 
 
-![image](media/certora-invariants/image-2f009cb3.png)
+![image](media/certora-invariants/image7.png)
 
 
 These extra entries are **automatic sanity checks** added by the Prover itself. They are **not something you wrote**, and they do **not mean that additional invariants or rules are being verified**. Their purpose is to ensure that your invariant is genuinely meaningful and not trivially satisfied.
