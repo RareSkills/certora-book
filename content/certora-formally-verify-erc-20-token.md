@@ -777,15 +777,11 @@ Here’s the rule that captures both the decrease in total supply and the decrea
 
 
 ```solidity
-rule 
-burn_decreasesTotalSupplyAndBalance
-() {
+rule burn_decreasesTotalSupplyAndBalance() {
     address holder;
     uint256 amount;
 			
-		require 
-totalSupply() >= balanceOf(holder); 
-// will be replaced by an invariant
+	require totalSupply() >= balanceOf(holder); // will be replaced by an invariant
 		
     mathint holderBalanceBefore = balanceOf(holder);
     mathint totalSupplyBefore = totalSupply();
@@ -821,15 +817,15 @@ Here’s the CVL rule that verifies this behavior:
 
 ```solidity
 rule burn_reverts(env e) {
-		address holder;
-	  uint256 amount;
+	address holder;
+	uint256 amount;
 
-	  mathint holderBalance = balanceOf(holder);
+	mathint holderBalance = balanceOf(holder);
 
-	  burn@withrevert(holder, amount);
-	  bool isReverted = lastReverted;
+	burn@withrevert(holder, amount);
+	bool isReverted = lastReverted;
 
-		assert isReverted <=> holderBalance < amount;
+	assert isReverted <=> holderBalance < amount;
 }
 ```
 
@@ -940,7 +936,7 @@ hook Sload uint256 balance balanceOf[KEY address account] {
 }
 
 invariant totalSupplyEqualsSumOfBalances()
-		to_mathint(totalSupply()) == g_sumOfBalances;
+	to_mathint(totalSupply()) == g_sumOfBalances;
 ```
 
 
@@ -985,7 +981,7 @@ Finally, we formally verify that the total supply equals the sum of all balances
 
 ```solidity
 invariant totalSupplyEqualsSumOfBalances()
-		to_mathint(totalSupply()) == g_sumOfBalances;
+	to_mathint(totalSupply()) == g_sumOfBalances;
 ```
 
 
@@ -1201,26 +1197,18 @@ Another unauthorized action is reducing a balance when the caller is not the hol
 
 ```solidity
 rule onlyHolderAndSpenderCanReduceHolderBalance(env e, method f, calldataarg args) filtered {
-		// `burn()` is excluded since permission checks are left to the integrator / developer
+	// `burn()` is excluded since permission checks are left to the integrator / developer
     f -> f.selector != sig:burn(address,uint256).selector                                                   
 } {
     requireInvariant totalSupplyEqualsSumOfBalances(); 
 
     address account;
 
-    mathint
- spenderAllowanceBefore = allowance(account, e.msg.sender);
-    
-mathint
- holderBalanceBefore = balanceOf(account);
-
+    mathint spenderAllowanceBefore = allowance(account, e.msg.sender);
+	mathint holderBalanceBefore = balanceOf(account);
     
     f(e, args);
-
-    
-mathint
- holderBalanceAfter = balanceOf(account);
-
+	mathint holderBalanceAfter = balanceOf(account);
 
     assert (holderBalanceAfter < holderBalanceBefore) => (
         e.msg.sender == account ||
