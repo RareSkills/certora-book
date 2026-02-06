@@ -283,29 +283,27 @@ In Solidity, a string is not a single value but a dynamic array of bytes. Howeve
 
 This repeated, word-based copying are the **hidden loop** that the Prover encounters in the compiled bytecode.
 
+In our specification, **four hidden loops** get triggered during string handling:
 
-In our specification, **four hidden loops** get triggered during string handling:
+1. **Copying from `calldata` to `memory` (The Entrance)**
 
+   - **What happens:** When you call `setTxt(_txt)`, the input string arrives in a temporary, read-only holding area called `calldata`. To actually use or process that string inside the function, the EVM must first move it into the function's workspace, called `memory`.
+   - **The Loop:** This transfer is done **32 bytes at a time**. The EVM loops until the entire string has been moved from `calldata` to `memory`.
 
-1. **Copying from** `calldata` **to** `memory` **(The Entrance)**
+2. **Copying from `memory` to `storage` (The Assignment)**
 
-- **What happens:** When you call `setTxt(_txt)`, the input string arrives in a temporary, read-only holding area called `calldata`. To actually use or process that string inside the function, the EVM must first move it into the function's workspace, called `memory`.
-- **The Loop:** This transfer is done **32 bytes at a time**. The EVM loops until the entire string has been moved from `calldata` to `memory`.
+   - **What happens:** The assignment `txt = _txt;` saves the string permanently. It moves the data from the temporary `memory` workspace into the contract's `storage`, which is where your contract's state lives on the blockchain.
+   - **The Loop:** Since this is a permanent write, the EVM runs a loop to copy the string **word-by-word (32 bytes at a time)** into the contract's designated storage slots. This is the main point of failure for verification.
 
-2. **Copying from** `memory` **to** `storage` **(The Assignment)**
+3. **Copying from `storage` back to `memory` (The Read)**
 
-- **What happens:** The assignment `txt = _txt;` saves the string permanently. It moves the data from the temporary `memory` workspace into the contract's `storage`, which is where your contract's state lives on the blockchain.
-- **The Loop:** Since this is a permanent write, the EVM runs a loop to copy the string **word-by-word (32 bytes at a time)** into the contract's designated storage slots. This is the main point of failure for verification.
-
-3. **Copying from** `storage` **back to** `memory` **(The Read)**
-
-- **What happens:** When you call the public getter `txt()`, the contract has to fetch the stored string data. It loads the string from its permanent `storage` location back into temporary **`memory`** so it can be returned.
-- **The Loop:** Yet another internal loop runs, reading the string's 32-byte words out of storage one by one.
+   - **What happens:** When you call the public getter `txt()`, the contract has to fetch the stored string data. It loads the string from its permanent `storage` location back into temporary **`memory`** so it can be returned.
+   - **The Loop:** Yet another internal loop runs, reading the string's 32-byte words out of storage one by one.
 
 4. **Comparing Strings (The Assertion)**
 
-- **What happens:** In your assertion, `assert _txt == txt();`, the Prover must check if the two symbolic strings are equal.
-- **The Loop:** The only way to check equality for two dynamic arrays is to compare them **word-by-word** from beginning to end, which is the definition of a final hidden loop.
+   - **What happens:** In your assertion, `assert _txt == txt();`, the Prover must check if the two symbolic strings are equal.
+   - **The Loop:** The only way to check equality for two dynamic arrays is to compare them **word-by-word** from beginning to end, which is the definition of a final hidden loop.
 
 For **concrete execution** (running the code with a specific input, like the string `"Hello"`), this hidden loop is simple. The string's length is a known, fixed number, so the loop runs a definite number of times. Everything is predictable.
 
@@ -370,7 +368,7 @@ This leaves us with a question: _**what options do we have for handling these ca
 The Certora Prover provides two configuration options to help deal with loops. While these do not provide complete proofs of correctness, they are useful tools for controlling the Prover's behavior.
 
 
-### **1. Increasing the Unrolling Bound with** `loop_iter`*
+### 1. Increasing the Unrolling Bound with `loop_iter`
 
 
 The first and most straightforward option is to tell the Prover to unroll the loop more times using the `--loop_iter` flag. This can be done either from the terminal or through the configuration file.
@@ -404,7 +402,7 @@ In the terminal command and configuration file examples above, `<N>` specifies
 ### Using the `loop_iter` Flag in Our Rule
 
 
-To understand how the `--``loop_iter` flag works in practice, let’s apply this to our string example and run the Prover with the following command:
+To understand how the `--loop_iter` flag works in practice, let’s apply this to our string example and run the Prover with the following command:
 
 
 ```solidity
@@ -461,10 +459,10 @@ With `--optimistic_loop`, the Prover changes strategy:
 - For iterations **within the bound**, it behaves normally and checks every case.
 - For iterations **beyond the bound**, it **assumes** that the property will continue to hold without actually exploring those paths.
 
-### **Using the** **`-—`****`optimistic_loop`** **Flag in Our Rule**
+### Using the `optimistic_loop` Flag in Our Rule
 
 
-To understand how the `--``optimistic_loop` flag works in practice, let’s apply this to our string example and run the Prover with following command:
+To understand how the `--optimistic_loop` flag works in practice, let’s apply this to our string example and run the Prover with following command:
 
 
 ```solidity
