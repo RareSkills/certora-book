@@ -107,7 +107,6 @@ The method-specific logic can be preconditions, method calls, or even assertions
 ```solidity
 rule partiallyParametricExample(env e) {
 	method f;
-		
 	helperFunction(e, f); // contains all conditional logic
 }
 ```
