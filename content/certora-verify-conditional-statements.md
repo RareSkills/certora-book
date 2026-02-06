@@ -297,7 +297,7 @@ If the remainder of `x * y` divided by `denominator` is greater than zero, one i
 Now that we know what the function is trying to do, we can now proceed with the formal verification.
 
 
-### Developing Specification_s_ For mulDivUp
+### Developing Specifications For mulDivUp
 
 
 Here is an initial specification that captures the behavior of the Solmate `mulDivUp()` function, and the explanation follows afterwards:
@@ -307,8 +307,7 @@ Here is an initial specification that captures the behavior of the Solmate `mulD
 /// CVL
 
 rule 
-mulDivUp_roundOrRevert
-() {
+mulDivUp_roundOrRevert() {
     uint256 x;
     uint256 y;
     uint256 denominator;
@@ -317,8 +316,6 @@ mulDivUp_roundOrRevert
         mulDivUp@withrevert(x, y, denominator); 
         assert lastReverted;
     }
- 
-
     else if (x * y > max_uint256) { // catches revert condition: multiplication overflows a max_uint256 value
         mulDivUp@withrevert(x, y, denominator);
         assert lastReverted;
