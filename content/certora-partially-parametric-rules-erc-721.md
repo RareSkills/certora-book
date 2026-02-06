@@ -714,7 +714,7 @@ rule approvalChange(env e, uint256 tokenId) {
 Prover run: [link](https://prover.certora.com/output/541734/6b33267777564799a3fe1ebb28ed0626?anonymousKey=ff12144bbac0ee70a140619379a8f7990c092ca7)
 
 
-### **P****re-call and post-call states**
+### **Pre-call and post-call states**
 
 
 The line below records the approved address before and after the partially parametric call `method f; helperSoundFnCall(e, f)` to determine whether the approval changed as a result of the listed invoked method, and whether it was cleared to `address(0)`:
