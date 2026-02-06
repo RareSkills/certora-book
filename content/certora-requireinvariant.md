@@ -383,7 +383,7 @@ This will send your specification and contract to the Certora Prover for verific
 
 1. Once the Prover finishes the run (which may take a few minutes), it will output a unique link to the verification report in your terminal. Open the link in your browser to view a result similar to the image below:
 
-![image](media/certora-requireinvariant/image-2f409cb3.png)
+![image](media/certora-requireinvariant/image1.png)
 
 
 The result shows that `checkTransferSuccess()` has **failed** verification. 
@@ -395,7 +395,7 @@ The result shows that `checkTransferSuccess()` has **failed** verification.
 To understand why the rule failed, let's examine the call trace. In the **Storage State** section under **`Global State #1`**, we can see the initial values the Prover chose:
 
 
-![image](media/certora-requireinvariant/image-2f409cb3.png)
+![image](media/certora-requireinvariant/image2.png)
 
 
 The Prover started from a state with the following values:
@@ -485,13 +485,13 @@ certoraRun confs/erc20.conf
 Open the verification link to view the result:
 
 
-![image](media/certora-requireinvariant/image-25809cb3.png)
+![image](media/certora-requireinvariant/image3.png)
 
 
 Our verification result clearly shows that the Prover has verified the rule. That means the  `transfer()` function correctly updates balances and preserves the total supply invariant.
 
 
-![image](media/certora-requireinvariant/image-25809cb3.png)
+![image](media/certora-requireinvariant/image4.png)
 
 
 The example discussed above makes it clear that adding `requireInvariant` ensures the Prover only considers realistic contract states that respect already-proven global properties. In the next section, we'll see how to use `requireInvariant` within another invariant definition.
@@ -524,7 +524,7 @@ This new invariant encodes a fundamental ERC-20 safety property: **no account’
 Now let’s run the Prover, and then open the verification link provided by the Prover to view a result similar to the image below:
 
 
-![image](media/certora-requireinvariant/image-25a09cb3.png)
+![image](media/certora-requireinvariant/image5.png)
 
 
 The result above shows that our invariant `indBalanceCap()` has failed the verification process. 
@@ -533,7 +533,7 @@ The result above shows that our invariant `indBalanceCap()` has failed the verif
 Further analysis of the Prover report shows that the invariant failed the induction check. Specifically, the Prover identified violations of the invariant through the `transfer()` and `transferFrom()` function calls, as shown in the image below:
 
 
-![image](media/certora-requireinvariant/image-25a09cb3.png)
+![image](media/certora-requireinvariant/image6.png)
 
 
 To understand the cause of the violation, let's analyze the `transfer()` call trace. _(Note:_ _`transferFrom()`_ _fails for the same reason, so analyzing_ _`transfer()`_ _covers both cases)_
@@ -545,7 +545,7 @@ To understand the cause of the violation, let's analyze the `transfer()` call tr
 Let’s start our analysis with the **Storage State** section of the Prover report. This section shows the actual values of the contract’s storage variables at the initial point of verification.
 
 
-![image](media/certora-requireinvariant/image-2ae09cb3.png)
+![image](media/certora-requireinvariant/image7.png)
 
 
 In the Storage State, we can see that the individual account balances are as follows:
@@ -600,7 +600,7 @@ certoraRun confs/erc20.conf
 and open the verification link, we’ll see a result similar to the image below:
 
 
-![image](media/certora-requireinvariant/image-25a09cb3.png)
+![image](media/certora-requireinvariant/image8.png)
 
 
 We can see, as expected, that `indBalanceCap()` now verifies successfully. Since the Prover was restricted to states that already satisfy `totalSupplyEqSumOfBalances()`, it no longer encountered the impossible configurations that caused the earlier failure.
@@ -612,7 +612,7 @@ We can see, as expected, that `indBalanceCap()` now verifies successfully. Since
 Interestingly, the `indBalanceCap()` invariant would also pass verification if we used a regular `require` statement instead of `requireInvariant`, as shown below: 
 
 
-![image](media/certora-requireinvariant/image-25a09cb3.png)
+![image](media/certora-requireinvariant/image9.png)
 
 
 This happens because, inside a preserved block, both `require` and `requireInvariant` serve the same operational purpose: they **filter the pre-state** of the induction step. In effect, both statements instruct the Prover:
