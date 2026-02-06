@@ -327,7 +327,7 @@ methods {
 
 The OpenZeppelin specification includes it. However, doing so produces a warning (even if this rule is verified):
 
-> _“Method declaration for_ _`OwnableHarness.restricted()`_ _is neither_ _`envfree`__,_ _`optional`__, nor summarized, so it has no effect.”_
+> _“Method declaration for_ _`OwnableHarness.restricted()`_ _is neither_ _`envfree`_, _`optional`_, nor summarized, so it has no effect.”
 
 
 As discussed in our previous chapter, if a function is environment-dependent and treated as such, it does not need to be included in the `methods` block. In this case, we can simplify by removing the line `function restricted() e``xternal` from the methods block.
