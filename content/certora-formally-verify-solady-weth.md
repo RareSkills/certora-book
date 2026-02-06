@@ -350,9 +350,7 @@ When a user withdraws ETH, the corresponding WETH amount is burned, which reduce
 rule withdraw_ethWithdrawDecreasesWETHSupply(env e) {
     uint256 amount;
     
-	  require balanceOf(e.msg.sender) <= totalSupply(); // will be replaced by an invarian
-t
-
+	require balanceOf(e.msg.sender) <= totalSupply(); // will be replaced by an invariant
     mathint totalSupplyBefore = totalSupply();
     
     withdraw(e, amount);
@@ -572,9 +570,7 @@ For users to successfully redeem ETH using their WETH, the ETH held by the contr
 
 
 ```solidity
-invariant 
-ethDepositsAlwaysGTEWethTotalSupply
-() 
+invariant ethDepositsAlwaysGTEWethTotalSupply() 
     nativeBalances[currentContract] >= totalSupply()
 {
     preserved with (env e) {
@@ -582,9 +578,7 @@ ethDepositsAlwaysGTEWethTotalSupply
     }
 
     preserved withdraw(uint256 amount) with (env e) {
-        
-require balanceOf(e.msg.sender) <= totalSupply();
-
+        require balanceOf(e.msg.sender) <= totalSupply();
     }
 }
 ```
