@@ -19,7 +19,7 @@ This limitation creates a major challenge for verification: many important contr
 In this chapter, we extend the use of `Sstore` hooks beyond integers, addresses, and booleans, and apply them to storage mappings — a common pattern in specifications, since many contracts rely heavily on mappings.
 
 
-## Sstore hook syntax for mappings 
+## Sstore Hook Syntax for Mappings 
 
 
 Before we proceed with the code demonstrations, let’s first learn the code syntax / patterns of `Sstore` hooks for mappings.
@@ -258,10 +258,10 @@ Ghosts can be used in both rules and invariants. In the following example, we ve
 ### Verify `totalPoints()` equals `g_sumOfUserPoints` as a rule
 
 
-Here's the rule in parametric form, where `f(e, args)` allows the Prover to verify the rule against all contract functions with arbitrary arguments. For the rule below, we require `totalPoints` and `g_sumOfuserPoints` start at zero:
+Here's the rule in parametric form, where `f(e, args)` allows the Prover to verify the rule against all contract functions with arbitrary arguments. For the rule below, we require `totalPoints` and `g_sumOfUserPoints` start at zero:
 
 
-```javascript
+```solidity
 rule sumOfUserPointsEqualsTotalPoints(env e, method f, calldataarg args) {
     require totalPoints() == 0 && g_sumOfUserPoints == 0;
 
