@@ -58,7 +58,7 @@ The key phrase is: ”_after any function is called with any valid arguments,”
 rule parametricExample(env e, method f, calldataarg args) {
     /// set precondition
 		
-		/// record pre-call state
+	/// record pre-call state
 
     /// parametric call: invokes all functions in the scene with arbitrary arguments 
     f(e, args);
@@ -86,17 +86,17 @@ The key phrase is _"specific actions and assertions tailored to different scenar
 
 ```solidity
 rule partiallyParametricExample(env e) {
-		method f;
+	method f;
 
-		if (f.selector == sig:exampleMethod1(uint256, address).selector) {
-				// method-specific logic
-		}
-		else if (f.selector == sig:exampleMethod2(address, address).selector) {
-				// method-specific logic
-		}
-		else {
-				// method-specific logic
-		}
+	if (f.selector == sig:exampleMethod1(uint256, address).selector) {
+			// method-specific logic
+	}
+	else if (f.selector == sig:exampleMethod2(address, address).selector) {
+			// method-specific logic
+	}
+	else {
+			// method-specific logic
+	}
 }
 ```
 
@@ -106,14 +106,9 @@ The method-specific logic can be preconditions, method calls, or even assertions
 
 ```solidity
 rule partiallyParametricExample(env e) {
-		method f;
+	method f;
 		
-helperFunction
-(e, f); // contains 
-all conditional 
-logic
-
-
+	helperFunction(e, f); // contains all conditional logic
 }
 ```
 
@@ -126,9 +121,7 @@ OpenZeppelin's specification uses the helper function `helperSoundFnCall()` to i
 
 rule supplyChange(env e) {
     ...
-    method f; 
-helperSoundFnCall
-(e, f);
+    method f; helperSoundFnCall(e, f);
     ...
     
     /// assert
@@ -217,7 +210,7 @@ When the invoked function is `burn()`, the helper function:
             // requireInvariant notMintedUnset(tokenId);
             burn(e, tokenId);
         } 
-    		...
+    	...
     }
     ```
 
@@ -513,7 +506,7 @@ Prover run: [link](https://prover.certora.com/output/541734/9dafe73bd99b4fd5a4aa
 The `requireInvariant balanceOfConsistency(account)` and `require balanceLimited(account)` are commented out because `helperSoundFnCall()` already enforces these preconditions for all balance-changing methods. The `balanceOfConsistency` is enforced through the preserved block of the `ownerHasBalance` invariant in the burn and transfer branches.
 
 
-### **P****re-call and post-call** **states**
+### **Pre-call and post-call** **states**
 
 
 The rule records the account balance before and after the `helperSoundFnCall(e, f)` call to compare the values and determine whether the method call changed the balance, and by how much:
@@ -649,9 +642,9 @@ Using `unsafeOwnerOf(tokenId)` allows the rule to reason about ownership changes
 
     ```solidity
     assert ownerBefore == 0 && ownerAfter != 0 => (
-    		f.selector == sig:mint(address,uint256).selector ||
-    		f.selector == sig:safeMint(address,uint256).selector ||
-    		f.selector == sig:safeMint(address,uint256,bytes).selector
+		f.selector == sig:mint(address,uint256).selector ||
+		f.selector == sig:safeMint(address,uint256).selector ||
+		f.selector == sig:safeMint(address,uint256,bytes).selector
     );
     ```
 
