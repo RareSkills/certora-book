@@ -15,20 +15,18 @@ However, in practice, transactions are heavily dependent on these environment va
 Consider a simple owner-controlled counter contract, where only the owner is allowed to increment a counter:
 
 ```solidity
-/// Solidity
-
 contract OwnerCounter {
     uint256 public counter;
-		address public owner;
-	
-		constructor(address _owner) {
-				owner = _owner;
-		}
-	
-		function increment() public {
-				require(msg.sender == owner, "not owner");
-				counter++;
-		}
+    address public owner;
+
+    constructor(address _owner) {
+        owner = _owner;
+    }
+
+    function increment() public {
+        require(msg.sender == owner, "not owner");
+        counter++;
+    }
 }
 
 ```
