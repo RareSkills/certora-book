@@ -212,7 +212,7 @@ This might raise the question: **if hooks are designed to capture and store data
 **The answer lies in the scope of variables defined within hooks**.
 
 
-### he Scope Limitation of Hooks
+### The Scope Limitation of Hooks
 
 
 When you define a variable inside a hook, its scope is **local to that hook only**. It’s like defining a variable inside a function—it can be used within that block but is not visible outside. That’s why `contractOwner` is perfectly valid inside the hook, but completely unknown to the rule `checkOwnerConsistency()`.
