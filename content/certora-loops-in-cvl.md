@@ -70,7 +70,7 @@ invariant maxEqReturnMax()
 At first glance, this claim appears valid and we expect the Prover to verify it successfully. However, when we run it through the Certora Prover, the verification fails, as shown below:
 
 
-![image](media/certora-loops-in-cvl/image-26a09cb3.png)
+![image](media/certora-loops-in-cvl/image1.png)
 
 
 After seeing the verification result, you might be puzzled: **if both functions are logically equivalent in what they return, why does the Prover still fail to establish that equivalence?**
@@ -127,14 +127,14 @@ Since `collection.length` is `0` in the initial state, the loop body never runs,
 As a result, the invariant holds in the initial state, meaning the base case is successfully verified, as shown below:
 
 
-![image](media/certora-loops-in-cvl/image-29b09cb3.png)
+![image](media/certora-loops-in-cvl/image2.png)
 
 1. **The Inductive Step: A**fter confirming that the invariant holds in the initial state, the Prover moves to the next phase — the **inductive step**. This step is about ensuring that the invariant **continues to hold** after any state change in the contract.
 
 In simple terms, the Prover checks the following:
 
 
-_**“**__**If the invariant holds in the current state S, then it must also hold in the next state S′ that results from any valid function call**_._**”**_
+“**If the invariant holds in the current state S, then it must also hold in the next state S′ that results from any valid function call.**”
 
 
 To reason about this, the Prover conceptually follows three stages:
@@ -229,7 +229,7 @@ As mentioned earlier, the Certora Prover uses **bounded loop unrolling** to hand
 In formal verification, proving an invariant requires showing that it holds **for every possible state transition**, including all iterations of any loop. If even one potential path is left unchecked, the **inductive step** of the proof becomes incomplete. That’s why the Prover marks the invariant `maxEqReturnMax()` as **failed:** 
 
 
-![image](media/certora-loops-in-cvl/image-28409cb3.png)
+![image](media/certora-loops-in-cvl/image3.png)
 
 
 It is very important to understand that any computation with an unbounded number of steps is hard for the Prover to reason about symbolically. And this difficulty isn’t limited to `for/while` loops in your Solidity code. The same problem appears even in places where no explicit loop is visible. Let’s examine a concrete example of such hidden loops: **Solidity strings**.
@@ -281,13 +281,13 @@ rule storedStringShouldEqualToInput() {
 If you run the Prover with this spec, the rule fails:
 
 
-![image](media/certora-loops-in-cvl/image-27609cb3.png)
+![image](media/certora-loops-in-cvl/image4.png)
 
 
 And you’ll see the familiar **“Unwinding condition in a loop”** error, just like in the previous example involving an explicit loop.
 
 
-![image](media/certora-loops-in-cvl/image-27609cb3.png)
+![image](media/certora-loops-in-cvl/5.png)
 
 
 You might be wondering why this error shows up when the code doesn’t contain any explicit loop.
@@ -419,7 +419,7 @@ Or inside a configuration file:
 In the terminal command and configuration file examples above, `<N>` specifies the maximum number of loop iterations the Prover will explore before stopping**.**
 
 
-### Using the `—-``loop_iter` Flag in Our Rule
+### Using the `loop_iter` Flag in Our Rule
 
 
 To understand how the `--``loop_iter` flag works in practice, let’s apply this to our string example and run the Prover with the following command:
@@ -437,13 +437,13 @@ When we run the prover with the above command, here is what is going to happen i
 - However, for strings longer than 96 bytes, the Prover reaches its unrolling bound. At that point, those paths remain _unproven_.
 - As a result, the rule `storedStringShouldEqualToInput()` will still fail in the general case as the Prover cannot prove correctness for all string lengths.
 
-![image](media/certora-loops-in-cvl/image-26b09cb3.png)
+![image](media/certora-loops-in-cvl/image6.png)
 
 
 The result will be the same no matter how much you raise the bound: **any finite** **`--loop_iter`** **only proves the property for strings up to that number of 32-byte words**. Larger strings remain _unproven_, and increasing the bound rapidly slows the Prover.
 
 
-### **2. Skipping Beyond the Bound with** **`--optimistic_loop`**
+### 2. Skipping Beyond the Bound with `--optimistic_loop`
 
 
 The second option takes a very different approach. Instead of increasing the bound, the Prover can be told to _assume_ everything beyond the bound works fine. That’s what `--optimistic_loop` does.
@@ -496,7 +496,7 @@ certoraRun confs/example.conf --optimistic_loop
 - Once it hits that bound, instead of reporting an _“unwinding condition in a loop”_ error, it **assumes** the property continues to hold for all remaining cases.
 - As a result, the rule `storedStringShouldEqualToInput()` now passes verification, even though longer string lengths were never fully checked.
 
-![image](media/certora-loops-in-cvl/image-27b09cb3.png)
+![image](media/certora-loops-in-cvl/image7.png)
 
 
 This approach is called “**optimistic**” because the Prover essentially _hopes_ that what it saw in the first few iterations will keep holding true for all future ones. 
