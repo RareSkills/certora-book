@@ -1,4 +1,4 @@
-# Mint and Burn for ERC-721
+# Mint and Burn Rules for ERC-721
 
 
 ## Introduction
