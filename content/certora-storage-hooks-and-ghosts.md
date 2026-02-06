@@ -133,8 +133,7 @@ It's defined using the `hook Sload` keywords, followed by the type and a name fo
 
 
 ```solidity
-hook Sload
- address contractOwner owner { ... }
+hook Sload address contractOwner owner { ... }
 ```
 
 
@@ -151,8 +150,7 @@ Store hooks are also defined using the `hook` keyword, followed by the `Sstore` 
 
 
 ```solidity
-hook Sstore
- owner address newOwner{...}
+hook Sstore owner address newOwner{...}
 ```
 
 
@@ -160,8 +158,7 @@ Optionally, the pattern may also include the type and name of a variable to stor
 
 
 ```solidity
-hook Sstore
- owner address newOwner (address oldOwner) {...}
+hook Sstore owner address newOwner (address oldOwner) {...}
 ```
 
 
@@ -185,9 +182,7 @@ rule checkOwnerConsistency(env e) {
      
     address prevOwner = contractOwner;
 
-     //
-parametric
- call
+     //parametric call
      method f;
      calldataarg args;
      f(e,args);
@@ -216,10 +211,10 @@ The above error simply highlights the fact that the rule `checkOwnerConsistency(
 This might raise the question: **if hooks are designed to capture and store data, why can’t we use that data in our rules directly?**
 
 
-**The answer** **lies i****n the scop****e** **of variables defined within hooks**.
+**The answer lies in the scope of variables defined within hooks**.
 
 
-### **The Scope Limitation of Hooks**
+### he Scope Limitation of Hooks
 
 
 When you define a variable inside a hook, its scope is **local to that hook only**. It’s like defining a variable inside a function—it can be used within that block but is not visible outside. That’s why `contractOwner` is perfectly valid inside the hook, but completely unknown to the rule `checkOwnerConsistency()`.
@@ -234,7 +229,7 @@ So how can we use the information extracted in a hook to write useful rules?
 The answer is **ghost variables.**
 
 
-### **Working Around the Scope Limitation with Ghost**
+### Working Around the Scope Limitation with Ghost
 
 
 Although we can’t directly access hook variables inside rules, we can define special variables called **ghost variables** (or simply **ghosts**) to communicate information between hooks and rules.
@@ -259,13 +254,11 @@ A ghost variable can be any CVL supported type or a mapping. In the case of a ma
 
 To make the  `checkOwnerConsistency()` rule work as intended, the value observed inside the hook needs to be made available in the rule’s scope. We can accomplish this by storing the observed value in a ghost variable. The steps to achieve this are outlined below:
 
-1. **Declare a ghost to hold** **the observed value of** `owner`: At the top level of our specification, introduce a ghost variable called  `ghostOw``ner`. This ghost will serve as a container for the value of the contract’s `owner` slot whenever it is read.
+**1. Declare a ghost to hold** **the observed value of `owner`:** At the top level of our specification, introduce a ghost variable called  `ghostOw``ner`. This ghost will serve as a container for the value of the contract’s `owner` slot whenever it is read.
 
 ```solidity
 /// Top-level ghost variable to mirror the contract's `owner` slot
-ghost address ghost
-Owner
-;
+ghost address ghostOwner;
 
 hook Sload address contractOwner owner {}
 
@@ -293,7 +286,7 @@ When declaring ghost variables, it is important to prefix them with `ghost` or `
 
 At this stage, the ghost variable `ghostOwner` has been declared but is not yet synchronized with the contract’s storage.
 
-1. **Synchronize the ghost inside the hook:** Next,modify the `Sload` hook so that whenever the contract performs a read on the `owner` storage slot, the hook captures the value and **writes it into the ghost.**
+**2. Synchronize the ghost inside the hook:** Next,modify the `Sload` hook so that whenever the contract performs a read on the `owner` storage slot, the hook captures the value and **writes it into the ghost.**
 
 ```solidity
 ghost address ghostOwner;
@@ -308,9 +301,7 @@ rule checkOwnerConsistency(env e) {
      
     address prevOwner = contractOwner;
 
-     //
-parametric
- call
+     //parametric call
      method f;
      calldataarg args;
      f(e,args);
@@ -326,11 +317,10 @@ parametric
 
 This creates a bridge from the contract’s private storage into the hook, and from the hook into a ghost variable that persists beyond the hook’s local scope. Every time the contract reads `owner`, the ghost `ghostOwner` is synchronized with that storage value.
 
-1. **Use the ghost inside the rule:** Finally, update the `checkOwnerConsistency()` rule so that instead of using the hook-local `contractOwner`, it references the ghost `ghostOwner`.
+**3. Use the ghost inside the rule:** Finally, update the `checkOwnerConsistency()` rule so that instead of using the hook-local `contractOwner`, it references the ghost `ghostOwner`.
 
 ```solidity
-ghos
-t address ghostOwner;
+ghost address ghostOwner;
 
 hook Sload address contractOwner owner {
     ghostOwner = contractOwner;
@@ -341,21 +331,16 @@ rule checkOwnerConsistency(env e) {
     //Take a snapshot of the ghost before the call
     address prevOwner = ghostOwner;
 
-     //
-parametric
- call
-     method f;
-     calldataarg args;
-     f(e,args);
+    //parametric call
+    method f;
+    calldataarg args;
+    f(e,args);
      
-     //Take another snapshot after the call
-     address currentOwner = ghostOwner;
+    //Take another snapshot after the call
+    address currentOwner = ghostOwner;
 
      
-assert prevOwner == currentOwner;
-
-
-
+    assert prevOwner == currentOwner;
 }
 ```
 
@@ -369,7 +354,7 @@ Once you’ve updated your specification as per the instructions provided above,
 After seeing the result above, you might be surprised and wonder why our rule still failed even though the `Counter` contract never explicitly updates its owner. The reason lies not in the Solidity code but in how the **Prover interprets ghosts and how the hooks are executed during verification** **run**.
 
 
-## **Synchronizing Ghosts with Storage**
+## Synchronizing Ghosts with Storage
 
 
 Ghost variables are not automatically tied to the contract’s storage. At the start of execution, the Prover assigns them **havoced values** — arbitrary placeholders that can change across traces unless they are explicitly initialised. In our case, the ghost `ghostOwner` is only updated when the `owner` slot is read (via Sload). If no read occurs before the rule compares `prevOwner` and `currentOwner`, the ghost remains uninitialised, holding an arbitrary value unrelated to the actual storage. 
@@ -396,7 +381,7 @@ To achieve this, we simply make an initial call that causes the contract to read
 Below is the **updated specification** showing the modified rule in full:
 
 
-```javascript
+```solidity
 ghost address ghostOwner;
 
 hook Sload address contractOwner owner {
@@ -440,20 +425,20 @@ With the ghost now properly synchronized, the comparison between `prevOwner` and
 
 Let’s break down what **happened** here, step by step:
 
-1. **Initial sync call (**`resetCounter(e)`**)**
+1. **Initial sync call (`resetCounter(e)`)**
     - The rule begins by calling `resetCounter(e)`.
     - To check the `onlyOwner` modifier, the contract **must read** the `owner` slot (SLOAD).
     - That read **fires the** **`Sload`** **hook**, which writes the observed value into the ghost `ghostOwner`.
     - As a result, `ghostOwner` is now synchronized with the actual storage value before we take any snapshot.
-2. **First snapshot (**`prevOwner`**)**
+2. **First snapshot (`prevOwner`)**
     - Right after the sync, the rule executes `address prevOwner = ghostOwner;`.
     - Because of Step 1, `prevOwner` is the **real owner** as stored in the contract.
-3. **Arbitrary call (**`method f; calldataarg args; f(e, args);`**)**
+3. **Arbitrary call (`method f; calldataarg args; f(e, args);`)**
     - The Prover now explores an **arbitrary external call** with symbolic inputs.
     - In this contract, that means either `increment(...)` or `resetCounter(...)` with arbitrary arguements.
     - Both functions are guarded by `onlyOwner` and **do not write** to owner.
     - During this call, any additional reads of `owner` (because of `onlyOwner`) will **re-fire the** `Sload` **hook**, but it will just write the **same value** into the ghost.
-4. **Second snapshot (**`currentOwner`**)**
+4. **Second snapshot (`currentOwner`)**
     - After the arbitrary call returns, the rule executes `address currentOwner = ghostOwner;`.
     - Since the contract never mutates `owner`, and the hook only mirrors reads, `currentOwner` equals the same storage-backed value captured earlier.
 5. **Assertion**
@@ -465,7 +450,7 @@ Let’s break down what **happened** here, step by step:
 With the owner property verified, let’s now turn to the second property we identified earlier. 
 
 
-## **Verifying the** **`Increment()`** **Call in** **`Counter`** **Contract**
+## Verifying the `Increment()` Call in `Counter` Contract
 
 
 The second property we want to prove is that **a call to** `increment()`  **should increase the** `count` **by exactly one**. Because count is private, rules alone cannot observe the actual storage write performed by `count++`. To prove this property, we attach a **store hook** to the `count` slot, capture the pre and post write values, persist them into ghosts, and finally assert the arithmetic relation in a rule.
@@ -484,15 +469,10 @@ ghost mathint ghost_prevCount;
 
 ghost mathint ghost_currentCount;
 
-
-
-
 hook Sstore count uint256 postcallValue (uint256 precallValue) {
     ghost_prevCount = precallValue;
     ghost_currentCount = postcallValue;
 }
-
-
 
 rule checkCounter() {
 
@@ -518,9 +498,9 @@ When we run the Prover on the spec above, we will see that the rule has been ver
 Let’s break down what happens here step by step: 
 
 1. **Before the call**: The contract’s private variable `count` has some initial value (say X).
-2. **During the** `increment()` **call**:
+2. **During the `increment()` call**:
     - The EVM executes the statement `count++`, which translates into a read followed by a write on the `count` storage slot.
-    - Just before the write occurs, the **`Sstore`** **hook** is triggered.
+    - Just before the write occurs, the `Sstore` hook is triggered.
     - The hook captures the value that was about to be overwritten (`precallValue`) and the new value being written (`postcallValue`).
     - These are stored in the ghost variables `ghost_``prevCount` and `ghost_currentCount`.
 3. **The rule check**:
@@ -539,7 +519,7 @@ We can see that hooks are used to observe and collect data by detecting specific
 ![image](media/certora-storage-hooks-and-ghosts/image8.png)
 
 
-**In fact, the Certora Prover treats** **ghost** **variables much like regular storage:**
+**In fact, the Certora Prover treats ghost variables much like regular storage:**
 
 - Any update to a ghost is reverted automatically if the transaction in progress later reverts, just like storage.
 - At the start of a verification run, ghosts (**as with other CVL variables**) represent arbitrary (_havoced_) values unless they are explicitly set in the specification, reflecting the Prover’s symbolic view of storage.
