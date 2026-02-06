@@ -52,7 +52,7 @@ rule check_balance_updates(env e) {
 ```
 
 
-In other words, it answers the question: _"__**Does this particular action (or sequence of actions) lead to the expected outcome?**__"_
+In other words, it answers the question: "**Does this particular action (or sequence of actions) lead to the expected outcome?"
 
 
 Unlike rules, which focus on specific scenarios, an **invariant** in CVL expresses a condition that must **always** be true in **every reachable state** of the contract, regardless of which functions are called or in what order.
@@ -67,7 +67,7 @@ invariant count_cannot_be_negative()
 ```
 
 
-Put simply, it answers the question: _“__**Is this condition**_ _**universally**_ _**true, regardless of how the contract is used?**__”_
+Put simply, it answers the question: “**Is this condition universally true, regardless of how the contract is used?**"
 
 
 ## When to Use Invariants vs. Rules
@@ -97,7 +97,7 @@ Choose an **invariant** when you want to verify a property that must hold true a
 2. In a lending protocol, the total value of collateral must always be greater than or equal to a certain percentage of the total debt, assuming liquidations are working properly.
 3. In a token contract, a user's balance can never become negative.
 
-Invariants provide the strongest guarantees about the long-term integrity and safety of your contract's state. They answer the critical question: _"__**Is this fundamental property of my contract unbreakable, no matter what?"**_
+Invariants provide the strongest guarantees about the long-term integrity and safety of your contract's state. They answer the critical question: "**Is this fundamental property of my contract unbreakable, no matter what?"
 
 
 ## Scope of Verification : `Rules` Vs `Invariants` 
