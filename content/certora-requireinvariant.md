@@ -13,13 +13,13 @@ This is where CVL's `requireInvariant` statement comes in. The `requireInvariant
 In this chapter, we'll explore what `requireInvariant` is, why it's useful, and how to apply it effectively when writing rules and invariants in CVL.
 
 
-## **Understanding the** **`requireInvariant`** **Statement**
+## Understanding the `requireInvariant` Statement
 
 
 The `requireInvariant` statement is a CVL construct that allows us to inject a proven invariant as an additional condition in a rule or another invariant.
 
 
-### **How** **`requireInvariant`**  **Works**
+### How `requireInvariant` Works
 
 
 When a `requireInvariant` statement is included in a rule or another invariant, the Prover automatically assumes that the referenced invariant is already true during verification. As a result, it explores only those contract states that satisfy this condition.
