@@ -481,7 +481,7 @@ This equality therefore guarantees that every owned token is counted exactly onc
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 */
 invariant ownedTotalIsSumOfBalances()
-		_ownedTotal == _supply
+	_ownedTotal == _supply
 {
     // preserved blocks will be shown later
 }
