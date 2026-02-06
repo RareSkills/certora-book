@@ -70,8 +70,7 @@ invariant count_cannot_be_negative()
 Put simply, it answers the question: _“__**Is this condition**_ _**universally**_ _**true, regardless of how the contract is used?**__”_
 
 
-## 
-When to Use Invariants vs. Rules
+## When to Use Invariants vs. Rules
 
 
 Deciding whether to use a rule or an invariant in CVL depends on the nature of the property we're aiming to verify. 
@@ -131,12 +130,10 @@ contract Voting {
     // `hasVoted[user]` is true if the user voted.
     mapping(address => bool) public hasVoted;
 
-    uint256 public votesInFavor;  // keep the count of votes 
-in favor
+    uint256 public votesInFavor;  // keep the count of votes in favor
 
     uint256 public votesAgainst;  // keep the count of votes against
-    uint256 public totalVotes;    // 
-keep the count of total votes cast
+    uint256 public totalVotes;    // keep the count of total votes cast
 
 
     /// @notice Allows a user to vote in favor of the proposal.
@@ -206,7 +203,7 @@ pip3 install certora-cli
 pip3 install solc-select
 ```
 
-1. In your project directory, create three subdirectories named `contracts`, `specs`, and `c``onfs`
+1. In your project directory, create three subdirectories named `contracts`, `specs`, and `confs`
 2. In your project directory, navigate to the `contracts` subfolder and create a file named `Voting.sol`. Then, paste the above discussed `Voting` contract into that file.
 
 ### Defining the Invariant in a Specification File
@@ -215,7 +212,7 @@ pip3 install solc-select
 Once the project environment is ready, the next step is to create a specification file where we will define our invariant.
 
 
-**1. Create a Specification File:** In your project directory, navigate to the `specs` subfolder and create a specification file (e.g., `invariant.``spec`). This file will contain your CVL rules, including the invariants you want to verify.
+**1. Create a Specification File:** In your project directory, navigate to the `specs` subfolder and create a specification file (e.g., `invariant.spec`). This file will contain your CVL rules, including the invariants you want to verify.
 
 
 **2. Declare the Invariant:** Inside your specification file, use the `invariant` keyword to define an invariant. Give it a descriptive name that clearly conveys what the rule checks.
@@ -313,8 +310,7 @@ solc-select use 0.8.25
 **5. Running the Prover:** To verify your invariant, run the following command from your project's root directory.
 
 ```bash
-certoraRun confs/
-invariant.conf
+certoraRun confs/invariant.conf
 ```
 
 
