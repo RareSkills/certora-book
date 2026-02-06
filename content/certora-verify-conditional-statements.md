@@ -161,8 +161,6 @@ rule max_returnMax() {
         assert !lastReverted;
         assert max == x;
     }
- 
-
     else {
         mathint max = max@withrevert(x, y);
         assert !lastReverted;
