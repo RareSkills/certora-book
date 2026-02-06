@@ -25,7 +25,7 @@ Here’s the `transferFrom` rule which we will explain section by section after 
 
 ```solidity
 rule transferFrom(env e, address from, address to, uint256 tokenId) {
-		// preconditions
+	// preconditions
     require nonpayable(e);
     require authSanity(e);
 
@@ -45,7 +45,7 @@ rule transferFrom(env e, address from, address to, uint256 tokenId) {
     address approvalBefore       = unsafeGetApproved(tokenId);
     address otherApprovalBefore  = unsafeGetApproved(otherTokenId);
 		
-		// method call
+	// method call
     transferFrom@withrevert(e, from, to, tokenId);
     bool success = !lastReverted;
 
