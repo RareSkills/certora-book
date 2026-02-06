@@ -115,7 +115,7 @@ Our invariant fails at the **base case** because while verifying any invariant, 
 This causes the invariant `totalVotes == votesInFavor() + votesAgainst()` to immediately fail, as the Prover checks if `-2 == 0 + 0`, which is false. To fix this, we need to set the ghost's initial value to `0`. However, unlike in rules, we cannot use a `require` statement to constrain the ghost’s initial value. This doesn't mean `require` has no place in invariants. It can be used inside a `preserved` block. 
 
 
-A `preserved` block is a special construct in CVL that lets you add **extra assumptions** while verifying an invariant. We will learn more about `preserved` blocks in a separate chapter
+A `preserved` block is a special construct in CVL that lets you add **extra assumptions** while verifying an invariant. We will learn more about `preserved` blocks in a separate chapter.
 
 
 Before we explore how to constrain ghost variables within invariants, let’s first understand **why require cannot be used** in this context. 
@@ -275,7 +275,7 @@ invariant totalVotesShouldAlwaysGtInFavorVotes()
 ```
 
 
-The above specification asserts that the total number of votes (`totalVotes`) must always be greater than or equal to the number of votes in favor (`votesInFavor`). In the above spec, the key part is the line `axiom totalVotes >= 0` , which introduces a global axiom, which instructs the Prover to **always assume** that `totalVotes` is non-negative in every program state. This means the Prover will never explore any execution path where `totalVotes` becomes negative.
+The above specification asserts that the total number of votes (`totalVotes`) must always be greater than or equal to the number of votes in favor (`votesInFavor`). In the above spec, the key part is the line `axiom totalVotes >= 0` , which introduces a global axiom that instructs the Prover to **always assume** that `totalVotes` is non-negative in every program state. This means the Prover will never explore any execution path where `totalVotes` becomes negative.
 
 
 When you submit this spec to the Prover, it successfully verifies the invariant, as shown in the result below:
