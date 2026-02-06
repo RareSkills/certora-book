@@ -10,7 +10,7 @@ In the previous chapter, we demonstrated that `Sstore` hooks are necessary to ve
 We demonstrated it by using a simple contract `PointSystem` that adds points to a user, records them in `pointsOf[address]`, and updates the total in `totalPoints`:
 
 
-```javascript
+```solidity
 contract PointSystem {
     mapping (address => uint256) public pointsOf;
     uint256 public totalPoints;
@@ -81,7 +81,7 @@ rule sumOfUserPointsEqualsTotalPoints_r(env e, method f, calldataarg args) { // 
 ```
 
 
-![image](media/certora-sload-hooks-storage-mappings/image-29e09cb3.png)
+![image](media/certora-sload-hooks-storage-mappings/image1.png)
 
 
 Prover run (fail): [link](https://prover.certora.com/output/541734/92d8f684310e46c6bfdb201973f5b053?anonymousKey=f37fb7cf914d39b30ccc4d70b3be5a18b764762f)
@@ -90,19 +90,19 @@ Prover run (fail): [link](https://prover.certora.com/output/541734/92d8f684310e4
 This raises the question: why do `totalPoints` and `g_sumOfUserPoints` diverge when the `unchecked` block is used? The answer is that the `unchecked` block triggers the Prover to assign a nonzero initial value to an arbitrary user (`pointsOf[address]`) to create an overflow scenario along the execution path, while `totalPoints` starts at zero (the actual initial state). As a result, the Prover tested a state where a user's points are greater than the total points — an impossible state in the contract.
 
 
-## **The Prover sets initial states to intentionally trigger overflow**
+## The Prover sets initial states to intentionally trigger overflow
 
 
 Now, let’s analyze the call trace for the rule and the invariant we wrote to understand how the violation, a false positive, came about.
 
 
-### **Rule call trace**
+### Rule call trace
 
 
 The Prover assigns a nonzero value to address `0xf` (`pointsOf[0xf] = 0x2`) so that later, by adding a sufficiently large value within the `uint256` range, it can simulate an overflow:
 
 
-![image](media/certora-sload-hooks-storage-mappings/image-29e09cb3.png)
+![image](media/certora-sload-hooks-storage-mappings/image2.png)
 
 
 Then the call `addPoints(_user=0xf, _amount=2^256 - 2)` executes, which results in `pointsOf[address] = 0x2 + (2^256 - 2) = 2^256 ≡ 0` (new value wraps to zero due to overflow):
@@ -111,14 +111,14 @@ Then the call `addPoints(_user=0xf, _amount=2^256 - 2)` executes, which results 
  
 
 
-![image](media/certora-sload-hooks-storage-mappings/image-29e09cb3.png)
+![image](media/certora-sload-hooks-storage-mappings/image3.png)
 
 
 Invoking `addPoints()` also adds to `totalPoints` in the contract. Since `totalPoints` is initially zero, adding `2^256 - 2` (the argument) results in a final value of `2^256 - 2`, as shown in the trace below:
 
 
 
-![image](media/certora-sload-hooks-storage-mappings/image-29e09cb3.png)
+![image](media/certora-sload-hooks-storage-mappings/image4.png)
 
 
 Now, let’s see how the `Sstore` hook logic calculates `g_sumOfUserPoints`:
@@ -136,7 +136,7 @@ Initial values:
 - `g_sumOfUserPoints = 0` (initial value)
 - `pointsOf[0xf] (oldVal) = 0x2` (initial value)
 
-![image](media/certora-sload-hooks-storage-mappings/image-29e09cb3.png)
+![image](media/certora-sload-hooks-storage-mappings/image5.png)
 
 
 Post-call values after `addPoints(0xf, 2^256 - 2)`:
@@ -145,13 +145,13 @@ Post-call values after `addPoints(0xf, 2^256 - 2)`:
 - `pointsOf[0xf] (oldVal) = 0x2`
 - `g_sumOfUserPoints = 0 + (0x0 - 0x2) = -0x2`
 
-![image](media/certora-sload-hooks-storage-mappings/image-29e09cb3.png)
+![image](media/certora-sload-hooks-storage-mappings/image6.png)
 
 
 Therefore, `totalPoints` (2^256 - 2) is no longer equal to `g_sumOfUserPoints`(-2):
 
 
-![image](media/certora-sload-hooks-storage-mappings/image-29e09cb3.png)
+![image](media/certora-sload-hooks-storage-mappings/image7.png)
 
 
 ### **Invariant call trace**
@@ -160,7 +160,7 @@ Therefore, `totalPoints` (2^256 - 2) is no longer equal to `g_sumOfUserPoints`(-
 The same issue occurred with the invariant. The Prover intentionally seeded `pointsOf[address] = 0xc00…000`, which is greater than `totalPoints` in the pre-call state:
 
 
-![image](media/certora-sload-hooks-storage-mappings/image-29e09cb3.png)
+![image](media/certora-sload-hooks-storage-mappings/image8.png)
 
 
 We don’t need another call trace to see that, in the final state, accounting inconsistencies happen, and they cause `totalPoints` to differ from `g_sumOfUserPoints`.
@@ -265,7 +265,7 @@ hook Sload uint256 points pointsOf[KEY address account] {
 With this in place, both the CVL rule and the invariant succeed, and the property is verified:
 
 
-![image](media/certora-sload-hooks-storage-mappings/image-29e09cb3.png)
+![image](media/certora-sload-hooks-storage-mappings/image9.png)
 
 
 Prover run (verified): [link](https://prover.certora.com/output/541734/34ed185c4433469a8e469fcf90fab653?anonymousKey=c4e55c4eb8e20b15c33eddc27e78145ad1ede5bc)
