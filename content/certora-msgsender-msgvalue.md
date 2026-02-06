@@ -8,27 +8,25 @@ We will focus on the first two, which can be accessed from the CVL variable `env
 
 In our previous examples, we ignored them because the functions we verified didn’t rely on environment variables. Hence, we tagged these functions as `envfree` in the methods block. This tells the Prover to treat them as pure logic and disregard environment (global) variables to simplify the analysis.
 
-However, in practice, transactions are heavily dependent on these environment variables (`env`), and here we will **explore how to create rules with `msg.sender` and `msg.value`.
+However, in practice, transactions are heavily dependent on these environment variables (`env`), and here we will explore how to create rules with `msg.sender` and `msg.value`.
 
 ## `e.msg.sender` and `e.msg.value` (non-payable)
 
 Consider a simple owner-controlled counter contract, where only the owner is allowed to increment a counter:
 
 ```solidity
-/// Solidity
-
 contract OwnerCounter {
     uint256 public counter;
-		address public owner;
-	
-		constructor(address _owner) {
-				owner = _owner;
-		}
-	
-		function increment() public {
-				require(msg.sender == owner, "not owner");
-				counter++;
-		}
+    address public owner;
+
+    constructor(address _owner) {
+        owner = _owner;
+    }
+
+    function increment() public {
+        require(msg.sender == owner, "not owner");
+        counter++;
+    }
 }
 
 ```
@@ -39,8 +37,8 @@ To verify the property: *“Only the owner can successfully call `increment()`�
 
 ```solidity
 methods {
-		function owner() external returns (address) envfree;
-    function counter() external returns (uint256) envfree;
+  function owner() external returns (address) envfree;
+  function counter() external returns (uint256) envfree;
 }
 
 rule increment_onlyOwnerCanCallIncrement(env e) {
@@ -90,13 +88,13 @@ In Solidity, a contract can receive Ether via a function call, but only if the f
 
 Since `increment()` is not marked as `payable`, any nonzero `msg.value` causes a revert, as shown in the report below:
 
-![Certora Prover counterexample showing the increment call reverting when msg.value is nonzero, since the function is not payable.](/media/certora-msgsender-msgvalue/image.png)
+![image](media/certora-msgsender-msgvalue/image1.png)
 
 To resolve this, we need to place `e.msg.value == 0` as a precondition.
 
 Then, another unexpected revert occurs when `counter == max_uint256`. Since `max_uint256` is the maximum value the counter can hold, attempting `counter++` will cause an overflow revert (note that we are calling the function with the `withrevert` tag):
 
-![Certora Prover counterexample demonstrating revert caused by counter overflow when the stored value equals max_uint256 and is incremented.](/media/certora-msgsender-msgvalue/image-1.png)
+![image](media/certora-msgsender-msgvalue/image2.png)
 
 To resolve this, we need to add another precondition `require(counter() < max_uint256)` to prevent the counter from overflowing.
 
@@ -106,16 +104,16 @@ With these two unexpected revert cases identified, both conditions must be inclu
 rule increment_onlyOwnerCanCallIncrement(env e) {
     address current = owner();
 
-		require e.msg.value == 0;
-    require counter() < max_uint256;  
+   require e.msg.value == 0;
+   require counter() < max_uint256;  
 
-    increment@withrevert(e);
+   increment@withrevert(e);
 
-    assert !lastReverted <=> e.msg.sender == current, "access control failed";
+   assert !lastReverted <=> e.msg.sender == current, "access control failed";
 }
 ```
 
-![Certora Prover output confirming the rule verifies successfully after adding preconditions preventing non-payable calls and counter overflow.](/media/certora-msgsender-msgvalue/image-2.png)
+![image](media/certora-msgsender-msgvalue/image3.png)
 
 Prover run: [link](https://prover.certora.com/output/541734/4aac7a40ddba421c89783c6581d11659?anonymousKey=cc8849ab3d456437ba3a64cd5bf315ef3683e260)
 
@@ -136,7 +134,7 @@ rule increment_notOwnerCannotCallIncrement(env e) {
 }
 ```
 
-![Certora Prover output verifying that calls from non-owners always revert, confirming correct access control behavior using implication.](/media/certora-msgsender-msgvalue/image-3.png)
+![image](media/certora-msgsender-msgvalue/image4.png)
 
 Prover run: [link](https://prover.certora.com/output/541734/8448bc805955405d81eef50022cb4e01?anonymousKey=c207f4d3ed8ff9c52f6bc6d90eb0d0a9fb0e45a8)
 

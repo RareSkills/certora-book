@@ -70,7 +70,7 @@ Since we ruled out the case where the sender is whitelisted (`require !isWhiteli
 However, as is often the case in formal verification, a sneaky counterexample emerges, causing a violation. It’s when the sender's ETH balance is less than the intended amount to be sent or insufficient balance:
 
 
-![image](media/cerotra-account-balances/image-1bc09cb3.png)
+![image](media/cerotra-account-balances/image1.png)
 
 
 This can be fixed by adding `require(nativeBalances[e.msg.sender] >= e.msg.value)` to the precondition, ruling out insufficient balance as a cause of revert.
@@ -97,7 +97,7 @@ rule register_payEthToWhitelist(env e) {
 Now, the rule is VERIFIED:
 
 
-![image](media/cerotra-account-balances/image-1bc09cb3.png)
+![image](media/cerotra-account-balances/image2.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/12df2da7107e4af68548359d5b63b47e?anonymousKey=a62d2c52a31b37be6b2279e3bd8edbd807e4bcb5)
@@ -136,7 +136,7 @@ In other words, if `!lastReverted` is true (the transaction succeeded), both con
 Here’s the Prover report and it is VERIFIED:
 
 
-![image](media/cerotra-account-balances/image-1c609cb3.png)
+![image](media/cerotra-account-balances/image3.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/03bf5b4af2b048cfb7163b631c4c3220?anonymousKey=dc3b03095a1815375c0e14b8f177e912deac2f52)
@@ -160,7 +160,7 @@ rule register_payEthToWhitelist_implication(env e) {
 If we use this rule, we see that it is VERIFIED:
 
 
-![image](media/cerotra-account-balances/image-1bc09cb3.png)
+![image](media/cerotra-account-balances/image4.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/121a88b21fcd4a5e9b8bf32c1cd17c4c?anonymousKey=5a254c0c12d71d7100bf133a823b4e2d389ddc1f)
@@ -197,7 +197,7 @@ An unexpected counterexample will cause this rule to fail. The Prover will gener
 This indicates that the contract sent ETH to itself rather than receiving new ETH from an external sender. As a result, the balance did not actually increase as expected (since sending ETH to itself does not change the total balance), causing the assertion `balanceAfter == balanceBefore + e.msg.value` to fail.
 
 
-![image](media/cerotra-account-balances/image-1e509cb3.png)
+![image](media/cerotra-account-balances/image5.png)
 
 
 To resolve the issue, since `msg.sender` should not be the contract itself (`currentContract`), we need to filter out self-transfers when verifying ETH balance changes by adding a precondition: `require(e.msg.sender != currentContract)`.  
@@ -222,7 +222,7 @@ rule register_nativeBalances(env e) {
 ```
 
 
-![image](media/cerotra-account-balances/image-1e509cb3.png)
+![image](media/cerotra-account-balances/image6.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/d5e02935beb74700a9ad52445efab7f3?anonymousKey=926ed9ab42e12e755bd511d74ae285b36de5ae57)
@@ -269,7 +269,7 @@ rule register_allRevertCases(env e) {
 As expected, the rule is VERIFIED:
 
 
-![image](media/cerotra-account-balances/image-1e509cb3.png)
+![image](media/cerotra-account-balances/image7.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/9126e4a5e6a9475989fe71a6cdff0e3a?anonymousKey=193309b12710b0aaef6003063aa9ae48a101a64d)

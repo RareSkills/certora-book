@@ -74,7 +74,7 @@ rule mod_ifXLessThanY_resultIsX_usingIf() {
     mathint result = mod(x, y);
 
     if (x < y) {
-        assert result == x;
+    assert result == x;
     }
     assert true; // trivially TRUE
 }
@@ -101,9 +101,9 @@ rule mod_ifXLessThanY_resultIsX_usingIfElse() {
     mathint result = mod(x, y);
 
     if (x < y) {
-        assert result == x;
+    assert result == x;
     } else {
-        assert result != x;
+    assert result != x;
     }
 }
 ```
@@ -167,8 +167,7 @@ Let’s now formally verify the following property: “if `x` is greater than `y
 
 
 ```solidity
-rule
- max_ifXGreaterThanY_resultX() {
+rule max_ifXGreaterThanY_resultX() {
     uint256 x;
     uint256 y;
 
@@ -182,7 +181,7 @@ rule
 In this rule, the condition (`x > y`) and the expected outcome (`result == x`) form the implication `P => Q`. As expected, the property is VERIFIED.
 
 
-![image](media/certora-implication/image-1e409cb3.png)
+![image](media/certora-implication/image2.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/48ff7cf0e7fe43b8873cdc43aa568399?anonymousKey=004dea34de11b5dbe06cbccc29f344f6da65a720)
@@ -211,7 +210,7 @@ rule max_ifResultIsX_thenXGreaterThanY() {
 ```
 
 
-![image](media/certora-implication/image-1e409cb3.png)
+![image](media/certora-implication/image3.png)
 
 
 ### _Counterexample_
@@ -220,10 +219,7 @@ rule max_ifResultIsX_thenXGreaterThanY() {
 When a rule is violated, the Prover shows a counterexample. In this case, `result == x` not only happens when `x > y` — it also occurs when `x == y`. The counterexample specifically shows x = 3 and y = 3:
 
 
- 
-
-
-![image](media/certora-implication/image-1e409cb3.png)
+![image](media/certora-implication/image4.png)
 
 
 
@@ -261,7 +257,7 @@ rule max_ifResultIsX_thenXGreaterOrEqualToY_simplified() {
 And now it’s VERIFIED:
 
 
-![image](media/certora-implication/image-1e409cb3.png)
+![image](media/certora-implication/image5.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/6acc70804ec94d61be2b7631194c36ce?anonymousKey=73deae017a3c9e0a34fd2b9de94c5539ee0c446f)
@@ -285,7 +281,7 @@ rule max_ifResultIsY_thenYGreaterOrEqualToX() {
 As expected, it is VERIFIED:
 
 
-![image](media/certora-implication/image-1e409cb3.png)
+![image](media/certora-implication/image6.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/bd2c1d2601ee4451a3e638637558699c?anonymousKey=36469d8cb6a396f8a329a914a0bf008b12f79735)
@@ -328,7 +324,7 @@ rule max_ifResultNotX_thenXNotGreaterThanY() {
 ```
 
 
-![image](media/certora-implication/image-1e409cb3.png)
+![image](media/certora-implication/image7.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/1cdf95d2bd4b42cc8dd11b4d71097cac?anonymousKey=cdfec47ef18bf1c19de3a1aec1d70f091eb39cdf)
@@ -377,9 +373,7 @@ rule max_unreachableCondition_vacuouslyTrue() {
     uint256 y;
 
     mathint result = max(x, y);
-    assert x < 0 => 
-result == y
-;
+    assert x < 0 => result == y;
 }
 ```
 
@@ -387,7 +381,7 @@ result == y
 This rule is VERIFIED, but not because `x < 0` leads to `result == y`. It verifies only because `x < 0` is unreachable in any valid execution path, making the implication vacuously true. It confirms that no counterexample exists because the condition can never happen:
 
 
-![image](media/certora-implication/image-1e409cb3.png)
+![image](media/certora-implication/image8.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/41f50a5158df4a95b80a1fc2e1b931f7?anonymousKey=60b2b67c3037745d6b9867064ff89553716122a0)
@@ -407,7 +401,7 @@ rule max_unreachableCondition_vacuouslyTrueObvious() {
 ```
 
 
-![image](media/certora-implication/image-1e409cb3.png)
+![image](media/certora-implication/image9.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/167bc794dda6409bab8b592d23cd7147?anonymousKey=db8f8821571de00cfba190b267a41a1e0d90a802)
@@ -437,9 +431,7 @@ rule max_outcomeIsAlwaysTrue_tautology() {
     uint256 y;
 
     mathint result = max(x, y);
-    assert 
-x > y
- => result >= 0;
+    assert x > y => result >= 0;
 }
 ```
 
@@ -447,7 +439,7 @@ x > y
 This rule is VERIFIED, not because `x > y` leads to `result >= 0`, but because `result >= 0` is always true by type, making the implication tautologically true:
 
 
-![image](media/certora-implication/image-1e409cb3.png)
+![image](media/certora-implication/image10.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/63d1f7b86c6a4cfe9582db0b8a69bc80?anonymousKey=db8d0fd4e7df6720c25eda6e5c4ce7148adae9de)
@@ -581,10 +573,10 @@ rule mulDivUp_noRoundUp() {
 ```
 
 
-![image](media/certora-implication/image-1e409cb3.png)
+![image](media/certora-implication/image11.png)
 
 
-![image](media/certora-implication/image-1e409cb3.png)
+![image](media/certora-implication/image12.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/3550e477bbfe4d65805eb047766e1d8d?anonymousKey=a725af8b6f98788cb5c25ae31fef58dea9adb8fb)
@@ -636,10 +628,10 @@ As expected, these rules are VERIFIED:
 
 
 
-![image](media/certora-implication/image-1ca09cb3.png)
+![image](media/certora-implication/image13.png)
 
 
-![image](media/certora-implication/image-1ca09cb3.png)
+![image](media/certora-implication/image14.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/4ee0cdc8d1864c5a8824f71a2705f0fe?anonymousKey=a1005ad87dc3e0329570fd0e5014144297ff8a25)
@@ -678,7 +670,7 @@ rule mulDivUp_allRevertCases() {
 ```
 
 
-![image](media/certora-implication/image-1b109cb3.png)
+![image](media/certora-implication/image15.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/4a40d955d3bb42e7b1876ee014517b29?anonymousKey=1cb1075873f3569ccf7881ce001ff45079215e71)
@@ -715,7 +707,7 @@ rule mulDivUp_noRevert() {
 As expected, the rule is VERIFIED:
 
 
-![image](media/certora-implication/image-1ca09cb3.png)
+![image](media/certora-implication/image16.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/794cbdf0f88c49ea904db79d71a7340b?anonymousKey=121409b38f4c0e66c8a05a81d048837ec966d91d)
