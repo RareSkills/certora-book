@@ -306,8 +306,7 @@ Here is an initial specification that captures the behavior of the Solmate `mulD
 ```solidity
 /// CVL
 
-rule 
-mulDivUp_roundOrRevert() {
+rule mulDivUp_roundOrRevert() {
     uint256 x;
     uint256 y;
     uint256 denominator;
