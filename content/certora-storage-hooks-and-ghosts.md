@@ -35,9 +35,7 @@ contract Counter {
 
 
 
-    /// @notice 
-Initializ
-es the contract and sets the deployer as the owner
+    /// @notice Initializes the contract and sets the deployer as the owner
     constructor() {
         owner = msg.sender;
     }
