@@ -71,7 +71,7 @@ To verify this invariant, the specification captures each of these representatio
 The `balanceOf(user)` is a public view function that we can directly invoke in CVL to retrieve the user's balance. This function returns the value stored in the storage mapping variable `_balances`.
 
 
-**`_balances[user]`** **—  t****oken balances mirrored from storage**
+**`_balances[user]`** **—  token balances mirrored from storage**
 
 
 The `_balances[user]` is a ghost variable that reads and mirrors the private storage mapping variable `_balances` through an `Sload` hook. 
@@ -97,9 +97,7 @@ After initialization, the specification must reflect the storage reads in the gh
 
 ```solidity
 ghost mapping(address => mathint) _balances {
-    init_state axiom 
-forall 
-address a. _balances[a] == 0;
+    init_state axiom forall address a. _balances[a] == 0;
 }
 
 hook Sload uint256 value _balances[KEY address user] {
@@ -524,8 +522,8 @@ Both `_supply` and `_ownedTotal` are ghost mapping variables used to track the t
 
     ```solidity
     _ownedTotal = _ownedTotal 
-    							+ to_mathint(newOwner != 0 ? 1 : 0) 
-    							- to_mathint(oldOwner != 0 ? 1 : 0);
+    			+ to_mathint(newOwner != 0 ? 1 : 0) 
+    			- to_mathint(oldOwner != 0 ? 1 : 0);
     ```
 
     - If both `oldOwner` and `newOwner` are nonzero addresses, then a transfer occurs:
