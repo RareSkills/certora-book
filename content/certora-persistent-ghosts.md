@@ -62,13 +62,13 @@ _Note:_ _While persistent ghosts are not havoc'ed during unresolved method calls
 The diagram below shows how a persistent ghost retains its value across reverted calls and unresolved external calls. During rule execution, when a hook assigns a value to `ghostVar`, that value is never reverted (reset) or havoc’ed, so its final state always reflects the last value assigned by the hook:
 
 
-![image](media/certora-persistent-ghosts/image-2a009cb3.png)
+![image](media/certora-persistent-ghosts/image1.png)
 
 
 In contrast to persistent ghosts, regular ghosts are havoc'ed on unresolved external calls and reset on reverts:
 
 
-![image](media/certora-persistent-ghosts/image-2b809cb3.png)
+![image](media/certora-persistent-ghosts/image2.png)
 
 
 _Note: Both persistent and regular ghosts maintain their values only within a single rule execution and do not carry over between rules. The difference is that persistent ghosts survive unresolved or reverted calls within that execution, while regular ghosts do not._
@@ -206,7 +206,7 @@ rule withdraw_revert(env e) {
 Using regular ghosts, the verification fails:
 
 
-![image](media/certora-persistent-ghosts/image-29209cb3.png)
+![image](media/certora-persistent-ghosts/image3.png)
 
 
 See the failed Prover run: [link](https://prover.certora.com/output/541734/825aac56f8da43b89cd7d8369aee1471?anonymousKey=8c9ed01752aba57c3098d832301252e24047963c) 
@@ -224,21 +224,21 @@ The verification fails because `g_lowLevelCallSuccess` is a regular ghost that r
 As shown in the image below, `g_lowLevelCallSuccess` is `true` before the `withdraw()` method is invoked (pre-call state): 
 
 
-![image](media/certora-persistent-ghosts/image-29209cb3.png)
+![image](media/certora-persistent-ghosts/image4.png)
 
 
 When the low-level ETH transfer call fails, the `CALL` hook captures the failed call (return value of 0), which sets `g_lowLevelCallSuccess` to `false`:
 
 
 
-![image](media/certora-persistent-ghosts/image-29209cb3.png)
+![image](media/certora-persistent-ghosts/image5.png)
 
 
 When the `CALL` opcode (captured by the CVL `CALL` hook) returns zero, it means the ETH transfer fails. Within the rule, the ghost resets to its pre-call state when the `withdraw@withrevert(e, amount)` invocation reverts. The image below shows the ghost returning to `true` despite the failed transfer:
 
 
 
-![image](media/certora-persistent-ghosts/image-29209cb3.png)
+![image](media/certora-persistent-ghosts/image6.png)
 
 
 ### Fixing the spec with a persistent ghost
@@ -294,7 +294,7 @@ rule withdraw_revert(env e) {
 As expected, the rule verifies:
 
 
-![image](media/certora-persistent-ghosts/image-29209cb3.png)
+![image](media/certora-persistent-ghosts/image7.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/502d0c23136841f0baa3ff2e122cb483?anonymousKey=65a6d9019f2936e0e30cf36d60a14e13161262a2)
@@ -380,7 +380,7 @@ rule deposit(env e) {
 Let's run the verification. Since the deposit function calls an unknown ERC-20 implementation (which will cause havoc), we expect it to fail: 
 
 
-![image](media/certora-persistent-ghosts/image-27909cb3.png)
+![image](media/certora-persistent-ghosts/image8.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/a176045767854bb1b2e6cb2f3c4d3a8f?anonymousKey=a9ffaabb713b3ad9bed779846009c2f5f2348556)
@@ -411,19 +411,19 @@ contract SimpleVault20 {
 In the image below, we see that the Prover assigned the value `0xa` (or 10) to `depositAmount`, which was then passed via the `Sstore` hook to the ghost mapping variable `g_balanceOf[address]`:
 
 
-![image](media/certora-persistent-ghosts/image-27909cb3.png)
+![image](media/certora-persistent-ghosts/image9.png)
 
 
 Then the ghost was havoc'ed during the call to an external contract because its implementation was unknown:
 
 
-![image](media/certora-persistent-ghosts/image-27909cb3.png)
+![image](media/certora-persistent-ghosts/image10.png)
 
 
 Seeing the havoc error, one might be tempted to add the `persistent` keyword to suppress it. While this makes verification pass, it hides the real issue: we do not know how the external ERC-20 contract is implemented:
 
 
-![image](media/certora-persistent-ghosts/image-27909cb3.png)
+![image](media/certora-persistent-ghosts/image11.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/0137cef605f04e39b7409f8928c4d362?anonymousKey=dda1014f4e9469fd09d682fee97569b2fd7dd40f)
@@ -435,7 +435,7 @@ Prover run: [link](https://prover.certora.com/output/541734/0137cef605f04e39b740
 The Prover shows the rule as verified, but this is based on a wrong assumption. By using a `persistent` ghost, the specification assumes the ERC-20 implementation never reverts or modifies the storage of the calling contract. Therefore, it credits the amount `0x``a` (or 10) to `msg.sender` even though the transfer might actually fail: 
 
 
-![image](media/certora-persistent-ghosts/image-26309cb3.png)
+![image](media/certora-persistent-ghosts/image12.png)
 
 
 This demonstrates why using a `persistent` ghost in this case is misleading: it bypasses the uncertainty of external contract behavior, masking potential bugs rather than revealing them.
