@@ -281,11 +281,8 @@ The precondition restricts the Prover from assigning balances whose sum exceeds 
 
 
 ```solidity
-require 
-balanceOf(e.msg.sender) + balanceOf(receiver)
- <= max_uint256; // will be replaced by an invariant
+require balanceOf(e.msg.sender) + balanceOf(receiver) <= max_uint256; // will be replaced by an invariant
 ```
-
 
 This is necessary because the `transfer()` function uses an `unchecked` block when it adds the transfer amount to `balanceOf[address]`, which causes the Prover to treat overflows as “possible” and report false positives.
 
