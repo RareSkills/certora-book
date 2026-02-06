@@ -202,7 +202,7 @@ By the contrapositive rule of implications, if A → B, then !B → !A. Suppose 
 The final rule re-uses a lot of logic from the previous examples, we won’t explain it here. The key difference is the line `assert success <=> to_mathint(currentNonce) == nonceBefore, "works iff current nonce is correct";`. Recall that `useCheckedNonce` only succeeds (doesn’t revert) if the nonce passed to it equals the current nonce of the user. Hence, the biconditional operator encodes that “if the nonce matches, the transaction is guaranteed to succeed. If not, it is guaranteed to revert.”
 
 
-```javascript
+```solidity
 rule useCheckedNonce(address account, uint256 currentNonce) {
     require nonceSanity(account);
 
@@ -220,9 +220,7 @@ rule useCheckedNonce(address account, uint256 currentNonce) {
     //// SEE HERE ////
     // liveness
     // the to_mathint cast makes it explicit to have the same type on both sides
-    assert success <=> 
-to_mathint
-(currentNonce) == nonceBefore, "works iff current nonce is correct";
+    assert success <=> to_mathint(currentNonce) == nonceBefore, "works iff current nonce is correct";
 
     // effect
     assert success => nonceAfter == nonceBefore + 1, "nonce is used";
