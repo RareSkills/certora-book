@@ -286,13 +286,13 @@ To view the results of our parametric rule, apply what you learned in the earlie
 Once the setup is complete, initiate the verification process. If the contract satisfies all conditions defined by the rule, the Certora Prover will confirm a successful verification run with no detected violations, as shown in the image below:
 
 
-![image](media/certora-parametric-rules/image-1b709cb3.png)
+![image](media/certora-parametric-rules/image1.png)
 
 
 The verification results confirm that all functions in the `RareToken` contract were tested against the `totalSupplyIsConstant()` rule. The green checkmarks(✅) next to each function indicate that the rule holds for every possible execution, ensuring that the `totalSupply` variable remains unchanged under any function call.
 
 
-![image](media/certora-parametric-rules/image-1d009cb3.png)
+![image](media/certora-parametric-rules/image2.png)
 
 
 ## Understanding the Scope of Parametric Rule
@@ -387,7 +387,7 @@ In the case of our `Counter` contract, the only function available is `increment
 Therefore, the rule will **fail verification**, which is the expected and correct outcome—as illustrated below:
 
 
-![image](media/certora-parametric-rules/image-1d009cb3.png)
+![image](media/certora-parametric-rules/image3.png)
 
 
  It’s very crucial to note that a parametric rule only analyzes the effect of **one external function call in isolation**. It does not examine sequences of calls or complex interactions within a single transaction. For example, while the above rule proves no single call can make `count == 2`, it _is_ possible to reach `count == 2` within one transaction if another smart contract were to call the `increment()` function **twice in sequence**. That scenario involves **multiple function calls** initiated within a single transaction, which is outside the scope of this chapter.
@@ -396,7 +396,7 @@ Therefore, the rule will **fail verification**, which is the expected and correc
 **However, even if we relaxed the rule to check** `satisfy count(e) == 1` **instead of** `satisfy count(e) == 2`**, the rule would still not pass, as shown below:**
 
 
-![image](media/certora-parametric-rules/image-1e609cb3.png)
+![image](media/certora-parametric-rules/image4.png)
 
 
 This happened because, under the hood, when evaluating a parametric rule, the Prover creates an instance of the rule for each function in the contract. It tests each of these rule instances individually against the assertions. **The rule passes the verification if and only if every function instance satisfies all the conditions specified by the assert and satisfy statements. If even one function fails to meet the criteria, the entire rule fails.**
@@ -405,7 +405,7 @@ This happened because, under the hood, when evaluating a parametric rule, the Pr
 In the **Counter** contract, only the `increment()` function modifies the count variable, making it the only candidate that can potentially satisfy the **satisfy** condition (e.g., `count == 1`). In contrast, `transferOwnership()` and the getter functions `count()` and `owner()` do not affect count at all. When the Prover evaluates the rule for these functions, it finds that none of them can produce the required state change. As a result, their rule instances fail, and since all instances must pass for the rule to succeed, the entire rule fails verification.
 
 
-![image](media/certora-parametric-rules/image-1e609cb3.png)
+![image](media/certora-parametric-rules/image5.png)
 
 
 ## Wrapping Up
