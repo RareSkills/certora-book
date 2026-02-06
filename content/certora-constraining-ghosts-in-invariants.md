@@ -235,9 +235,8 @@ To fix this, we need to tell the Prover that `totalVotes` should begin at 0 imme
 
 
 ```solidity
-ghost
- mathint totalVotes{    
-init_state axiom totalVotes == 0;
+ghost mathint totalVotes{    
+  init_state axiom totalVotes == 0;
 }
 ```
 
