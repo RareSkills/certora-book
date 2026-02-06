@@ -235,7 +235,7 @@ function _update(address to, uint256 tokenId, address auth) internal virtual ret
 Using `require balanceLimited(to)` rules out practically unreachable overflow states that would cause the rule to fail in unrealistic scenarios.
 
 
-### **P****re-call state**
+### **Pre-call state**
 
 
 Before invoking the `tra``nsferFrom()` method , we record state variables for comparison against post-call values:
