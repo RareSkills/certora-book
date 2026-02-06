@@ -319,7 +319,7 @@ To demonstrate the problem with misuse, let's consider a similar vault that acce
 /// minimal ERC20 interface
 interface IERC20 {
     function transfer(address to, uint256 amount) external returns (bool);
-		...
+	...
 }
 
 contract SimpleVault20 {
