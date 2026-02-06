@@ -23,13 +23,14 @@ contract Voting {
     // `hasVoted[user]` is true if the user voted.
     mapping(address => bool) public hasVoted;
 
-    uint256 public votesInFavor;  // keep the count of votes 
-in favor
+    // keep the count of votes in favor
+    uint256 public votesInFavor;
 
+    // keep the count of votes against
     uint256 public votesAgainst;  // keep the count of votes against
 
 
-    /// @notice Allows a user to vote in favor of the proposal.
+    // @notice Allows a user to vote in favor of the proposal.
     function inFavor() external {
         // Ensure the user has not already voted
         require(!hasVoted[msg.sender], "You have already voted.");
@@ -68,8 +69,7 @@ methods
     function votesAgainst() external returns(uint256) envfree;
 }
 
-ghost mathint totalVotes
-;
+ghost mathint totalVotes;
 
 
 hook Sstore hasVoted[KEY address voter] bool newStatus(bool oldStatus) {
@@ -91,7 +91,7 @@ Here is the detailed explanation of the above spec:
 Once you place the above spec in your project directory, run the verification process using the `certoraRun` command. Next, open the verification result link shown in your terminal to view the result, which should look similar to the image below.
 
 
-![image](media/certora-constraining-ghosts-in-invariants/image-21009cb3.png)
+![image](media/certora-constraining-ghosts-in-invariants/image1.png)
 
 
 We can see that the Prover has failed to verify our invariant. Let’s explore why this happened and how we can address it.
@@ -106,13 +106,13 @@ An invariant check involves two steps: the **base case** (checking the initial s
 In our situation, the Prover fails at the _base case_, meaning it cannot confirm that the invariant is valid right from the contract’s initial state.
 
 
-![image](media/certora-constraining-ghosts-in-invariants/image-22309cb3.png)
+![image](media/certora-constraining-ghosts-in-invariants/image2.png)
 
 
-Our invariant fails at the **base case because while verifying any invariant, t**he Prover must check the invariant in the contract's initial state. However, since we never specified an initial value for `totalVotes`, the Prover adversarially chose one for us. In the call trace, we can see it chose `-2`.
+Our invariant fails at the **base case** because while verifying any invariant, the Prover must check the invariant in the contract's initial state. However, since we never specified an initial value for `totalVotes`, the Prover adversarially chose one for us. In the call trace, we can see it chose `-2`.
 
 
-![image](media/certora-constraining-ghosts-in-invariants/image-22309cb3.png)
+![image](media/certora-constraining-ghosts-in-invariants/image3.png)
 
 
 This causes the invariant `totalVotes == votesInFavor() + votesAgainst()` to immediately fail, as the Prover checks if `-2 == 0 + 0`, which is false. To fix this, we need to set the ghost's initial value to `0`. However, unlike in rules, we cannot use a `require` statement to constrain the ghost’s initial value. This doesn't mean `require` has no place in invariants. It can be used inside a `preserved` block. 
@@ -161,26 +161,21 @@ There are two primary kinds of axioms used for ghost variables in CVL:
 1. **Initial State Axioms**
 2. **Global Axioms**
 
-## What are “**Initial State Axioms”**
+## What are “Initial State Axioms”
 
 
 An **initial state axiom** defines a property that the prover must assume to hold in the base step of invariant checking or right before the contract’s constructor executes.
 
 
-In other words, it tells the Prover, _“__**assume this condition is true when the contract is first deployed.**__”_ This allows you to control the initial values of ghost variables and eliminate the arbitrary starting states that can otherwise cause invariant failures.
+In other words, it tells the Prover, “**assume this condition is true when the contract is first deployed.**” This allows you to control the initial values of ghost variables and eliminate the arbitrary starting states that can otherwise cause invariant failures.
 
 
 The initial state axiom is declared using the `init_state` keyword, followed by the `axiom` keyword, and then the condition that defines the initial state of the ghost variable, as shown below:
 
 
 ```solidity
-ghost
- type_of_ghost name_of_ghost {
-    
-init_state axiom
- boolean_expression
-;
-
+ghost type_of_ghost name_of_ghost {
+    init_state axiom boolean_expression;
 }
 ```
 
@@ -189,11 +184,8 @@ For example, the code below defines a ghost variable `sum_of_balances` of type `
 
 
 ```solidity
-ghost
- mathint sum_of_balances {
-    
-init_state axiom
- sum_of_balances == 0;
+ghost mathint sum_of_balances {
+    init_state axiom sum_of_balances == 0;
 }
 ```
 
@@ -214,11 +206,8 @@ A global ghost axiom is defined by including the `axiom` keyword inside the ghos
 
 
 ```solidity
-ghost
- type_of_ghost name_of_ghost {
-    
-axiom
- boolean_expression;
+ghost type_of_ghost name_of_ghost {    
+  axiom boolean_expression;
 }
 ```
 
@@ -227,11 +216,8 @@ For example, the code below defines a ghost variable `x` of type `mathint` and a
 
 
 ```solidity
-ghost
- mathint x {
-    
-axiom
- x > 0;
+ghost mathint x {    
+  axiom x > 0;
 }
 ```
 
@@ -250,10 +236,8 @@ To fix this, we need to tell the Prover that `totalVotes` should begin at 0 imme
 
 ```solidity
 ghost
- mathint totalVotes{
-    
-init_state axiom
- totalVotes == 0;
+ mathint totalVotes{    
+init_state axiom totalVotes == 0;
 }
 ```
 
@@ -261,13 +245,13 @@ init_state axiom
 Once you have updated the spec to include the `init_state` axiom as shown above, re-run the  Prover and open the verification result. Our new verification result should look similar to the result below.
 
 
-![image](media/certora-constraining-ghosts-in-invariants/image-21009cb3.png)
+![image](media/certora-constraining-ghosts-in-invariants/image4.png)
 
 
 This time, we can observe that the Prover has successfully verified our invariant by passing both **the base case** and **the inductive step**, confirming that the total number of votes is always equal to the sum of votes cast in favor and votes cast against.
 
 
-![image](media/certora-constraining-ghosts-in-invariants/image-22509cb3.png)
+![image](media/certora-constraining-ghosts-in-invariants/image5.png)
 
 
 ## Using Global Axiom In Practice
@@ -301,7 +285,7 @@ The above specification asserts that the total number of votes (`totalVotes`) mu
 When you submit this spec to the Prover, it successfully verifies the invariant, as shown in the result below:
 
 
-![image](media/certora-constraining-ghosts-in-invariants/image-29409cb3.png)
+![image](media/certora-constraining-ghosts-in-invariants/image6.png)
 
 
 As we know, when an invariant is submitted for verification, the Prover performs two essential checks to ensure its correctness:
