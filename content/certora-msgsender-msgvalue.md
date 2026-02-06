@@ -8,7 +8,7 @@ We will focus on the first two, which can be accessed from the CVL variable `env
 
 In our previous examples, we ignored them because the functions we verified didn’t rely on environment variables. Hence, we tagged these functions as `envfree` in the methods block. This tells the Prover to treat them as pure logic and disregard environment (global) variables to simplify the analysis.
 
-However, in practice, transactions are heavily dependent on these environment variables (`env`), and here we will **explore how to create rules with `msg.sender` and `msg.value`.
+However, in practice, transactions are heavily dependent on these environment variables (`env`), and here we will explore how to create rules with `msg.sender` and `msg.value`.
 
 ## `e.msg.sender` and `e.msg.value` (non-payable)
 
@@ -39,8 +39,8 @@ To verify the property: *“Only the owner can successfully call `increment()`�
 
 ```solidity
 methods {
-		function owner() external returns (address) envfree;
-    function counter() external returns (uint256) envfree;
+  function owner() external returns (address) envfree;
+  function counter() external returns (uint256) envfree;
 }
 
 rule increment_onlyOwnerCanCallIncrement(env e) {
@@ -106,12 +106,12 @@ With these two unexpected revert cases identified, both conditions must be inclu
 rule increment_onlyOwnerCanCallIncrement(env e) {
     address current = owner();
 
-		require e.msg.value == 0;
-    require counter() < max_uint256;  
+   require e.msg.value == 0;
+   require counter() < max_uint256;  
 
-    increment@withrevert(e);
+   increment@withrevert(e);
 
-    assert !lastReverted <=> e.msg.sender == current, "access control failed";
+   assert !lastReverted <=> e.msg.sender == current, "access control failed";
 }
 ```
 
