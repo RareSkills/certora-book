@@ -93,7 +93,7 @@ The second precondition, `require balanceOf(e.msg.sender) + e.msg.value <= max_u
 Since `require` statements are assumptions that the Prover does not verify — it simply takes them as given — we need to formally prove this as an invariant in a later section. Once proven, we can replace this assumed precondition with the verified invariant using `requireInvariant`.
 
 
-### **Record the user's ETH and WETH** **balance****s before and after the** **`deposit()`** **call**
+### **Record the user's ETH and WETH** **balances before and after the** **`deposit()`** **call**
 
 
 After all preconditions are set, we must record the ETH and WETH balances of the caller before and after invoking `deposit(``)`. These recorded values will be used in the assertions to reason about the balance changes:
