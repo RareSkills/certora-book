@@ -211,7 +211,7 @@ Before we proceed, let’s first look at the syntax and pattern of `Sload` hooks
 
 ```solidity
 hook Sload uint256 val balances[KEY address user] {
-		// implement hook logic
+	// implement hook logic
 }
 ```
 
@@ -231,7 +231,7 @@ Since the Prover does not know the relationship between the storage variables an
 
 ```solidity
 hook Sload uint256 points pointsOf[KEY address account] {
-		require g_sumOfUserPoints >= points;
+	require g_sumOfUserPoints >= points;
 }
 ```
 
@@ -257,7 +257,7 @@ This prevents the Prover from initializing a state where a single account’s ba
 
 ```solidity
 hook Sload uint256 points pointsOf[KEY address account] {
-		require g_sumOfUserPoints >= points;
+	require g_sumOfUserPoints >= points;
 }
 ```
 
