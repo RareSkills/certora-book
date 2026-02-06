@@ -4,7 +4,7 @@
 In this chapter, we will learn how to use method tags (`@withrevert` and `@norevert`) and the special variable `lastReverted` in CVL to verify expected reverts in smart contract execution.
 
 
-## Setting Up Verification Scenarios for the `Add` function
+## Setting Up Verification Scenarios for the `Add()` function
 
 
 Consider the following `Math` contract, which has a basic `add()` function that takes two unsigned integers as its inputs and returns their sum as its output.
@@ -87,7 +87,7 @@ function_name@withrevert();
 ```
 
 
-When we _use the_ _`@norevert`_ _tag with a method c_all, the Prover actively disregards any execution paths that result in a revert. In other words, `function_name@norevert()` behaves identically to `function_name()` .
+When we use the `@norevert` tag with a method call, the Prover actively disregards any execution paths that result in a revert. In other words, `function_name@norevert()` behaves identically to `function_name()` .
 
 
 On the other hand, when we use the `@withrevert` tag with a method call, the Prover no longer ignores revert cases. Instead, it treats any scenario where a revert occurs as a violation. For example, consider the `checkAdd()` rule below with the tag `@withrevert`:
