@@ -307,9 +307,7 @@ This follows the same structure as `rule deposit_ethDepositedEqualsWethReceived(
 - Record the caller’s ETH and WETH balances afterward
 
 ```solidity
-require 
-e.msg.sender != currentContract;
-
+require e.msg.sender != currentContract;
 
 mathint ethBalanceBefore = nativeBalances[e.msg.sender];
 mathint wethBalanceBefore = balanceOf(e.msg.sender); 
