@@ -84,28 +84,23 @@ Here's the CVL rule that proves these properties:
 
 
 rule mint(env e, address to, uint256 tokenId) {
-		// preconditions
-
-    
-require nonpayable(e);
-
-    
-// requireInvariant notMintedUnset(tokenId);
-
+	// preconditions
+	require nonpayable(e);
+	// requireInvariant notMintedUnset(tokenId);
 
     uint256 otherTokenId;
     address otherAccount;
 
     require balanceLimited(to);
     
-		// pre-call state
+	// pre-call state
     mathint supplyBefore         = _supply;
     uint256 balanceOfToBefore    = balanceOf(to);
     uint256 balanceOfOtherBefore = balanceOf(otherAccount);
     address ownerBefore          = unsafeOwnerOf(tokenId);
     address otherOwnerBefore     = unsafeOwnerOf(otherTokenId);
 		
-		// method call
+	// method call
     mint@withrevert(e, to, tokenId);
     bool success = !lastReverted;
 
@@ -506,7 +501,7 @@ Here's the CVL rule that proves these properties:
 // ERC721.spec -- burn (explanation follows) 
 
 rule burn(env e, uint256 tokenId) {
-		// preconditions
+	// preconditions
     require nonpayable(e);
 
     address from = unsafeOwnerOf(tokenId);
@@ -523,7 +518,7 @@ rule burn(env e, uint256 tokenId) {
     address otherOwnerBefore     = unsafeOwnerOf(otherTokenId);
     address otherApprovalBefore  = unsafeGetApproved(otherTokenId);
 		
-		// method call
+	// method call
     burn@withrevert(e, tokenId);
     bool success = !lastReverted;
 
@@ -728,9 +723,7 @@ rule burn(env e, uint256 tokenId) {
 
     // effect
     assert success => (
-        unsafeOwnerOf(tokenId)      != 0 => (_supply == supplyBefore - 1) && // modified for the 
-Prover
- v8.3.1
+        unsafeOwnerOf(tokenId)      != 0 => (_supply == supplyBefore - 1) && // modified for the Prover v8.3.1
         to_mathint(balanceOf(from)) == balanceOfFromBefore - 1 &&
         unsafeOwnerOf(tokenId)      == 0 &&
         unsafeGetApproved(tokenId)  == 0
