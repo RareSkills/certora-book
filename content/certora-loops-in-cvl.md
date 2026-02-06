@@ -76,7 +76,7 @@ At first glance, this claim appears valid and we expect the Prover to verify it 
 After seeing the verification result, you might be puzzled: **if both functions are logically equivalent in what they return, why does the Prover still fail to establish that equivalence?**
 
 
-The answer lies in the fundamental difference between how the EVM executes a program and how the Prover reasons about it: **the EVM executes** **one specific path** **with concrete inputs, whereas the Prover explores** **all possible paths** **with symbolic inputs****.**
+The answer lies in the fundamental difference between how the EVM executes a program and how the Prover reasons about it: **the EVM executes** **one specific path with concrete inputs, whereas the Prover explores all possible paths with symbolic inputs.**
 
 
 To understand this difference, let's first examine what happens during contract execution, then contrast it with how the Prover reasons symbolically.
