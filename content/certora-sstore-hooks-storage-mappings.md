@@ -80,7 +80,7 @@ We may choose to capture only the new value and omit the old value, since the la
 
 ```solidity
 hook Sstore balances[KEY address user] uint256 newVal {
-		// implement hook logic
+	// implement hook logic
 }
 ```
 
@@ -97,7 +97,7 @@ ghost mathint g_balance;
 
 
 hook Sstore balances[KEY address user] uint256 newVal {
-		g_balance = newVal;
+	g_balance = newVal;
 }
 ```
 
@@ -107,8 +107,8 @@ The `g_balance` value can then be used to verify whether a balance stays within 
 
 ```solidity
 rule balanceDoesNotExceed2000() {
-		...
-		assert g_balance <= 2000;
+	...
+	assert g_balance <= 2000;
 }
 ```
 
