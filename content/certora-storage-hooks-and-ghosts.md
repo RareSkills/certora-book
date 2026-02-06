@@ -1,4 +1,4 @@
-# Introduction to Storage Hooks And Ghosts
+# Introduction to Storage Hooks and Ghosts
 
 
 It often becomes necessary to inspect changes at specific storage locations to prove that a property or invariant holds, especially when the storage is not externally accessible or when the values of interest are not explicitly calculated or exposed by the contract.
@@ -141,7 +141,7 @@ The above hook will be executed whenever the contract under verification accesse
 ### 2.  The  Store Hooks
 
 
-T**he store hooks** are executed before any write operation takes place at any specific storage variable.
+**The store hooks** are executed before any write operation takes place at any specific storage variable.
 
 
 Store hooks are also defined using the `hook` keyword, followed by the `Sstore` keyword. After that, you specify the name of the contract’s storage variable being monitored, along with the type and name of the CVL variable that will hold the value about to be written to that storage location.
@@ -160,7 +160,7 @@ hook Sstore owner address newOwner (address oldOwner) {...}
 ```
 
 
-Before we apply hooks to verify the properties of the`Counter` contract, there’s an important limitation to understand: **variables declared inside hooks are local to the hook block and are not directly visible to rules**.
+Before we apply hooks to verify the properties of the `Counter` contract, there’s an important limitation to understand: **variables declared inside hooks are local to the hook block and are not directly visible to rules**.
 
 
 ## Understanding the Limitations of Hooks
