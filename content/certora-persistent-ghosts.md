@@ -53,10 +53,10 @@ persistent ghost uint256 g_count {
 ```
 
 
-_Note:_ _While persistent ghosts are not havoc'ed during unresolved method calls, they are havoc'ed in the pre-call state for rules and in the base case for invariants__; the same goes for regular ghosts. Therefore, they must still be properly constrained as a precondition (via require statements) in rules and_ _initialized using the_ _`init_state axiom`_ _for_ _invariants__’_ _base cases__._ 
+_Note:_ _While persistent ghosts are not havoc'ed during unresolved method calls, they are havoc'ed in the pre-call state for rules and in the base case for invariants; the same goes for regular ghosts. Therefore, they must still be properly constrained as a precondition (via require statements) in rules and_ _initialized using the_ _`init_state axiom`_ _for_ _invariants’_ _base cases_. 
 
 
-## **The b****ehavior of persistent vs. regular ghosts**
+## **The behavior of persistent vs. regular ghosts**
 
 
 The diagram below shows how a persistent ghost retains its value across reverted calls and unresolved external calls. During rule execution, when a hook assigns a value to `ghostVar`, that value is never reverted (reset) or havoc’ed, so its final state always reflects the last value assigned by the hook:
