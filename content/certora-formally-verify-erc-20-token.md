@@ -740,9 +740,7 @@ rule mint_reverts() {
     mint@withrevert(receiver, amount);
     bool isReverted = lastReverted;
 
-    assert isReverted <=> 
-totalSupply + amount
- > max_uint256;
+    assert isReverted <=> totalSupply + amount > max_uint256;
 }
 ```
 
