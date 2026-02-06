@@ -1,7 +1,7 @@
 # Verifying an Invariant Using Ghost and Hook
 
 
-In any correct ERC20 implementation, t**he sum of all account balances must always equal the total token supply.** This property should always remain true throughout any state changes. If a call, whether direct or part of a sequence of calls, violates this invariant, it signals a fundamental flaw in the contract’s logic and design. 
+In any correct ERC20 implementation, **the sum of all account balances must always equal the total token supply.** This property should always remain true throughout any state changes. If a call, whether direct or part of a sequence of calls, violates this invariant, it signals a fundamental flaw in the contract’s logic and design. 
 
 
 In this chapter, we will leverage **what we've learned** about ghost variables and hooks from previous chapters to formally verify this critical invariant. 
@@ -361,7 +361,7 @@ When we click on the “**induction base: After the constructor**” violation, 
 ![image](media/certora-verifying-invariant-using-ghost-hook/image3.png)
 
 
-For now, let’s follow the Prover’s recommendation by updating the configuration file with the `optimistic_loop` key set to `true`. **We’ll explore this issue in greater depth in a later chapter titled** _**“How Strings Lead to Loops?”**_
+For now, let’s follow the Prover’s recommendation by updating the configuration file with the `optimistic_loop` key set to `true`. **We’ll explore this issue in greater depth in a later chapter titled _“How Strings Lead to Loops?”**_
 
 
 ```solidity
@@ -416,11 +416,9 @@ In our `erc20.spec` file, add the code shown below to our store hook to limit th
 ```solidity
 hook Sstore balanceOf[KEY address account] uint256 newAmount (uint256 oldAmount)  {
     
-require oldAmount <= sumOfBalances;  /
-/
-add this line
-
-    sumOfBalances = sumOfBalances - oldAmount + newAmount;   
+require oldAmount <= sumOfBalances;  //add this line
+sumOfBalances = sumOfBalances - oldAmount + newAmount;
+  
 }
 ```
 
@@ -448,7 +446,7 @@ To implement this approach, follow the steps below:
 hook Sload uint256 balance balanceOf[KEY address addr] {}
 ```
 
-1. **Introduce a constraint** inside this hook using `require sumOfBalances >= to_mathint(balance);`.
+2. **Introduce a constraint** inside this hook using `require sumOfBalances >= to_mathint(balance);`.
 
 ```solidity
 hook Sload uint256 balance balanceOf[KEY address addr] {
@@ -456,7 +454,7 @@ hook Sload uint256 balance balanceOf[KEY address addr] {
 }
 ```
 
-1. **Remove the constraint** from the `Sstore` hook so that we are relying solely on the load hook logic.
+3. **Remove the constraint** from the `Sstore` hook so that we are relying solely on the load hook logic.
 
 ```solidity
 hook Sstore balanceOf[KEY address account] uint256 newAmount (uint256 oldAmount)  {
@@ -531,7 +529,7 @@ hook Sstore balanceOf[KEY address account] uint256 newAmount (uint256 oldAmount)
 ```
 
 
-In the above code, we are effectively telling the Prover: _“__**Whenever you write to**_ _**`balanceOf[account]`**__**, make sure the previous value (**__**`oldAmount`**__**) was not larger than**_ _**`sumOfBalances`**__**.**__”_
+In the above code, we are effectively telling the Prover: “**Whenever you write to `balanceOf[account]` , make sure the previous value (`oldAmount`) was not larger than `sumOfBalances`**”
 
 
 This creates a **blind spot**:
@@ -556,7 +554,7 @@ hook Sload uint256 balance balanceOf[KEY address addr] {
 ```
 
 
-This runs **every time** the Prover reads a balance from `balanceOf`. Here, we are telling the Prover: _“__**Whenever you read a balance, that balance must be less than or equal to**_ _**`sumOfBalances`**__**.**__”_
+This runs **every time** the Prover reads a balance from `balanceOf`. Here, we are telling the Prover: _“__**Whenever you read a balance, that balance must be less than or equal to `sumOfBalances`**”
 
 
 This has two important effects:
@@ -564,7 +562,7 @@ This has two important effects:
 1. **The Prover cannot use an impossible balance in any calculation.** If it tries to assume `balanceOf[addr]` is bigger than `sumOfBalances` and then reads it, the `require` in the load hook fails, and that execution path is immediately discarded.
 2. **This applies even if the slot was never written to.** The Prover might havoc `balanceOf[addr]` to some arbitrary value at the start, but the moment it **reads** that value, the load hook checks it. If the value is impossible, that whole path is thrown away.
 
-The load hook acts like a **global sanity check**: _“Any balance you ever_ _**look at**_ _must make sense with respect to the ghost_ _`sumOfBalances`__.”_
+The load hook acts like a **global sanity check**: “Any balance you ever look at must make sense with respect to the ghost `sumOfBalances`”
 
 
 This is why, when we care about keeping `sumOfBalances` aligned with real balances and avoiding impossible ERC20 states, the load hook approach is usually the better choice.
