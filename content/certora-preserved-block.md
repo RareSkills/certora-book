@@ -82,7 +82,7 @@ invariant invariant_name(param_1, param_2,...)
 Both generic preserved blocks and function-specific preserved blocks apply during the induction step of invariant checking. They are executed after the invariant is assumed to hold in the pre-state but before the corresponding method is symbolically executed, ensuring that the Prover starts each induction step from a state that is both mathematically valid and contextually realistic.
 
 
-So far, preserved blocks determine the assumptions under which each relevant function is analyzed. In some cases, however, we may also want to restrict _which_ functions the invariant is checked against in the first place. CVL provides a filter block, written as `filtered { … }`, for this purpose. (_You can read more about filter block at_ [_here_](/1bb09cb3e96280418bb9c910f2bd5d6e)_)_
+So far, preserved blocks determine the assumptions under which each relevant function is analyzed. In some cases, however, we may also want to restrict _which_ functions the invariant is checked against in the first place. CVL provides a filter block, written as `filtered { … }`, for this purpose. (_You can read more about filter block at [_here_](https://rareskills.io/post/certora-method-properties)
 
 
 ```solidity
@@ -124,7 +124,7 @@ Now that we’ve covered the theory and syntax, let’s see how preserved blocks
 To put everything into context, let’s verify an invariant of the **Solady WETH contract** — an ERC-20 implementation that represents Ether (ETH) **in a** **1:1 ratio with WETH tokens**. A key property of this contract is that its ETH balance must always be greater than or equal to the total number of WETH tokens in circulation.
 
 
-![image](media/certora-preserved-block/image-24809cb3.png)
+![image](media/certora-preserved-block/image1.png)
 
 
 ### Defining Our WETH Invariant
@@ -178,7 +178,7 @@ invariant tokenIntegrity()
 Once you have executed all the steps above, run the `certoraRun confs/weth.conf` command to verify our specification and [view a result](https://prover.certora.com/output/2547903/227a181633004cdfb37679fbc2461f3a?anonymousKey=9cfabcb2bed85e3925756963c08620b7923fc94a) similar to the image below:
 
 
-![image](media/certora-preserved-block/image-25309cb3.png)
+![image](media/certora-preserved-block/image2.png)
 
 
 The above result of our verification run shows that the `tokenIntegrity` invariant failed because the Prover found a scenario where the contract’s ETH balance could be less than the reported total supply.
@@ -196,7 +196,7 @@ Our detailed analysis report finds that our invariant `tokenIntegrity` has pas
 To understand the cause of violation, we need to analyze the call traces of the failing functions. 
 
 
-![image](media/certora-preserved-block/image-25309cb3.png)
+![image](media/certora-preserved-block/image4.png)
 
 
 Let’s begin with the `deposit()` function.
@@ -208,7 +208,7 @@ Let’s begin with the `deposit()` function.
 Our analysis of the call trace of the `deposit()` function reveals something unusual: both the sender and receiver are the contract itself (WETH).
 
 
-![image](media/certora-preserved-block/image-25309cb3.png)
+![image](media/certora-preserved-block/image5.png)
 
 
 This scenario — where the contract calls its own `deposit()` — is an absurd case from a practical standpoint, since the WETH contract does not contain any code path that can call `deposit()` directly or indirectly. While the Prover correctly identifies this as a theoretically possible interaction, we can explicitly tell it to ignore such cases through the `preserved` block.
@@ -245,10 +245,10 @@ Because of this, any unrealistic execution path that breaks `deposit()` can also
 This is exactly what happened in the failing trace: just like with `deposit()`, the Prover picked a path where both the sender and receiver are the contract itself (WETH), leading to an impossible self-call scenario that does not occur in real execution but causes the invariant to fail symbolically.
 
 
-![image](media/certora-preserved-block/image-2aa09cb3.png)
+![image](media/certora-preserved-block/image6.png)
 
 
-### **Understanding the Violation of the**  **`withdraw()`** **Call**
+### Understanding the Violation of the `withdraw()` Call
 
 
 The call trace for `withdraw()` reveals a problem caused by the Prover testing a wildly unrealistic scenario. To understand why it fails, let’s analyze the call trace step by step, using the exact values the Prover used.
@@ -260,7 +260,7 @@ The call trace for `withdraw()` reveals a problem caused by the Prover testing
 During the **pre-state check**, the Prover assumes that the invariant holds before the function runs. At this point—captured as **Global State #1**—it sets up a symbolic environment representing the possible starting conditions before the symbolic execution of the `wi``thdraw()` function.
 
 
-![image](media/certora-preserved-block/image-2a309cb3.png)
+![image](media/certora-preserved-block/image7.png)
 
 
 In this state, the contract’s ETH balance is set to `2^256 − 3`, while the total token supply is only `2`. 
@@ -277,13 +277,13 @@ At this point, our invariant holds because:
 ```
 
 
-**Symbolic Execution of** **`withdraw()`** **(Global State #3)**
+**Symbolic Execution of** **`withdraw()`** **(Global State #2)**
 
 
 Next, the Prover symbolically executes the  `withdraw()` function:
 
 
-![image](media/certora-preserved-block/image-2a309cb3.png)
+![image](media/certora-preserved-block/image8.png)
 
 
 Here, the caller (`0x8200`) attempts to withdraw `2^256 − 6`. The `withdraw()` function calls the internal `_burn(from, amount)`. In a real execution, `_burn()` would immediately revert if `amount > balanceOf(from)` .
@@ -295,7 +295,7 @@ However, the Prover reasons **symbolically**. When it reaches the check `if (a
 We can find this assumed value by looking at the `_burn` operations below `Global State #3`. The trace shows a classic "**read-modify-write**" pattern on a single storage slot (the caller's balance):
 
 
-![image](media/certora-preserved-block/image-2a309cb3.png)
+![image](media/certora-preserved-block/image9.png)
 
 
 Here's what this tells us:
@@ -326,7 +326,7 @@ The calculated result `4` perfectly matches the **Store** value `0x4`.
 Once `_burn()` updates the caller’s WETH balance, it then updates the WETH total supply.
 
 
-![image](media/certora-preserved-block/image-2a309cb3.png)
+![image](media/certora-preserved-block/image10.png)
 
 
 At this point, `totalSupply` changes from 2 to 8 because `2 − (2^256 − 6)` underflows `uint256` and wraps modulo `2^256`. 
@@ -352,7 +352,7 @@ Before the call to `withdraw()`, the WETH contract held `2^256 − 3 wei`. A 
 If we look at the trace for `Global State #5`, we see the Prover does this calculation correctly at first:
 
 
-![image](media/certora-preserved-block/image-2a309cb3.png)
+![image](media/certora-preserved-block/image11.png)
 
 
 However, the Prover doesn't stop there. The call is to an **external, unknown** address (the `caller()`). The Prover cannot determine this callee’s behavior (i.e., the caller’s fallback function).
@@ -367,13 +367,13 @@ Under AUTO-havoc, the Prover **assumes** the external call succeeds but may ar
 In the call trace, we see this happen immediately after the correct calculation:
 
 
-![image](media/certora-preserved-block/image-2a309cb3.png)
+![image](media/certora-preserved-block/image12.png)
 
 
 This havoc **overwrites** the computed balance. In the next state (**Global State #6**), the contract’s balance is:
 
 
-![image](media/certora-preserved-block/image-2a309cb3.png)
+![image](media/certora-preserved-block/image13.png)
 
 
 This means the Prover ignored the computed result (3) and assigned an arbitrary value (5) as part of the havoc summary. This havoc'd value is what will be used in the post-state check.
@@ -499,7 +499,7 @@ Together, these preserved blocks eliminate every unrealistic execution path that
 After applying both fixes, run the Prover again and open the verification result link to view an output similar to the image shown below.
 
 
-![image](media/certora-preserved-block/image-25309cb3.png)
+![image](media/certora-preserved-block/image14.png)
 
 
 This time, the Prover confirms that the `tokenIntegrity` invariant holds across all verification phases, passing both the induction base and the induction step.
@@ -508,7 +508,7 @@ This time, the Prover confirms that the `tokenIntegrity` invariant holds across 
 The report shows that all relevant functions — including `deposit()`, `withdraw()`, `transfer()`, and `approve()` — now preserve the invariant.
 
 
-![image](media/certora-preserved-block/image-2aa09cb3.png)
+![image](media/certora-preserved-block/image15.png)
 
 
 At this point, the invariant is verified successfully, and the specification is correct. However, we can simplify it further. Both assumptions we added earlier share the same structure and do not depend on any function arguments, which means we can consolidate them into a single, cleaner preserved block.
@@ -551,7 +551,7 @@ invariant tokenIntegrity()
 When we run the Prover using this combined block, the specification is accepted without errors and the invariant holds across all verification phases, as shown in the image below:
 
 
-![image](media/certora-preserved-block/image-2aa09cb3.png)
+![image](media/certora-preserved-block/image16.png)
 
 
 ## **Constructor Preserved Blocks (Base-Step Assumptions)**
