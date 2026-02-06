@@ -14,7 +14,7 @@ In this chapter, we will:
 - Introduce two configuration flags, `--loop_iter` and `--optimistic_loop`, that control how loops are explored.
 - Discuss the **strengths and limitations** of these approaches, and why they cannot provide a complete and sound proof for **unknown and unbounded** loops.
 
-## **Why Loops Are Hard to Verify**
+## Why Loops Are Hard to Verify
 
 
 To understand why loops are difficult to verify, consider the following Solidity contract that keeps track of the largest number added to a collection array:
@@ -82,7 +82,7 @@ The answer lies in the fundamental difference between how the EVM executes a pro
 To understand this difference, let's first examine what happens during contract execution, then contrast it with how the Prover reasons symbolically.
 
 
-### **A Program Follows One Concrete Path**
+### A Program Follows One Concrete Path
 
 
 When we execute this contract in practice with concrete inputs (specific, actual values), the program follows a single, concrete path determined by these inputs and the sequence of function calls.
@@ -98,7 +98,7 @@ For example:
 So in concrete execution, the program follows a single, deterministic path defined by the given inputs and array contents, and both functions return the same value. 
 
 
-### **The Prover Reasons About All Inputs at Once**
+### The Prover Reasons About All Inputs at Once
 
 
 The Certora Prover is a **symbolic execution engine**, meaning it doesn’t test the program on one input at a time. Instead, it reasons about **all possible executions simultaneously**.
@@ -139,7 +139,7 @@ In simple terms, the Prover checks the following:
 
 To reason about this, the Prover conceptually follows three stages:
 
-1. **Before the Call Assumption:** The Prover begins by considering an arbitrary, valid state `S` in which the invariant **already holds**. This forms the **inductive hypothesis**, a standard step in inductive reasoning. The Prover doesn’t need to know the actual contents of the `collection` array or the value of `maxInCollection`; it assumes—_as part of the proof method itself_—that in this state `S`, the property `maxInCollection() == returnMax()` is true.
+**a. Before the Call Assumption:** The Prover begins by considering an arbitrary, valid state `S` in which the invariant **already holds**. This forms the **inductive hypothesis**, a standard step in inductive reasoning. The Prover doesn’t need to know the actual contents of the `collection` array or the value of `maxInCollection`; it assumes—_as part of the proof method itself_—that in this state `S`, the property `maxInCollection() == returnMax()` is true.
 
 **b.** **Symbolic Execution:** Next, the Prover simulates a function call that could change the contract’s state. In our case, it picks `addToCollection()`. Crucially, it does not choose a specific value like `5` or `10` as input to `addToCollection()`. Instead, it uses a **symbolic variable**, x, which represents _any possible_ `uint256` value that the function could receive.
 
@@ -220,7 +220,7 @@ For example:
 This exponential growth is what makes it _practically infeasible_ for the Prover to explore all paths within reasonable time or resources.
 
 
-### **The Prover’s Approach to Tackling the Path Explosion Problem**
+### The Prover’s Approach to Tackling the Path Explosion Problem
 
 
 As mentioned earlier, the Certora Prover uses **bounded loop unrolling** to handle this problem. **The technique** limits how many times a loop is explored during verification, with the default bound set to one iteration. Once this limit is reached, the Prover stops exploring further because each additional iteration doubles the number of symbolic paths it must analyze. **As a result, the remaining paths are left unproven.**
@@ -287,7 +287,7 @@ If you run the Prover with this spec, the rule fails:
 And you’ll see the familiar **“Unwinding condition in a loop”** error, just like in the previous example involving an explicit loop.
 
 
-![image](media/certora-loops-in-cvl/5.png)
+![image](media/certora-loops-in-cvl/image5.png)
 
 
 You might be wondering why this error shows up when the code doesn’t contain any explicit loop.
@@ -368,7 +368,7 @@ The Prover gets overwhelmed by the enormous and rapidly growing number of possib
 Because the Prover cannot check all possible paths (i.e., it cannot fully unroll the loop for all symbolic lengths), the proof is considered **incomplete**. Therefore, it cannot prove that the property holds for **all** possible strings, which is why the rule `storedStringShouldEqualToInput()` fails to verify successfully.
 
 
-## **Revisiting the “Cause”**
+## Revisiting the “Cause”
 
 
 We can see that the Prover failed to verify both rules: `maxEqReturnMax()` and `storedStringShouldEqualToInput()`, not because the properties are false, but because the Prover cannot finish reasoning about them.
@@ -382,13 +382,13 @@ In both cases, the root cause is the same: t**he Prover cannot symbolically expl
 This leaves us with a question: _**what options do we have for handling these cases?**_
 
 
-## **The “Solution”: Configuration Flags**
+## The “Solution”: Configuration Flags
 
 
 The Certora Prover provides two configuration options to help deal with loops. While these do not provide complete proofs of correctness, they are useful tools for controlling the Prover's behavior.
 
 
-### **1. Increasing the Unrolling Bound with** **`--loop_iter`** 
+### **1. Increasing the Unrolling Bound with** `loop_iter`*
 
 
 The first and most straightforward option is to tell the Prover to unroll the loop more times using the `--loop_iter` flag. This can be done either from the terminal or through the configuration file.
@@ -443,7 +443,7 @@ When we run the prover with the above command, here is what is going to happen i
 The result will be the same no matter how much you raise the bound: **any finite** **`--loop_iter`** **only proves the property for strings up to that number of 32-byte words**. Larger strings remain _unproven_, and increasing the bound rapidly slows the Prover.
 
 
-### 2. Skipping Beyond the Bound with `--optimistic_loop`
+### 2. Skipping Beyond the Bound with `optimistic_loop`
 
 
 The second option takes a very different approach. Instead of increasing the bound, the Prover can be told to _assume_ everything beyond the bound works fine. That’s what `--optimistic_loop` does.
