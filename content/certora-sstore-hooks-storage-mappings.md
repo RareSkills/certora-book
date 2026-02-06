@@ -25,7 +25,7 @@ In this chapter, we extend the use of `Sstore` hooks beyond integers, addresses,
 Before we proceed with the code demonstrations, let’s first learn the code syntax / patterns of `Sstore` hooks for mappings.
 
 
-### **Sstore hook — capture the new and old values**
+### Sstore hook — capture the new and old values
 
 
 Here's the `Sstore` hook syntax for capturing the new and old values of a storage mapping: 
@@ -72,7 +72,7 @@ rule deltaNotMoreThan10() {
 ```
 
 
-### **Sstore hook — capture new value only**
+### Sstore hook — capture new value only
 
 
 We may choose to capture only the new value and omit the old value, since the latter is optional:
@@ -113,7 +113,7 @@ rule balanceDoesNotExceed2000() {
 ```
 
 
-## **Tracking all keys and values in a mapping is impossible without an Sstore hook**  
+## Tracking all keys and values in a mapping is impossible without an Sstore hook  
 
 
 To understand why hooks are necessary for verifying properties involving mappings, let’s start with a simple contract, `PointSystem`, that does the following:
@@ -164,7 +164,7 @@ rule sumOfUserPointsEqualsTotalPoints() {
 In this Prover run, we see that the property is verified:
 
 
-![image](media/certora-sstore-hooks-storage-mappings/image-29e09cb3.png)
+![image](media/certora-sstore-hooks-storage-mappings/image1.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/17a8763cef104d50abcfbc7e65740f48?anonymousKey=1a745e73ed1383d76aab9e357ad1bcf4749ce472)
@@ -216,7 +216,7 @@ rule sumOfUserPointsEqualsTotalPoints_modified() {
 ```
 
 
-![image](media/certora-sstore-hooks-storage-mappings/image-29e09cb3.png)
+![image](media/certora-sstore-hooks-storage-mappings/image2.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/643e3502afd14577ac244d351420f124?anonymousKey=2d88b28f23ee5c54996c0f0c1e37197eb05316d7)
@@ -255,7 +255,7 @@ Now that the sum of individual user points is quantifiable in the ghost variable
 Ghosts can be used in both rules and invariants. In the following example, we verify that `totalPoints` (storage variable) equals `g_sumOfUserPoints` (ghost variable), whose value is tracked and calculated in the `Sstore` hook.
 
 
-### **Verify** **`totalPoints()`** **equals** **`g_sumOfUserPoints`** **as a rule** 
+### Verify `totalPoints()` equals `g_sumOfUserPoints` as a rule
 
 
 Here's the rule in parametric form, where `f(e, args)` allows the Prover to verify the rule against all contract functions with arbitrary arguments. For the rule below, we require `totalPoints` and `g_sumOfuserPoints` start at zero:
@@ -271,7 +271,7 @@ rule sumOfUserPointsEqualsTotalPoints(env e, method f, calldataarg args) {
 ```
 
 
-![image](media/certora-sstore-hooks-storage-mappings/image-29e09cb3.png)
+![image](media/certora-sstore-hooks-storage-mappings/image3.png)
 
 
 Prover run: [link](https://prover.certora.com/output/541734/207b2683fcc74aa4a471db53f52d8b5c?anonymousKey=e69087f0f11b96f67c6af54741351a6938642356)
@@ -296,7 +296,7 @@ rule sumOfUserPointsEqualsTotalPoints_alt(env e, method f, calldataarg args) {
 Prover run (verified): [link](https://prover.certora.com/output/541734/d06d83d9281140798a032b8853c32f91?anonymousKey=51934abd9323dbfac2713edd577e0be9dad1f95b)
 
 
-### **Verify** **`totalPoints()`** **equals** **`g_sumOfUserPoints`** **as an invariant** 
+### Verify `totalPoints()` equals `g_sumOfUserPoints` as an invariant 
 
 
 To verify the same property inductively (base case and induction step), we write it as a CVL invariant. The ghost is initialized to zero, and the same `Sstore` hook from the previous rule is applied here: 
