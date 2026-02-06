@@ -27,7 +27,7 @@ contract Voting {
     uint256 public votesInFavor;
 
     // keep the count of votes against
-    uint256 public votesAgainst;  // keep the count of votes against
+    uint256 public votesAgainst; 
 
 
     // @notice Allows a user to vote in favor of the proposal.
@@ -46,10 +46,7 @@ contract Voting {
         hasVoted[msg.sender] = true;
 
         votesAgainst += 1;
-    
 }
-   
-
 }
 ```
 
@@ -124,7 +121,7 @@ A `preserved` block is a special construct in CVL that lets you add **extra ass
 Before we explore how to constrain ghost variables within invariants, let’s first understand **why require cannot be used** in this context. 
 
 
-## Why We Can’t Use the require Statement ?
+## Why We Can’t Use the require Statement?
 
 
 In CVL, a `require` statement is used within a **rule** to act as a _precondition_. It tells the Prover, “**Only check the following assertions for scenarios where these specific conditions hold.**” This helps filter the execution paths or input combinations the Prover explores when evaluating the rule.
@@ -235,7 +232,7 @@ To fix this, we need to tell the Prover that `totalVotes` should begin at 0 imme
 
 
 ```solidity
-ghost mathint totalVotes{    
+ghost mathint totalVotes {    
   init_state axiom totalVotes == 0;
 }
 ```
