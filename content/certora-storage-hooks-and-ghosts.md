@@ -194,7 +194,7 @@ rule checkOwnerConsistency(env e) {
 ```
 
 
-In the above spec, the hook `Sload` makes the private `owner` variable observable whenever it is read, storing its value to `contractOwne``r`. In the rule, the spec saves this observed value as `prevOwner`, performs a symbolic call to any contract function with arbitrary inputs, then observes owner again as `currentOwner`. Finally, it asserts that `prevOwner == currentOwner`, meaning that across all possible calls, the owner must remain consistent.
+In the above spec, the hook `Sload` makes the private `owner` variable observable whenever it is read, storing its value to `contractOwner`. In the rule, the spec saves this observed value as `prevOwner`, performs a symbolic call to any contract function with arbitrary inputs, then observes owner again as `currentOwner`. Finally, it asserts that `prevOwner == currentOwner`, meaning that across all possible calls, the owner must remain consistent.
 
 
 However, when you run the Certora Prover, you will experience the following error:
