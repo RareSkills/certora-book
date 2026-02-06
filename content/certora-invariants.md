@@ -97,7 +97,7 @@ Choose an **invariant** when you want to verify a property that must hold true a
 2. In a lending protocol, the total value of collateral must always be greater than or equal to a certain percentage of the total debt, assuming liquidations are working properly.
 3. In a token contract, a user's balance can never become negative.
 
-Invariants provide the strongest guarantees about the long-term integrity and safety of your contract's state. They answer the critical question: "**Is this fundamental property of my contract unbreakable, no matter what?"
+Invariants provide the strongest guarantees about the long-term integrity and safety of your contract's state. They answer the critical question: "**Is this fundamental property of my contract unbreakable, no matter what?**"
 
 
 ## Scope of Verification: `Rules` vs `Invariants` 
