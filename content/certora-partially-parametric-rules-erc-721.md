@@ -384,7 +384,7 @@ Prover run: [link](https://prover.certora.com/output/541734/cf14580f393e40f4ac4d
     This invariant precondition prevents `address(0)` from approving operators. Without this constraint, the Prover can explore states in which `address(0)` has granted operator permissions to nonzero addresses.
 
 
-### **P****re-call and post-call states**
+### **Pre-call and post-call states**
 
 - `supplyBefore = _supply`
 
