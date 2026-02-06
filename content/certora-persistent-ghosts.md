@@ -133,10 +133,7 @@ ghost bool g_lowLevelCallSuccess; // regular ghost
 rule withdraw_revert(env e) {
     uint256 amount;
    
- require g_lowLevelCallSuccess;
- // by requiring 
-it to be tru
-e initially, you can detect when it becomes false during execution
+ 	require g_lowLevelCallSuccess; // by requiring it to be true initially, you can detect when it becomes false during execution
 
     mathint balanceBefore = balanceOf(e.msg.sender);
 
