@@ -129,7 +129,7 @@ As a result, the invariant holds in the initial state, meaning the base case is 
 
 ![image](media/certora-loops-in-cvl/image2.png)
 
-1. **The Inductive Step: A**fter confirming that the invariant holds in the initial state, the Prover moves to the next phase — the **inductive step**. This step is about ensuring that the invariant **continues to hold** after any state change in the contract.
+2. **The Inductive Step: A**fter confirming that the invariant holds in the initial state, the Prover moves to the next phase — the **inductive step**. This step is about ensuring that the invariant **continues to hold** after any state change in the contract.
 
 In simple terms, the Prover checks the following:
 
