@@ -402,7 +402,7 @@ assert success => owner() == 0, "owner not cleared";
 
 
 
-is an implication. It means that _“if the call succeeds, then the owner must be cleared (i.e., set to_ _`address(0)`__)”_. In other words, ownership must be renounced.
+is an implication. It means that _“if the call succeeds, then the owner must be cleared (i.e., set to_ _`address(0)`_)”. In other words, ownership must be renounced.
 
 
 ## **Transfer Ownership**
