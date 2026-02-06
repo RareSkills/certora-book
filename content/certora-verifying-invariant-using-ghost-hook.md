@@ -474,23 +474,20 @@ methods {
 
 ghost mathint sumOfBalances {
     // Constraining pre-constructor ghost value through axiom
-    init_state axiom sumOfBalances == 0
-;
+    init_state axiom sumOfBalances == 0;
 
 }
 
 // Added a load hook on balanceOf mapping
 hook Sload uint256 balance balanceOf[KEY address addr] {
     // Introduce a constraint
-    require sumOfBalances >= to_mathint(balance)
-;
+    require sumOfBalances >= to_mathint(balance);
 
 }
 
 hook Sstore balanceOf[KEY address account] uint256 newAmount (uint256 oldAmount)  {
     // Delta Update
-    sumOfBalances = sumOfBalances - oldAmount + newAmount
-;
+    sumOfBalances = sumOfBalances - oldAmount + newAmount;
 
 }
 
@@ -554,7 +551,7 @@ hook Sload uint256 balance balanceOf[KEY address addr] {
 ```
 
 
-This runs **every time** the Prover reads a balance from `balanceOf`. Here, we are telling the Prover: _“__**Whenever you read a balance, that balance must be less than or equal to `sumOfBalances`**”
+This runs **every time** the Prover reads a balance from `balanceOf`. Here, we are telling the Prover: _“**Whenever you read a balance, that balance must be less than or equal to `sumOfBalances`**_”
 
 
 This has two important effects:
