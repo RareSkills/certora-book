@@ -23,9 +23,7 @@ Below is the Solidity implementation of the `add()` function:
 ```solidity
 /// Solidity
 
-function add(uint256 x, uint256 y) external pure returns (uint256
-)
- {
+function add(uint256 x, uint256 y) external pure returns (uint256) {
     return x + y;
 }
 ```
@@ -46,17 +44,13 @@ rule add_sumWithOverflowRevert() {
     uint256 y;
 
     mathint _sum = x + y;
-
     
-if (_sum <= max_uint256) {
- // non-revert case
+    if (_sum <= max_uint256) { // non-revert case
         mathint result = add@withrevert(x, y);
         assert !lastReverted;
         assert result == _sum;
-    } 
-    
-else {
- // revert case
+    }
+    else { // revert case
         add@withrevert(x, y);
         assert lastReverted; 
     }
@@ -167,8 +161,6 @@ rule max_returnMax() {
         assert !lastReverted;
         assert max == x;
     }
- 
-
     else {
         mathint max = max@withrevert(x, y);
         assert !lastReverted;
@@ -305,7 +297,7 @@ If the remainder of `x * y` divided by `denominator` is greater than zero, one i
 Now that we know what the function is trying to do, we can now proceed with the formal verification.
 
 
-### Developing Specification_s_ For mulDivUp
+### Developing Specifications For mulDivUp
 
 
 Here is an initial specification that captures the behavior of the Solmate `mulDivUp()` function, and the explanation follows afterwards:
@@ -314,9 +306,7 @@ Here is an initial specification that captures the behavior of the Solmate `mulD
 ```solidity
 /// CVL
 
-rule 
-mulDivUp_roundOrRevert
-() {
+rule mulDivUp_roundOrRevert() {
     uint256 x;
     uint256 y;
     uint256 denominator;
@@ -325,8 +315,6 @@ mulDivUp_roundOrRevert
         mulDivUp@withrevert(x, y, denominator); 
         assert lastReverted;
     }
- 
-
     else if (x * y > max_uint256) { // catches revert condition: multiplication overflows a max_uint256 value
         mulDivUp@withrevert(x, y, denominator);
         assert lastReverted;

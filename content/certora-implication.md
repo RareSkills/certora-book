@@ -60,7 +60,7 @@ To resolve this, one workaround is to add a trivial assertion at the end:
 
 ```solidity
 if (P) { 
-assert Q; 
+	assert Q; 
 }
 assert true;
 ```
@@ -86,9 +86,9 @@ However, this solution introduces a pointless assertion that clutters the specif
 
 ```solidity
 if (P) { 
-assert Q; 
+	assert Q; 
 } else {
-assert (something_else);
+	assert (something_else);
 }
 ```
 
@@ -131,7 +131,7 @@ rule mod_ifXLessThanY_thenResultIsX() {
 ```
 
 
-![image](media/certora-implication/image1.png)
+![image](media/certora-implication/image-1d109cb3.png)
 
 
 Prove run: [link](https://prover.certora.com/output/541734/8902287c8cad40108315113981707b7c?anonymousKey=1da2ab01a326687abc7ecfdb24cb6c717d3d06a9)

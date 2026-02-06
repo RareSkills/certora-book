@@ -45,14 +45,9 @@ We will formally verify the property: “the caller can successfully call `regis
 
 ```solidity
 rule register_payEthToWhitelist(env e) {
-    
-require
- !isWhitelisted(e.msg.sender);
-
+    require !isWhitelisted(e.msg.sender);
     register@withrevert(e);
-    assert !lastReverted <=> e.msg.value >= 
-5 * 10^16
-;
+    assert !lastReverted <=> e.msg.value >= 5 * 10^16;
 }
 ```
 
@@ -157,9 +152,7 @@ Another approach is to use the implication operator. If your goal is simply to c
 ```solidity
 rule register_payEthToWhitelist_implication(env e) {
     register@withrevert(e);
-    assert e.msg.value < 5 * 10^16 => 
-lastReverted;
-
+    assert e.msg.value < 5 * 10^16 => lastReverted;
 }
 ```
 
@@ -184,9 +177,7 @@ Below is the CVL rule, which will be explained in the next section:
 
 ```solidity
 rule register_nativeBalances(env e) {
-    mathint balanceBefore = nativeBalances[
-currentContract
-];
+    mathint balanceBefore = nativeBalances[currentContract];
     register(e);
 
     mathint balanceAfter = nativeBalances[currentContract];
