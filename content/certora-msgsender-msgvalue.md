@@ -90,13 +90,13 @@ In Solidity, a contract can receive Ether via a function call, but only if the f
 
 Since `increment()` is not marked as `payable`, any nonzero `msg.value` causes a revert, as shown in the report below:
 
-![Certora Prover counterexample showing the increment call reverting when msg.value is nonzero, since the function is not payable.](/media/certora-msgsender-msgvalue/image1.png)
+![image](/media/certora-msgsender-msgvalue/image1.png)
 
 To resolve this, we need to place `e.msg.value == 0` as a precondition.
 
 Then, another unexpected revert occurs when `counter == max_uint256`. Since `max_uint256` is the maximum value the counter can hold, attempting `counter++` will cause an overflow revert (note that we are calling the function with the `withrevert` tag):
 
-![Certora Prover counterexample demonstrating revert caused by counter overflow when the stored value equals max_uint256 and is incremented.](/media/certora-msgsender-msgvalue/image2.png)
+![image](/media/certora-msgsender-msgvalue/image2.png)
 
 To resolve this, we need to add another precondition `require(counter() < max_uint256)` to prevent the counter from overflowing.
 
@@ -115,7 +115,7 @@ rule increment_onlyOwnerCanCallIncrement(env e) {
 }
 ```
 
-![Certora Prover output confirming the rule verifies successfully after adding preconditions preventing non-payable calls and counter overflow.](/media/certora-msgsender-msgvalue/image3.png)
+![image](/media/certora-msgsender-msgvalue/image3.png)
 
 Prover run: [link](https://prover.certora.com/output/541734/4aac7a40ddba421c89783c6581d11659?anonymousKey=cc8849ab3d456437ba3a64cd5bf315ef3683e260)
 
@@ -136,7 +136,7 @@ rule increment_notOwnerCannotCallIncrement(env e) {
 }
 ```
 
-![Certora Prover output verifying that calls from non-owners always revert, confirming correct access control behavior using implication.](/media/certora-msgsender-msgvalue/image4.png)
+![image](/media/certora-msgsender-msgvalue/image4.png)
 
 Prover run: [link](https://prover.certora.com/output/541734/8448bc805955405d81eef50022cb4e01?anonymousKey=c207f4d3ed8ff9c52f6bc6d90eb0d0a9fb0e45a8)
 
