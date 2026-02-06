@@ -46,8 +46,7 @@ When using `requireInvariant` inside an **invariant** (rather than a rule), the 
 
 ```solidity
 invariant invariantName()
-    conditionExpression
-;
+    conditionExpression;
 
 {
     preserved with (env e) {
@@ -173,7 +172,7 @@ invariant totalSupplyEqSumOfBalances()
     to_mathint(totalSupply()) == sumOfBalances;
 ```
 
-1. **Add a rule:** Extend the `erc20.spec` file by adding a new rule block named `checkTransferCall()`.
+2. **Add a rule:** Extend the `erc20.spec` file by adding a new rule block named `checkTransferCall()`.
 
 ```solidity
 rule checkTransferSuccess() {
@@ -181,7 +180,7 @@ rule checkTransferSuccess() {
 }
 ```
 
-1. **Include the environment argument:** Since our `transfer()` call needs access to the transaction environment (like `msg.sender` and other EVM context variables), we pass this environment as an argument of type `env e`.
+3. **Include the environment argument:** Since our `transfer()` call needs access to the transaction environment (like `msg.sender` and other EVM context variables), we pass this environment as an argument of type `env e`.
 
 ```solidity
 rule checkTransferSuccess(env e) {
@@ -189,7 +188,7 @@ rule checkTransferSuccess(env e) {
 }
 ```
 
-1. **Declare inputs:** The `transfer()` function requires two inputs: **a recipient** **address** and a**n amount of tokens** to transfer. We declare these as local variables in our rule.
+4. **Declare inputs:** The `transfer()` function requires two inputs: **a recipient** **address** and a**n amount of tokens** to transfer. We declare these as local variables in our rule.
 
 ```solidity
 rule checkTransferSuccess(env e){
@@ -201,7 +200,7 @@ rule checkTransferSuccess(env e){
 }
 ```
 
-1. **Add minimal constraints to the environment:** Not every input combination represents a valid scenario for verification. For example, we don’t want the caller (`msg.sender`) to be the contract itself, and we don’t want to allow transfers where the sender and recipient are the same account. We add `require` statements to exclude these invalid scenarios.
+5. **Add minimal constraints to the environment:** Not every input combination represents a valid scenario for verification. For example, we don’t want the caller (`msg.sender`) to be the contract itself, and we don’t want to allow transfers where the sender and recipient are the same account. We add `require` statements to exclude these invalid scenarios.
 
 ```solidity
 rule checkTransferSuccess(env e){
@@ -215,7 +214,7 @@ rule checkTransferSuccess(env e){
 }
 ```
 
-1. **Capture the pre-call state:** Before making the `transfer()` call, we record the sender's balance, the recipient's balance, and the total supply. These values serve as a baseline against which we verify the changes after the call.
+6. **Capture the pre-call state:** Before making the `transfer()` call, we record the sender's balance, the recipient's balance, and the total supply. These values serve as a baseline against which we verify the changes after the call.
 
 ```solidity
 rule checkTransferSuccess(env e){
@@ -233,7 +232,7 @@ rule checkTransferSuccess(env e){
 }
 ```
 
-1. **Invoke the** `transfer()` **function:** We now invoke the `transfer()` function using the environment `e`, along with the recipient address `to` and the transfer amount `amount`.
+7. **Invoke the** `transfer()` **function:** We now invoke the `transfer()` function using the environment `e`, along with the recipient address `to` and the transfer amount `amount`.
 
 ```solidity
 rule checkTransferSuccess(env e){
@@ -257,7 +256,7 @@ rule checkTransferSuccess(env e){
 
 **Note: W**e call `transfer()` without the `@withrevert` modifier—this means the rule only verifies executions where the transfer succeeds. If the transfer would revert (for example, due to insufficient balance), the Prover simply excludes that path from verification.
 
-1. **Capture post-call state**: After the transfer executes, we once again capture the sender's balance, the recipient's balance, and the total supply so we can compare them against our expectations.
+8. **Capture post-call state**: After the transfer executes, we once again capture the sender's balance, the recipient's balance, and the total supply so we can compare them against our expectations.
 
 ```solidity
 rule checkTransferSuccess(env e) {
@@ -284,7 +283,7 @@ rule checkTransferSuccess(env e) {
 }
 ```
 
-1. **Assert correctness of outcomes:** Next, we encode our expectations as assertions:
+9. **Assert correctness of outcomes:** Next, we encode our expectations as assertions:
 - The sender's balance should decrease by exactly `amount`.
 - The recipient's balance should increase by exactly `amount`.
 - The total supply should remain unchanged (transfers move tokens, they don't create or destroy them).
@@ -315,7 +314,7 @@ rule checkTransferSuccess(env e){
 }
 ```
 
-1. **Update the methods block:** Previously, our methods block contained only the `totalSupply()` function, since it was the only one explicitly invoked in the specification. Now, we also need to include the `balanceOf()` function, as our rule references it to read account balances.
+10. **Update the methods block:** Previously, our methods block contained only the `totalSupply()` function, since it was the only one explicitly invoked in the specification. Now, we also need to include the `balanceOf()` function, as our rule references it to read account balances.
 
 ```solidity
 methods {
@@ -372,7 +371,7 @@ To run the verification, follow the instructions below:
 }
 ```
 
-1. Next, execute the following command in your terminal:
+2. Next, execute the following command in your terminal:
 
 ```solidity
 certoraRun confs/erc20.conf
@@ -381,7 +380,7 @@ certoraRun confs/erc20.conf
 
 This will send your specification and contract to the Certora Prover for verification.
 
-1. Once the Prover finishes the run (which may take a few minutes), it will output a unique link to the verification report in your terminal. Open the link in your browser to view a result similar to the image below:
+3. Once the Prover finishes the run (which may take a few minutes), it will output a unique link to the verification report in your terminal. Open the link in your browser to view a result similar to the image below:
 
 ![image](media/certora-requireinvariant/image1.png)
 
@@ -497,7 +496,7 @@ Our verification result clearly shows that the Prover has verified the rule. Tha
 The example discussed above makes it clear that adding `requireInvariant` ensures the Prover only considers realistic contract states that respect already-proven global properties. In the next section, we'll see how to use `requireInvariant` within another invariant definition.
 
 
-## **Using** **`requireInvariant`** **in Invariants**
+## Using `requireInvariant`in Invariants
 
 
 To understand how `requireInvariant` can be used inside the invariant construct of CVL, let’s define another invariant called `indBalanceCap()` inside our `erc20.spec` file (right below the `totalSupplyEqSumOfBalances()` invariant). 
@@ -562,7 +561,7 @@ Since we already proved the `totalSupplyEqSumOfBalances()` invariant, a state li
 This happens because the Prover does _not_ automatically assume that previously proven invariants should hold when it begins verifying a new property. Each new rule or invariant starts from a fresh symbolic state unless we explicitly connect it to earlier results. As a result, the Prover may pick an initial configuration that violates the invariant we proved before, even though such a configuration is impossible during actual contract execution
 
 
-### **Fixing the failure with** **`requireInvariant`**  **Statement**
+### Fixing the failure with `requireInvariant` Statement
 
 
 To rule out such inconsistent states, we need to tell the Prover that `indBalanceCap()` should only be checked under the assumption that `totalSupplyEqSumOfBalances()` already holds. 
@@ -586,7 +585,7 @@ invariant indBalanceCap(address a)
 This way, the Prover starts from a world that already satisfies the token-conservation rule we previously proved and prevents the search space from drifting into impossible ERC-20 states.
 
 
-### **Verifying the Strengthened Invariant**
+### Verifying the Strengthened Invariant
 
 
 Now, if we re-run the Prover with:
@@ -640,7 +639,7 @@ require to_mathint(totalSupply()) == sumOfBalances;
 Both prevent the Prover from considering the inconsistent initial state we observed earlier, allowing the `indBalanceCap()` invariant to pass.
 
 
-### **Why** **`requireInvariant`** **Is Still Preferable**
+### Why `requireInvariant` Is Still Preferable
 
 
 Although both forms restrict the search space similarly, they differ in how **reliable and principled** the resulting specification is.
