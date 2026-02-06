@@ -73,9 +73,7 @@ methods {
     function totalSupply() external returns(uint256) envfree;
 }
 
-ghost mathint 
-sumOfBalances
- {
+ghost mathint sumOfBalances {
     init_state axiom sumOfBalances == 0;
 }
 
