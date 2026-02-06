@@ -695,9 +695,7 @@ invariant noAccountBalanceExceedsTotalSupply(env e1)
     
     filtered {
         f -> f.selector != sig:transfer(address,uint256).selector && // excludes standard ERC-20 transfer function from this invariant
-            f.selector != sig:transferFrom(address,address,uint256).selector // excludes standard ERC-20 t
-ransferFrom 
-function from this invariant
+			f.selector != sig:transferFrom(address,address,uint256).selector // excludes standard ERC-20 transferFrom function from this invariant
     }
     {
         preserved withdraw(uint256 amount) with (env e2) {
