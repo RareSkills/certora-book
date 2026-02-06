@@ -12,7 +12,7 @@ In the previous chapter, we learned about parametric rules, which allow us to fo
 How do we handle such cases where a property generally holds but has known exceptions based on the function? Or what if you simply want to exclude certain administrative methods from general invariant checks altogether?
 
 
-_I__**n this chapter, we learn how to use method properties to enforce function-specific assertions in parametric rules. We’ll also see how to exclude certain functions from verification when those rules aren’t applicable.**_
+**In this chapter, we learn how to use method properties to enforce function-specific assertions in parametric rules. We’ll also see how to exclude certain functions from verification when those rules aren’t applicable.**
 
 
 ## What Are Method Properties?
@@ -233,7 +233,7 @@ The above rule successfully uses conditional logic based on `f.selector` to appl
 ## Optimizing Parametric Rule  with `filtered` Blocks
 
 
-When we review the verification report, we notice that the Certora Prover has applied our assertion checks to **every function** in the contract—including read-only ones like `to``talSupply()`, `balanceOf()`, and `owner()`. These functions are marked as **view** in Solidity, which means they **only read from the blockchain state** and do not modify anything. Because of this, running state-change rules on these functions doesn’t make much sense and doesn’t help us catch meaningful bugs.
+When we review the verification report, we notice that the Certora Prover has applied our assertion checks to **every function** in the contract—including read-only ones like `totalSupply()`, `balanceOf()`, and `owner()`. These functions are marked as **view** in Solidity, which means they **only read from the blockchain state** and do not modify anything. Because of this, running state-change rules on these functions doesn’t make much sense and doesn’t help us catch meaningful bugs.
 
 
 ![image](media/certora-method-properties/image3.png)
@@ -267,10 +267,10 @@ rule totalSupplyIntegrityCheck(env e, method f, calldataarg args) filtered {
 
     // Step 4: Function-specific assertions
     if (f.selector == sig:mint(address,uint256).selector) {
-        assert supplyAfter >= supplyBefore, "Total suppply should not decrease after mint()";
+        assert supplyAfter >= supplyBefore, "Total supply should not decrease after mint()";
     } 
     else if (f.selector == sig:burn(uint256).selector) {
-        assert supplyAfter <= supplyBefore, "Total suppply should not increase after burn()";
+        assert supplyAfter <= supplyBefore, "Total supply should not increase after burn()";
     } 
     else {
         assert supplyAfter == supplyBefore, "Total supply must remain unchanged for other function calls";
