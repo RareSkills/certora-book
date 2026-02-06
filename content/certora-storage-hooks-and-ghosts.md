@@ -500,7 +500,7 @@ Let’s break down what happens here step by step:
     - The EVM executes the statement `count++`, which translates into a read followed by a write on the `count` storage slot.
     - Just before the write occurs, the `Sstore` hook is triggered.
     - The hook captures the value that was about to be overwritten (`precallValue`) and the new value being written (`postcallValue`).
-    - These are stored in the ghost variables `ghost_``prevCount` and `ghost_currentCount`.
+    - These are stored in the ghost variables `ghost_prevCount` and `ghost_currentCount`.
 3. **The rule check**:
     - After the function call completes, the rule asserts that `ghost_currentCount == ghost_prevCount + 1`.
     - Given that `ghost_currentCount = X + 1` and `ghost_prevCount = X`, the assertion holds true.
