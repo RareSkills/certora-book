@@ -23,9 +23,7 @@ Below is the Solidity implementation of the `add()` function:
 ```solidity
 /// Solidity
 
-function add(uint256 x, uint256 y) external pure returns (uint256
-)
- {
+function add(uint256 x, uint256 y) external pure returns (uint256) {
     return x + y;
 }
 ```
