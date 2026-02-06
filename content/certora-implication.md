@@ -86,9 +86,9 @@ However, this solution introduces a pointless assertion that clutters the specif
 
 ```solidity
 if (P) { 
-		assert Q; 
+	assert Q; 
 } else {
-		assert (something_else);
+	assert (something_else);
 }
 ```
 
