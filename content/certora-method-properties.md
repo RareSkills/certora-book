@@ -218,13 +218,13 @@ The above rule simply enforces the following behaviour:
 To view the results of our parametric rule, set up the Certora Prover environment by placing the `RareToken` contract and its specification in the appropriate directory. Then, run the verification process. If the contract meets the rule’s conditions, the prover will confirm a successful verification with no detected violations, as shown in the results below.
 
 
-![image](media/certora-method-properties/image-1c509cb3.png)
+![image](media/certora-method-properties/image1.png)
 
 
 The verification results confirm that the `totalSupplyIntegrityCheck` rule was successfully executed, with all nine checks passing without any detected violations. This validates that the behavior of the `mint()`, `burn()`, and other functions in the `RareToken` contract is consistent with the rule’s expectations—`totalSupply` increases after `mint()`, decreases after `burn()`, and remains unchanged for all other functions.
 
 
-![image](media/certora-method-properties/image-1c509cb3.png)
+![image](media/certora-method-properties/image2.png)
 
 
 The above rule successfully uses conditional logic based on `f.selector` to apply the correct assertions _after_ executing each function `f`. This ensures every function compatible with the rule's parameters is checked against the appropriate expectation based on its identity.
@@ -236,7 +236,7 @@ The above rule successfully uses conditional logic based on `f.selector` to appl
 When we review the verification report, we notice that the Certora Prover has applied our assertion checks to **every function** in the contract—including read-only ones like `to``talSupply()`, `balanceOf()`, and `owner()`. These functions are marked as **view** in Solidity, which means they **only read from the blockchain state** and do not modify anything. Because of this, running state-change rules on these functions doesn’t make much sense and doesn’t help us catch meaningful bugs.
 
 
-![image](media/certora-method-properties/image-1d209cb3.png)
+![image](media/certora-method-properties/image3.png)
 
 
 Even though verifying them isn’t technically wrong, it causes extra computational work and slows down the process. That’s why it’s important to exclude functions that don’t impact the contract state when they aren’t relevant to the rule being tested. This is where the filtered block comes in handy. 
@@ -285,7 +285,7 @@ In the above rule, the line `f -> !f.isView`  inside the filter block `filtered 
 If we re-run the Prover with the above specification, we can see that **view functions like** `totalSupply()`**,** `balanceOf()`**, and** `owner()` **are no longer included** in the verification of this rule, as shown in the image below:
 
 
-![image](media/certora-method-properties/image-1d209cb3.png)
+![image](media/certora-method-properties/image4.png)
 
 
 Using a filter block inside a parametric rule helps us achieve two things: 
