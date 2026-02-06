@@ -1,4 +1,4 @@
-# SafeMint and SafeTransfer in ERC-721
+# SafeMint and SafeTransfer Rules in ERC-721
 
 
 ## Introduction
