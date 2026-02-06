@@ -82,7 +82,7 @@ invariant invariant_name(param_1, param_2,...)
 Both generic preserved blocks and function-specific preserved blocks apply during the induction step of invariant checking. They are executed after the invariant is assumed to hold in the pre-state but before the corresponding method is symbolically executed, ensuring that the Prover starts each induction step from a state that is both mathematically valid and contextually realistic.
 
 
-So far, preserved blocks determine the assumptions under which each relevant function is analyzed. In some cases, however, we may also want to restrict _which_ functions the invariant is checked against in the first place. CVL provides a filter block, written as `filtered { … }`, for this purpose. (_You can read more about filter block at [_here_](https://rareskills.io/post/certora-method-properties)
+So far, preserved blocks determine the assumptions under which each relevant function is analyzed. In some cases, however, we may also want to restrict _which_ functions the invariant is checked against in the first place. CVL provides a filter block, written as `filtered { … }`, for this purpose. (You can read more about filter block at [_here_](https://rareskills.io/post/certora-method-properties) )
 
 
 ```solidity
@@ -139,15 +139,13 @@ To verify this invariant, follow the steps below:
 
 ```solidity
 invariant tokenIntegrity()
-    
-nativeBalances
-[currentContract] >= totalSupply();
+    nativeBalances[currentContract] >= totalSupply();
 ```
 
 
 **Note:** In CVL, `nativeBalances` is a mapping of the native token balances — for example, ETH on Ethereum. The balance of an address `a` can be expressed using `nativeBalances[a]`. The identifier `currentContract` refers to the main contract being verified. Therefore, `nativeBalances[currentContract]` represents the native token balance of the contract being verified.
 
-1. Add a methods block that includes the function signature of `totalSupply()`:
+5. Add a methods block that includes the function signature of `totalSupply()`:
 
 ```solidity
 methods {
@@ -158,7 +156,7 @@ invariant tokenIntegrity()
     nativeBalances[currentContract] >= totalSupply();
 ```
 
-1. In the `confs` subdirectory, create a configuration file named `weth.conf`:
+6. In the `confs` subdirectory, create a configuration file named `weth.conf`:
 
 ```solidity
 {
@@ -257,7 +255,7 @@ The call trace for `withdraw()` reveals a problem caused by the Prover testing
 **The Pre-State Check (Global State #1)**
 
 
-During the **pre-state check**, the Prover assumes that the invariant holds before the function runs. At this point—captured as **Global State #1**—it sets up a symbolic environment representing the possible starting conditions before the symbolic execution of the `wi``thdraw()` function.
+During the **pre-state check**, the Prover assumes that the invariant holds before the function runs. At this point—captured as **Global State #1**—it sets up a symbolic environment representing the possible starting conditions before the symbolic execution of the `withdraw()` function.
 
 
 ![image](media/certora-preserved-block/image7.png)
@@ -277,7 +275,7 @@ At this point, our invariant holds because:
 ```
 
 
-**Symbolic Execution of** **`withdraw()`** **(Global State #2)**
+**Symbolic Execution of `withdraw()` (Global State #2)**
 
 
 Next, the Prover symbolically executes the  `withdraw()` function:
@@ -307,13 +305,9 @@ We can confirm this with simple math:
 
 
 ```solidity
-Precall Balance of 0x8200 = 
-2^256
-
+Precall Balance of 0x8200 =  2^256
 Withdrawal Amount = 2^256 - 6
-Postcall Balance of 0x8200 should be = (
-2^256 - 2)
- - (2^256 - 6) = 4
+Postcall Balance of 0x8200 should be = (2^256 - 2) - (2^256 - 6) = 4
 ```
 
 
@@ -397,8 +391,7 @@ So the invariant evaluates to:
 
 
 ```solidity
-5 >= 8 ❌ 
-(false)
+5 >= 8 ❌ (false)
 ```
 
 
