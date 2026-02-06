@@ -556,10 +556,8 @@ rule approve_spenderAllowance(env e) {
 
     approve@withrevert(e, spender, amount);
     bool isReverted = lastReverted;
-    
 
     mathint approvedAmountAfter = allowance(e.msg.sender, spender);
-
 
     assert !isReverted => approvedAmountAfter == amount;
     assert isReverted <=> e.msg.value != 0;
