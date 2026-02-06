@@ -162,11 +162,8 @@ hook Sload uint256 balance balanceOf[KEY address addr] {
 }
 
 hook Sstore balanceOf[KEY address account ] uint256 newAmount (uint256 oldAmount)  {
-    s
-umOfBalances
- = sumOfBalances - oldAmount + newAmount;
+    sumOfBalances = sumOfBalances - oldAmount + newAmount;
 }
-
 
 invariant totalSupplyEqSumOfBalances()
     to_mathint(totalSupply()) == sumOfBalances;
