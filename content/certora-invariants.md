@@ -1,10 +1,10 @@
 # Introduction to Invariants in Certora
 
 
-Up until now, we’ve focused on verifying the behavior of individual methods or sequences of methods —ensuring that a specific function call or set of calls, given certain inputs, produces the correct changes in state. But there’s another, more universal aspect of verification: **invariants**.
+Up until now, we’ve focused on verifying the behavior of individual methods or sequences of methods — ensuring that a specific function call or set of calls, given certain inputs, produces the correct changes in state. But there’s another, more universal aspect of verification: **invariants**.
 
 
-**Invariants** are conditions that must always hold true for the contract’s state, no matter which function is called or in what order. If any execution—whether direct or via a sequence of calls—violates an invariant, it signals a fundamental flaw in the contract’s design, potentially exposing a bug or vulnerability.
+**Invariants** are conditions that must always hold true for the contract’s state, no matter which function is called or in what order. If any execution — whether direct or via a sequence of calls—violates an invariant, it signals a fundamental flaw in the contract’s design, potentially exposing a bug or vulnerability.
 
 
 In this article, we’ll explore how to formally specify and verify such properties using **Certora’s CVL built-in invariant construct.**
@@ -31,7 +31,7 @@ An invariant is considered to hold and is reported as verified (✅) if its bool
 ## **How Invariants Differ from Rules**
 
 
-A **rule** in CVL is designed to check if a specific property holds true within a defined scenario**:** **starting from a certain state, performing certain actions, and then checking an outcome.**
+A **rule** in CVL is designed to check if a specific property holds true within a defined scenario: **starting from a certain state, performing certain actions, and then checking an outcome.**
 
 
 ```solidity
@@ -52,7 +52,7 @@ rule check_balance_updates(env e) {
 ```
 
 
-In other words, it answers the question: "**Does this particular action (or sequence of actions) lead to the expected outcome?"
+In other words, it answers the question: "**Does this particular action (or sequence of actions) lead to the expected outcome?**"
 
 
 Unlike rules, which focus on specific scenarios, an **invariant** in CVL expresses a condition that must **always** be true in **every reachable state** of the contract, regardless of which functions are called or in what order.
@@ -100,7 +100,7 @@ Choose an **invariant** when you want to verify a property that must hold true a
 Invariants provide the strongest guarantees about the long-term integrity and safety of your contract's state. They answer the critical question: "**Is this fundamental property of my contract unbreakable, no matter what?"
 
 
-## Scope of Verification : `Rules` Vs `Invariants` 
+## Scope of Verification: `Rules` Vs `Invariants` 
 
 
 When verifying a **rule**, the Prover checks whether the assertions hold for the specific scenario defined in the rule—based on the initial state, actions taken, and any assumptions. Rules offer flexibility for exploring custom paths or edge cases, but they only verify correctness along the execution paths explicitly constructed in the specification.
@@ -109,7 +109,7 @@ When verifying a **rule**, the Prover checks whether the assertions hold for the
 In contrast, an invariant must hold regardless of which functions are called, with what parameters, or in what order. The Prover must make sure that the invariant is maintained in every reachable state of the contract. This is achieved through a two-part proof principle based on mathematical induction:
 
 1. **Base Case:** The property must hold immediately after contract deployment—i.e., it must be established by the **constructor**.
-2. **Inductive Step:** For every public or external function in the contract, if the property holds _before_ the function is called, it must still hold _after_ the function call.
+2. **Inductive Step:** For every public or external function in the contract, if the property holds _before_ the function is called, it must still hold after the function call.
 
 If both the base case and the inductive step are proven, the prover reports the invariant as **verified (✅)**.
 
@@ -270,7 +270,7 @@ invariant totalVotesMatch()
 Once your project directory is set up correctly, follow the steps below to run the Certora Prover and verify your invariant.
 
 
-**1. Create a Configuration File****:** In the `confs` subfolder, create a configuration file (e.g., `invariant.conf`) and paste the code below in it.
+**1. Create a Configuration File:** In the `confs` subfolder, create a configuration file (e.g., `invariant.conf`) and paste the code below in it.
 
 
 ```solidity
@@ -385,8 +385,7 @@ In addition to these two core checks, the Prover also runs a rule named `envFree
 ![image](media/certora-invariants/image6.png)
 
 
-## 
-**Understanding Additional Checks in the Prover UI**
+## Understanding Additional Checks in the Prover UI
 
 
 If you are using a newer version of the Certora Prover, you might notice additional entries when you expand an invariant result in the Prover UI, such as `rule_not_vacuous` and `invariant_not_trivial_postcondition`, as shown below:
