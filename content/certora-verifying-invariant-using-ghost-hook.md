@@ -10,7 +10,7 @@ In this chapter, we will leverage **what we've learned** about ghost variables a
 ## Adding Smart Contracts For Verification
 
 
-For this tutorial, we will use the ERC20 contract from [**the Solmate library**](https://github.com/transmissions11/solmate/tree/main), developed by _**T**__**ransmission11**_. To include this contract in your project, create a new file named `ERC20.sol` inside the `contracts` subdirectory of your Certora project directory. Then, copy the code of [**Solmate’s ERC20 implementation**](https://github.com/transmissions11/solmate/blob/main/src/tokens/ERC20.sol) and paste it into that file. 
+For this tutorial, we will use the ERC20 contract from [**the Solmate library**](https://github.com/transmissions11/solmate/tree/main), developed by _**Transmission11**_. To include this contract in your project, create a new file named `ERC20.sol` inside the `contracts` subdirectory of your Certora project directory. Then, copy the code of [**Solmate’s ERC20 implementation**](https://github.com/transmissions11/solmate/blob/main/src/tokens/ERC20.sol) and paste it into that file. 
 
 
 ```solidity
@@ -223,7 +223,7 @@ contract ERC20 {
 ```
 
 
-## **Understanding the Challenge**
+## Understanding the Challenge
 
 
 To express our invariant as a CVL expression, we need **two** values:
@@ -231,7 +231,7 @@ To express our invariant as a CVL expression, we need **two** values:
 1. **The total token supply**
 2. **The sum of all account balances**
 
-Our contract has a public state variable called `totalSupply` which keeps track of the total token supply at any state and whose value can be read using the getter function called `totalSupply()`. **However, the core challenge is that the contract does not provide any built-in way to get the** **total** **sum of all balances.**
+Our contract has a public state variable called `totalSupply` which keeps track of the total token supply at any state and whose value can be read using the getter function called `totalSupply()`. **However, the core challenge is that the contract does not provide any built-in way to get the total sum of all balances.**
 
 
 ## The “Solution”
@@ -254,7 +254,7 @@ For instance, if a user's balance is increased from 100 to 150, our hook subtrac
 Once we have both of these values available to the Prover (the actual `totalSupply` from the contract and our precisely maintained `sumOfBalances` ghost), we can formally state the invariant using the invariant block in CVL to assert that the total supply is always equal to the sum of all account balances.
 
 
-## **Writing the Full Specification Step-by-Step**
+## Writing the Full Specification Step-by-Step
 
 
 Let’s now put everything we’ve discussed into practice and write a complete specification that verifies whether the sum of all balances matches the total token supply, by following the steps below:
@@ -266,7 +266,7 @@ Let’s now put everything we’ve discussed into practice and write a complete 
 ghost mathint sumOfBalances;
 ```
 
-1. Next, we use the `init_state` axiom to set the initial value of `sumOfBalances` to `0` in the invariant base case**.**
+3. Next, we use the `init_state` axiom to set the initial value of `sumOfBalances` to `0` in the invariant base case**.**
 
 ```solidity
 ghost mathint sumOfBalances {
@@ -277,7 +277,7 @@ ghost mathint sumOfBalances {
 
 This axiom constrains the ghost variable only in the invariant base case, establishing a consistent post-constructor state. Without this baseline, the prover could assume arbitrary initial values for the ghost, making invariant preservation meaningless.
 
-1. Define a store hook that tracks changes to the `balanceOf` mapping and updates our ghost variable `sumOfBalances` accordingly.
+4. Define a store hook that tracks changes to the `balanceOf` mapping and updates our ghost variable `sumOfBalances` accordingly.
 
 ```solidity
 ghost mathint sumOfBalances {
@@ -289,7 +289,7 @@ hook Sstore balanceOf[KEY address account ] uint256 newAmount (uint256 oldAmount
 }
 ```
 
-1. Now that we have both values — the contract’s `totalSupply()` and our ghost `sumOfBalances` — we can define the core invariant as shown below:
+5. Now that we have both values — the contract’s `totalSupply()` and our ghost `sumOfBalances` — we can define the core invariant as shown below:
 
 ```solidity
 ghost mathint sumOfBalances {
@@ -304,7 +304,7 @@ invariant totalSupplyEqSumOfBalances()
     to_mathint(totalSupply()) == sumOfBalances;
 ```
 
-1. Finally, add a methods block that will include the function signature of `totalSupply()` .
+6. Finally, add a methods block that will include the function signature of `totalSupply()` .
 
 ```solidity
 methods {
@@ -324,7 +324,7 @@ invariant totalSupplyEqSumOfBalances()
     to_mathint(totalSupply()) == sumOfBalances;
 ```
 
-1. Navigate to the `confs` subdirectory and create a new file named `erc20.conf`.
+7. Navigate to the `confs` subdirectory and create a new file named `erc20.conf`.
 
 ```solidity
 {
@@ -346,19 +346,19 @@ Once you have executed all the above steps, submit the code for verification by 
 Open the [**verification result**](https://prover.certora.com/output/2547903/84247496b9e34a8692fdf20ed2821804?anonymousKey=5141ffab3fa58e2ccac963e1701126d87f03ba9a)[ ](https://prover.certora.com/output/2547903/aba8f87240b8475299d60f2dd6114ab8?anonymousKey=45035350cafd9ec06b0e060110d7c2ce15e9ac97)provided by the Prover in any web browser of your choice to view a result similar to the image below:
 
 
-![image](media/certora-verifying-invariant-using-ghost-hook/image-20909cb3.png)
+![image](media/certora-verifying-invariant-using-ghost-hook/image1.png)
 
 
 In our verification result, we can see that the invariant check failed in both places: after the constructor call and during method execution.
 
 
-![image](media/certora-verifying-invariant-using-ghost-hook/image-24b09cb3.png)
+![image](media/certora-verifying-invariant-using-ghost-hook/image2.png)
 
 
 When we click on the “**induction base: After the constructor**” violation, the Prover recommends adding the `optimistic_loop` key to your config and setting its value to `true`, or alternatively increasing `loop_iter` to a value higher than 1.
 
 
-![image](media/certora-verifying-invariant-using-ghost-hook/image-20909cb3.png)
+![image](media/certora-verifying-invariant-using-ghost-hook/image3.png)
 
 
 For now, let’s follow the Prover’s recommendation by updating the configuration file with the `optimistic_loop` key set to `true`. **We’ll explore this issue in greater depth in a later chapter titled** _**“How Strings Lead to Loops?”**_
@@ -379,25 +379,25 @@ For now, let’s follow the Prover’s recommendation by updating the configurat
 Once done, re-run the Prover by running the command `certoraRun confs/erc20.conf` in the terminal.  In our new verification result, we can see that our invariant successfully passes during constructor execution but **fails during method execution**, specifically for the `transfer()` and `transferFrom()` functions.
 
 
-![image](media/certora-verifying-invariant-using-ghost-hook/image-20909cb3.png)
+![image](media/certora-verifying-invariant-using-ghost-hook/image4.png)
 
 
 To understand the cause of the violation, click on the call trace of the `transfer()`  or `transferFrom()` function. In our case, we will analyze the call trace of the  `transfer()`  function.
 
 
-![image](media/certora-verifying-invariant-using-ghost-hook/image-24b09cb3.png)
+![image](media/certora-verifying-invariant-using-ghost-hook/image5.png)
 
 
 To view the full call trace, click on the **“Expand”** button available on the top-right corner of the **Call Trace** panel.
 
 
-![image](media/certora-verifying-invariant-using-ghost-hook/image-24b09cb3.png)
+![image](media/certora-verifying-invariant-using-ghost-hook/image6.png)
 
 
 In the call trace, we can see that the initial balances of the individual accounts `0x7` and `0x8200` are set to `2^256 − 4` and `0xf000000000000000000000000000000000000000000000000000000000000000`, respectively. In decimal form, these correspond to **`115792089237316195423570985008687907853269984665640564039457584007913129639932`** and **`108890810646419256008710686707116392212123736112785533035372916772359555072000`**.
 
 
-![image](media/certora-verifying-invariant-using-ghost-hook/image-24c09cb3.png)
+![image](media/certora-verifying-invariant-using-ghost-hook/image7.png)
 
 
 Both of these values are assigned by the Prover through **havocing** and fall within the numerical range 0 to `2^{256} - 1`. However, in any **correctly** implemented ERC20 contract, no individual account balance should ever exceed the total sum of all balances. In this scenario, both accounts start with balances that are vastly greater than the total supply (`0xa`) and `sumOfBalances`, creating an impossible initial state that could never exist in an actual deployment.
@@ -428,7 +428,7 @@ add this line
 In the [**new result**](https://prover.certora.com/output/2547903/5ad3cdb8984c4010bb129422dc7511df?anonymousKey=7b6e97c71e8ccc75ee9a4f914beafabcae54389e), you’ll notice that **the Prover no longer finds any violation.**
 
 
-![image](media/certora-verifying-invariant-using-ghost-hook/image-20909cb3.png)
+![image](media/certora-verifying-invariant-using-ghost-hook/image8.png)
 
 
 Our invariant `totalSupplyEqSumOfBalances` passed verification because, after adding the line `require oldAmount <= sumOfBalances;` in the store hook, the Prover will only explore execution paths where this condition holds true. This effectively rules out counterexamples that rely on a single balance being higher than the total sum **(for example, the balance of the sender or receiver in a** `transfer`**)**, ensuring the Prover focuses on scenarios **where individual balances remain within the logical bounds of the total supply**. As a result, the verification succeeds, confirming that the invariant is preserved under all allowed transitions.
@@ -505,7 +505,7 @@ invariant totalSupplyEqSumOfBalances()
 If you re-run the verification with this change (removing the `require` from the `Sstore` hook and keeping it only in the `Sload`hook), the invariant `totalSupplyEqSumOfBalances` will still pass.
 
 
-![image](media/certora-verifying-invariant-using-ghost-hook/image-24c09cb3.png)
+![image](media/certora-verifying-invariant-using-ghost-hook/image9.png)
 
 
 This works because the load hook explicitly filters out **any state where an individual account balance is larger than the total sum of all balances**. If the Prover tries to build a counterexample using such an impossible initial state, it will eventually **read** that balance while evaluating the contract logic. The moment this read occurs, the `require`  statement inside the load hook checks whether that balance is consistent with our ghost variable. Since the balance is unrealistically large, the condition fails, and the Prover is forced to discard that entire execution path.
