@@ -361,7 +361,7 @@ When we click on the “**induction base: After the constructor**” violation, 
 ![image](media/certora-verifying-invariant-using-ghost-hook/image3.png)
 
 
-For now, let’s follow the Prover’s recommendation by updating the configuration file with the `optimistic_loop` key set to `true`. **We’ll explore this issue in greater depth in a later chapter titled _“How Strings Lead to Loops?”**_
+For now, let’s follow the Prover’s recommendation by updating the configuration file with the `optimistic_loop` key set to `true`. We’ll explore this issue in greater depth in a later chapter titled **“How Strings Lead to Loops?”**
 
 
 ```solidity
