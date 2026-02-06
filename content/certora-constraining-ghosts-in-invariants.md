@@ -300,4 +300,4 @@ This is how a **global axiom** helps the Prover reason about properties that are
 ## Conclusion
 
 
-In this chapter, we demonstrated how unconstrained ghost variables can cause invariant proofs to fail at the base case. Since using `require` for initialization is not valid within invariants**,** we introduced **axioms** as the correct alternative. Specifically, the `init_state`  **axiom** resolves the initialization problem by defining valid starting values for ghosts, while **global axioms** express properties that remain true across all contract states.
+In this chapter, we demonstrated how unconstrained ghost variables can cause invariant proofs to fail at the base case. Since using `require` for initialization is not valid within invariants, we introduced **axioms** as the correct alternative. Specifically, the `init_state`  **axiom** resolves the initialization problem by defining valid starting values for ghosts, while **global axioms** express properties that remain true across all contract states.
