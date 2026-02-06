@@ -76,7 +76,7 @@ Put simply, it answers the question: “**Is this condition universally true, re
 Deciding whether to use a rule or an invariant in CVL depends on the nature of the property we're aiming to verify. 
 
 
-### **When to Use a Rule: Verifying Specific Scenarios**
+### When to Use a Rule: Verifying Specific Scenarios
 
 
 Opt for a **rule** when your goal is to verify behavior within a defined context or a specific sequence of operations. For example:
@@ -185,26 +185,26 @@ To begin verifying our invariant, we first need to set up our project structure 
 virtualenv certora-env
 ```
 
-1. Activate the Python virtual environment you created by running the command below.
+3. Activate the Python virtual environment you created by running the command below.
 
 ```bash
 source certora-env/bin/activate
 ```
 
-1. Run the command below to install the Certora-CLI  in your virtual environment.
+4. Run the command below to install the Certora-CLI  in your virtual environment.
 
 ```bash
 pip3 install certora-cli
 ```
 
-1. Run the command below to install the **solc-select** in your virtual environment.
+5. Run the command below to install the **solc-select** in your virtual environment.
 
 ```bash
 pip3 install solc-select
 ```
 
-1. In your project directory, create three subdirectories named `contracts`, `specs`, and `confs`
-2. In your project directory, navigate to the `contracts` subfolder and create a file named `Voting.sol`. Then, paste the above discussed `Voting` contract into that file.
+6. In your project directory, create three subdirectories named `contracts`, `specs`, and `confs`
+7. In your project directory, navigate to the `contracts` subfolder and create a file named `Voting.sol`. Then, paste the above discussed `Voting` contract into that file.
 
 ### Defining the Invariant in a Specification File
 
