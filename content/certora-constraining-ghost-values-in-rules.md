@@ -3,7 +3,7 @@
 
 In the previous chapter, we learned how ghost variables allow information to flow from hooks into rules. We also learned that:
 
-1. **At the start of the verification run**,the Prover chooses arbitrary - havoced values for a ghost variables.
+1. **At the start of the verification run**, the Prover chooses arbitrary - havoced values for a ghost variables.
 2. **Ghost variables are treated as an extension of the contract’s storage.** If a transaction reverts during symbolic execution, the Prover also reverts any ghost updates from that path, keeping them consistent with the contract’s storage state.
 
 The second case isn’t usually a concern, as reverting ghost values during transactions mirrors normal storage behavior. However, the first case can lead to incorrect or misleading verification results.
@@ -12,8 +12,7 @@ The second case isn’t usually a concern, as reverting ghost values during tran
 In this chapter, we will demonstrate how this issue can affect verification and explain how to fix it by establishing **consistency** between ghost variables and the contract state using the `require` statement.
 
 
-## **Understanding the Danger of Unconstrained Ghosts** 
-
+## Understanding the Danger of Unconstrained Ghosts
 
 To see how an unconstrained ghost variable can affect verification, let's revisit the `Counter` contract used in earlier chapters.
 
@@ -107,7 +106,7 @@ In this particular case, the storage variable `count` started at `0xA` (10 in de
 
 
 ```solidity
-postCallCountValue == precallCountValue + countIncrementCall
+postCallCountValue == precallCountValue + countIncrementCall;
 ```
 
 
