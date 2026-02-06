@@ -64,9 +64,7 @@ import "contracts/interfaces/IERC721Receiver.sol";
 
 contract ERC721ReceiverHarness is IERC721Receiver {
     function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
-        
-return this.onERC721Received.selector;
- // always returns 0x150b7a02
+        return this.onERC721Received.selector; // always returns 0x150b7a02
     }
 }
 ```
@@ -204,9 +202,9 @@ rule safeMint(env e, method f, address to, uint256 tokenId) filtered { f ->
     f.selector == sig:safeMint(address,uint256).selector ||
     f.selector == sig:safeMint(address,uint256,bytes).selector
 } {
-		...
+	...
     helperMintWithRevert@withrevert(e, f, to, tokenId);
-		...
+	...
 }
 ```
 
@@ -485,7 +483,7 @@ rule safeTransferFrom(env e, method f, address from, address to, uint256 tokenId
     f.selector == sig:safeTransferFrom(address,address,uint256).selector ||
     f.selector == sig:safeTransferFrom(address,address,uint256,bytes).selector
 } {
-		...
+	...
     
     helperTransferWithRevert@withrevert(e, f, from, to, tokenId);
     bool success = !lastReverted;
