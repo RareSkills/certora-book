@@ -229,3 +229,5 @@ rule useCheckedNonce(address account, uint256 currentNonce) {
     assert otherNonceBefore != otherNonceAfter => other == account, "no other nonce is used";
 }
 ```
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
