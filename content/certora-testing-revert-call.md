@@ -286,3 +286,5 @@ By storing `lastReverted` **immediately after calling** `divide(a, 0)`, we ensur
 
 
 Testing both success and revert cases is crucial for performing formal verification of a method, as it provides better coverage and ensures that the method behaves correctly under all possible input conditions, including edge cases like overflows or invalid inputs.
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
