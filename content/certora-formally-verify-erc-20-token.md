@@ -1259,3 +1259,6 @@ Here's the Prover [run](https://prover.certora.com/output/541734/47a61566a1624ac
 
 
 Here's the full CVL specification and the Prover [run](https://prover.certora.com/output/541734/82386b72baee498cb34af38a3a72e1a9?anonymousKey=6e4b2549cc8a89a54d9ebf703288bf65d815aa24).
+
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
