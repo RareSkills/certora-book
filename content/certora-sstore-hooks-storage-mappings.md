@@ -337,3 +337,6 @@ The reason is that invariants must begin testing immediately after the construct
 - Without an `Sstore` hook, properties can only be proven for a limited set of manually queried keys, rather than monitoring storage directly.
 - In rules, the initial values of ghost variables are constrained using `require` statements.
 - In invariants, ghost variables are initialized using the `init_state` axiom.
+
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
