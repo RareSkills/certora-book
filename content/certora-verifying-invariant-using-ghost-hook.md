@@ -565,11 +565,11 @@ This is why, when we care about keeping `sumOfBalances` aligned with real bala
 
 ## Conclusion
 
-
 In this chapter, we verified the fundamental ERC20 invariant: **Total Supply = Sum of All Balances**.
-
 
 We achieved this by using a **ghost variable** to track the aggregate sum and **hooks** to synchronize that ghost with the contract's storage. Crucially, we demonstrated why placing constraints in an `Sload` hook is often safer than in an `Sstore` hook. By policing values whenever they are _read_, we effectively closed the "blind spot" where the Prover could otherwise assume impossible initial states.
 
-
 These techniques allow you to prove high-level business rules on top of low-level storage, ensuring your verification focuses solely on valid, realistic contract behaviors.
+
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
