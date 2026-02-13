@@ -297,3 +297,5 @@ Using a filter block inside a parametric rule helps us achieve two things:
 
 
 This is how we can utilize method properties to enforce function-specific assertions as well as exclude irrelevant functions from verification using filtered blocks.
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
