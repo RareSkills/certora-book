@@ -275,3 +275,5 @@ Prover run (verified): [link](https://prover.certora.com/output/541734/34ed185c4
 
 - The `unchecked` block disables Solidity's built-in overflow checks, which causes the Prover to explore unsafe arithmetic by assigning initial values that trigger overflows to test the implementation.
 - These unrealistic initial values can be prevented by using `require` in the `Sload` hook, so that the Prover explores states only within the specified bounds, such as requiring that an individual point's value not exceed the total.
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
