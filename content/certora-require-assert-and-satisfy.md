@@ -546,3 +546,5 @@ At first glance, **assert** and **satisfy** statements may seem similar in funct
 
 
 In this chapter, we examined how CVL statements guide the Certora Prover during verification. We learned how assert enforces properties across all execution paths, how require constrains the states the Prover considers, and how satisfy demonstrates the existence of valid execution paths. Understanding these statements and how the Prover reasons about arbitrary states is essential for writing correct and effective CVL rules.
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
