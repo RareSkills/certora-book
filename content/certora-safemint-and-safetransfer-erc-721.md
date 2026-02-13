@@ -650,3 +650,6 @@ _Note: A new Prover feature introduced in_ [_version 8.1.0_](https://docs.certor
 
 
 Here's the Prover [run](https://prover.certora.com/output/541734/0da14ebdd2b044229ba7bae1e71d9acc?anonymousKey=b7f9046a2be316bcac5fd00b396920254d8b34b2).
+
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
