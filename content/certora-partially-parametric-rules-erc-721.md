@@ -1129,3 +1129,5 @@ A partially parametric rule, on the other hand, uses conditional logic based on 
 
 
 The choice between them is primarily about code organization: partially parametric rules centralize method-specific logic, while fully parametric rules separate concerns into independent rules. This organizational difference affects maintainability and clarity, but both approaches are equally valid when preconditions are properly scoped.
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
