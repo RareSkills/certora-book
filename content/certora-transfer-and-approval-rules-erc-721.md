@@ -1102,3 +1102,5 @@ rule zeroAddressBalanceRevert() {
     assert lastReverted;
 }
 ```
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
