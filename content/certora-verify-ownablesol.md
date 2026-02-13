@@ -538,3 +538,6 @@ If the owner has changed (`oldCurrent != newCurrent`), then the change must have
 
 
 These are the only two legitimate paths for changing ownership according to the rule.
+
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
