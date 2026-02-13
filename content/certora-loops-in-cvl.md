@@ -498,3 +498,6 @@ The `--loop_iter` flag increases the number of iterations explored, but this onl
 
 
 These workarounds are helpful for debugging, quick checks, or catching shallow bugs. However, they cannot provide a complete proof when dealing with unbounded loops.
+
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
