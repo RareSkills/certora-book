@@ -412,3 +412,6 @@ In the **Counter** contract, only the `increment()` function modifies the count 
 
 
 This is how we can use a **parametric rule** to verify smart contract properties that are expected to hold true across all function executions. However, there are cases where we may want to **exclude certain functions from the rule** or handle them differently. In the next chapter, we’ll learn how to **fine-tune parametric rules** to selectively enforce constraints based on specific function calls.
+
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
