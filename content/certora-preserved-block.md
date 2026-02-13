@@ -588,3 +588,5 @@ Preserved blocks are a powerful tool for refining invariant verification in CVL.
 
 
 Through the WETH case study, we saw how carefully chosen preserved blocks can guide the Prover away from impossible symbolic states and toward meaningful executions, ensuring that invariants are verified under conditions that accurately reflect real-world behavior.
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
