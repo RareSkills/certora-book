@@ -412,3 +412,6 @@ These additional checks do not alter the core verification process. The Prover s
 
 
 Smart contract invariants are critical assertions about the state of your contract that must always remain true. Formally verifying these invariants ensures that the contract maintains its intended behavior and correctness across all possible states and method executions.
+
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
