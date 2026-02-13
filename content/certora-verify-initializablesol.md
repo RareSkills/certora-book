@@ -117,5 +117,7 @@ rule disableEffect() {
 
 ## Summary
 
-
 The rules we showed here are extremely simple to grasp, but we review them to demonstrate that formal verification doesn’t always have to be complex. The rules we show here could be accomplished with a unit test, but formal verification is more thorough and high assurance.
+
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
