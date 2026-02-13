@@ -668,3 +668,5 @@ This is how we can use `requireInvariant` to make our specifications stronger, m
 - In **invariants**, it lets us prove new properties by assuming earlier ones, avoiding meaningless counterexamples that come from inconsistent states.
 
 The key principle is simple but powerful: **prove global invariants first, then reuse them as building blocks** when verifying specific behaviors or additional invariants.
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
