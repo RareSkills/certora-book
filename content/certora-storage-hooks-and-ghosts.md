@@ -527,5 +527,7 @@ Weâ€™ll explore these behaviours in greater detail in a later chapter, where weâ
 
 ## Conclusion
 
-
 Certora hooks provide powerful observability into storage and EVM operations. However, their variables are limited to each hook's local scope. Ghost variables solve this problem by capturing data from hooks and making it accessible to rules, thereby enabling effective and comprehensive reasoning about a contract's internal state during the verification.
+
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
