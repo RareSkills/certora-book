@@ -348,5 +348,6 @@ Even though all the rules are verified, this does not mean the entire contract i
 
 ## Conclusion
 
-
 In this chapter, we explored the anatomy of a `.spec` file, focusing on the **Methods Block** for interface definition and the **Rule Block** for logic testing. We also saw how tags like `envfree` help refine the verification process. In the next chapter, we will build on this foundation by taking a detailed look at `require` and `assert` statements.
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
