@@ -274,3 +274,6 @@ Take an AMM WETH/USDC pool as an example: During swaps, the WETH balance increas
 
 1. Formally verify [Solady min](https://github.com/Vectorized/solady/blob/dcdfab80f4e6cb9ac35c91610b2a2ec42689ec79/src/utils/FixedPointMathLib.sol#L1100) always returns the min.
 2. Formally verify [Solady zeroFloorSub](https://github.com/Vectorized/solady/blob/dcdfab80f4e6cb9ac35c91610b2a2ec42689ec79/src/utils/FixedPointMathLib.sol#L657) returns `max(0, x - y)`. In other words, if `x` is less than `y`, it returns `0`. Otherwise, it returns `x - y`.
+
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
