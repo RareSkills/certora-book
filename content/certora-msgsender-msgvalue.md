@@ -147,3 +147,6 @@ Now, we understand how to write rules for environment-dependent functions. The P
 - These environment-dependent functions do not need to be declared in the methods block, while `envfree` functions must be explicitly declared and marked as `envfree`.
 - If an environment-dependent function is not correctly implemented as such, it will still compile and run on the Prover but will produce violations and warnings.
 - If `msg.value` is not properly accounted for, the Prover will generate violations and counterexamples stemming from it.
+
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
