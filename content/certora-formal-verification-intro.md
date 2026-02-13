@@ -146,3 +146,5 @@ This tutorial series focuses on
 4. How to formally verify real DeFi protocols
 
 Each part in the series builds on concepts from previous chapters. For this reason, we advise readers to follow the series in order instead of skipping around.
+
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
