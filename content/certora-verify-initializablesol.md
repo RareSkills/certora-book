@@ -20,7 +20,7 @@ For safety purposes, upgradeable contracts must have the following properties wi
 Note that access control to the initializer and reinitializer is out of scope of this contract. The contract doesn't even enforce what those functions are named, it only ensures the functionality of the modifiers is correct.
 
 
-We will cover most, but not all of the [Initializable.spec](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/certora/specs/Initializable.spec) file for OpenZeppelin, as some of the contents rely on techniques we haven't covered yet. However, the majority of the contents should be understandable based on what we have covered so far in the course.
+We will cover most, but not all of the [Initializable.spec](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/fv/specs/Initializable.spec) file for OpenZeppelin, as some of the contents rely on techniques we haven't covered yet. However, the majority of the contents should be understandable based on what we have covered so far in the course.
 
 
 Here is the first rule we examine:
