@@ -4,7 +4,7 @@
 Nonces, which stands for "number used once" are used in digital signature schemes to prevent replay attacks. For the purposes of this article, we assume the reader is already familiar with what nonces are and how they are used.
 
 
-The [OpenZeppelin nonces.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Nonces.sol) library tracks the signers’ nonces by using a counter that increments for each address. Here is the entire library (with the comments removed for brevity):
+The [OpenZeppelin nonces.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/c1a74030e01eb1b12ef7b302502f291318f0baad/contracts/utils/Nonces.sol) library tracks the signers’ nonces by using a counter that increments for each address. Here is the entire library (with the comments removed for brevity):
 
 
 ```solidity
@@ -52,7 +52,7 @@ Here are some of the properties that will be proven:
 ## Nonces.sol Spec
 
 
-Here is the [spec Certora wrote for nonces.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/certora/specs/Nonces.spec).
+Here is the [spec Certora wrote for nonces.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/c1a74030e01eb1b12ef7b302502f291318f0baad/fv/specs/Nonces.spec).
 
 
 ### Helper function
