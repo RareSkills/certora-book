@@ -16,7 +16,7 @@ Ownable is an abstract contract that provides owner-based access control. When i
     This is also a public function and, like `renounceOwnership()`, is restricted by the `onlyOwner` modifier. When called with a valid argument address (not `address(0)`), it updates the contract’s ownership to that address, even if it’s the same as the current owner.
 
 
-Below is the [OpenZeppelin Ownable contract](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol), provided for reference while explaining their approach to formal verification:
+Below is the [OpenZeppelin Ownable contract](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/c1a74030e01eb1b12ef7b302502f291318f0baad/contracts/access/Ownable.sol), provided for reference while explaining their approach to formal verification:
 
 
 ```solidity
@@ -126,7 +126,7 @@ abstract contract Ownable is Context {
 # OZ’s Ownable CVL Specifications
 
 
-Here’s the CVL specification link for the Ownable contract: [Ownable CVL Specification](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/certora/specs/Ownable.spec). 
+Here’s the CVL specification link for the Ownable contract: [Ownable CVL Specification](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/c1a74030e01eb1b12ef7b302502f291318f0baad/fv/specs/Ownable.spec). 
 
 
 To simplify, we made minor modifications by placing the following definitions directly into the specification file, rather than importing them from `IOwnable.spec` and `helpers.spec`:
