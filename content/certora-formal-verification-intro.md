@@ -1,4 +1,7 @@
-# Introduction to Formal Verification
+---
+description: "Formal verification proves a smart contract meets its specification. Learn how it works, how it compares to fuzzing, and its limits, in the Certora book."
+---
+# Certora Prover: Formal Verification of Smart Contracts
 
 Formal verification is the process of mathematically proving a program adheres to a specification. 
 
