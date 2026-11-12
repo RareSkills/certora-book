@@ -27,7 +27,7 @@ contract Math {
 The `add()` function behaves as follows:
 
 1. When provided with valid inputs, it should correctly **calculate** the sum of `x` and `y` , and return the result as a `uint256` value. For example, `add(15, 10)` will return 25.
-2. Since the contract uses Solidity version 0.8.0 or later, the transaction will revert if the sum exceeds [the ](https://www.rareskills.io/post/uint-max-value-solidity)[maximum value of ](https://www.rareskills.io/post/uint-max-value-solidity)[`uint256`](https://www.rareskills.io/post/uint-max-value-solidity) (`2^256 - 1`). For example, if `x = 2^256 - 1` and `y = 1`, the overflow will cause the transaction to revert instead of returning a result.
+2. Since the contract uses Solidity version 0.8.0 or later, the transaction will revert if the sum exceeds [the ](https://rareskills.io/post/uint-max-value-solidity)[maximum value of ](https://rareskills.io/post/uint-max-value-solidity)[`uint256`](https://rareskills.io/post/uint-max-value-solidity) (`2^256 - 1`). For example, if `x = 2^256 - 1` and `y = 1`, the overflow will cause the transaction to revert instead of returning a result.
 
 ## Verifying the `add()` Function Specification
 
@@ -287,4 +287,4 @@ By storing `lastReverted` **immediately after calling** `divide(a, 0)`, we ensur
 
 Testing both success and revert cases is crucial for performing formal verification of a method, as it provides better coverage and ensures that the method behaves correctly under all possible input conditions, including edge cases like overflows or invalid inputs.
 
-*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/certora-book)*

@@ -339,4 +339,4 @@ The reason is that invariants must begin testing immediately after the construct
 - In invariants, ghost variables are initialized using the `init_state` axiom.
 
 
-*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/certora-book)*

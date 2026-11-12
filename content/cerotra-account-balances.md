@@ -283,4 +283,4 @@ Prover run: [link](https://prover.certora.com/output/541734/9126e4a5e6a9475989fe
 - Self-calls are included in test cases by the Prover, so in our example, we rule them out by adding `require(e.msg.sender != currentContract)` to avoid false counterexamples; be cautious, as self-calls can be plausible and may reveal real bugs in real-world contracts.
 
 
-*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/certora-book)*

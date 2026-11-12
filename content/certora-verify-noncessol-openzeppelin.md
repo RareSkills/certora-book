@@ -58,7 +58,7 @@ Here is the [spec Certora wrote for nonces.sol](https://github.com/OpenZeppelin/
 ### Helper function
 
 
-The spec includes a helper CVL function to check that the nonce is not the [maximum value of uint256](https://www.rareskills.io/post/uint-max-value-solidity). In practice, a counter cannot get that high:
+The spec includes a helper CVL function to check that the nonce is not the [maximum value of uint256](https://rareskills.io/post/uint-max-value-solidity). In practice, a counter cannot get that high:
 
 
 ```solidity
@@ -230,4 +230,4 @@ rule useCheckedNonce(address account, uint256 currentNonce) {
 }
 ```
 
-*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/certora-book)*

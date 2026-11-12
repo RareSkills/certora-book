@@ -315,4 +315,4 @@ As a final note, Certora provides the following practical guideline:
 - `require_uint256` restricts a `mathint` type to the `uint256` range, hence ignoring values beyond `max_uint256`. Thus, it can hide overflows.
 - Use `mathint` whenever possible, and use `uint` or `int` for contract function arguments.
 
-*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/certora-book)*
