@@ -1,7 +1,7 @@
 # Formally verifying Initializable.sol
 
 
-This article describes how Certora formally verified the Initializable.sol OpenZeppelin contract. We assume the reader is already familiar with how this contract is used. If not, please see our article on [Initializable Contracts](https://www.rareskills.io/post/initializable-solidity).
+This article describes how Certora formally verified the Initializable.sol OpenZeppelin contract. We assume the reader is already familiar with how this contract is used. If not, please see our article on [Initializable Contracts](https://rareskills.io/post/initializable-solidity).
 
 
 In upgradeable contracts, the constructor is not used. Instead, after deployment, the deployer calls `initialize(...)` and this sets the state variables to their initial conditions. The `initialize(...)` function must be callable only once.
@@ -120,4 +120,4 @@ rule disableEffect() {
 The rules we showed here are extremely simple to grasp, but we review them to demonstrate that formal verification doesn’t always have to be complex. The rules we show here could be accomplished with a unit test, but formal verification is more thorough and high assurance.
 
 
-*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/certora-book)*

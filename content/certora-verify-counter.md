@@ -264,4 +264,4 @@ For now, just understand that the green check (✅) indicates that the Prover ha
 
 **Congratulations!** You have successfully set up your development environment and executed your first formal verification run. However, up until now, we have treated the specification file (`.spec`) as a '**black box**'. We ran it, but didn't look inside. In the next chapter, we will open that box and dissect the anatomy of a Certora specification. We will break down its two essential components, Rule Blocks and Methods Blocks, and learn how to define the pre-conditions, actions, and post-conditions necessary to verify your first smart contract.
 
-*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/certora-book)*

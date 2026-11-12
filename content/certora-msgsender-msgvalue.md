@@ -149,4 +149,4 @@ Now, we understand how to write rules for environment-dependent functions. The P
 - If `msg.value` is not properly accounted for, the Prover will generate violations and counterexamples stemming from it.
 
 
-*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/certora-book)*

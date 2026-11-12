@@ -460,4 +460,4 @@ For further details on `link`, see the Certora documentation: [[1](https://docs.
 - A proper use of persistent ghosts is to capture information from CVL hooks — such as `CALL` return codes — that must survive across failing execution paths, like tracking failed low-level ETH transfers.
 - Adding the `persistent` keyword as a quick fix to pass failing rules creates a false sense of verification success by ignoring the effects of unknown contract implementations or unresolved calls.
 
-*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/certora-book)*

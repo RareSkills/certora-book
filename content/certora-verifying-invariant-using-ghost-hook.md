@@ -572,4 +572,4 @@ We achieved this by using a **ghost variable** to track the aggregate sum and�
 These techniques allow you to prove high-level business rules on top of low-level storage, ensuring your verification focuses solely on valid, realistic contract behaviors.
 
 
-*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/certora-book)*

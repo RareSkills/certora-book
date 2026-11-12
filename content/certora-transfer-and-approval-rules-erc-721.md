@@ -1103,4 +1103,4 @@ rule zeroAddressBalanceRevert() {
 }
 ```
 
-*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/tutorials/certora-book)*
+*This article is part of a series on [formal verification using the Certora Prover](https://rareskills.io/certora-book)*
